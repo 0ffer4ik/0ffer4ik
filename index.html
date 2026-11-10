@@ -8,27 +8,47 @@
 </head>
 <body>
 
+    <!-- Холст для эффекта Матрицы на фоне -->
+    <canvas id="matrix-canvas"></canvas>
+
     <div class="card">
         <h1>Привет!</h1>
         
-        <!-- Картинка-мем. Название файла должно совпадать! -->
+        <!-- Картинка-мем -->
         <img src="meme.jpg" alt="Смешной мем" class="meme-img">
         
         <p>Это мой первый сайт на GitHub Pages.</p>
         <p>И он уже выглядит круто! 😎</p>
 
-        <!-- Кнопки соцсетей. Замени ссылки на свои! -->
+        <!-- Кнопки соцсетей -->
         <div class="social-links">
             <a href="https://vk.com/djxdtv" class="btn vk" target="_blank">VK</a>
             <a href="https://instagram.com/0ffer4ik" class="btn inst" target="_blank">Instagram</a>
             <a href="https://threads.net/@0ffer4ik" class="btn threads" target="_blank">Threads</a>
             <a href="https://t.me/Offer4ik" class="btn tg" target="_blank">Telegram</a>
         </div>
- <div style="margin-top: 30px;">
-            <a href="sudoku.html" class="btn btn-easy" style="display: inline-block; padding: 15px 30px; font-size: 18px;">
+
+        <!-- Блок с играми и переключателем -->
+        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+            
+            <!-- Кнопка Змейки (файл создадим на следующем шаге) -->
+            <a href="snake.html" class="btn" style="background-color: #8b0000; width: 80%; padding: 15px 30px; font-size: 18px;">
+                🐍 Играть в Змейку
+            </a>
+
+            <!-- Кнопка Судоку -->
+            <a href="sudoku.html" class="btn btn-easy" style="width: 80%; padding: 15px 30px; font-size: 18px;">
                 🎮 Играть в Судоку
             </a>
+
+            <!-- Переключатель Матрицы -->
+            <button id="matrix-toggle" class="btn btn-back" style="width: 80%; padding: 15px 30px; font-size: 16px;">
+                Выключить Матрицу
+            </button>
         </div>
     </div>
+
+    <!-- Подключаем скрипт Матрицы -->
+    <script src="matrix.js"></script>
 </body>
 </html>
