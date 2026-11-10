@@ -154,3 +154,13 @@ p {
     font-size: 18px;
     min-height: 24px;
 }
+/* Стили для картинки (мема) */
+.meme-img {
+    max-width: 100%;
+    height: auto; /* Эта строчка не дает картинке сплющиваться */
+    border-radius: 15px; /* Закругляем углы у самой картинки */
+    margin-bottom: 20px;
+    display: block; /* Убирает лишние отступы снизу */
+    margin-left: auto; /* Центрирует картинку */
+    margin-right: auto; /* Центрирует картинку */
+}
