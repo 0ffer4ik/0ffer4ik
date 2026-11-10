@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html lang = ru>
+<html lang="ru">
 <head>
-    <meta charsef="UTF-8">
-    <title>мой сайтик</title>
+    <meta charset="UTF-8">
+    <title>Мой первый сайт</title>
+    
+    <!-- Вот здесь начинается наш CSS (оформление) -->
+    <style>
+        body {
+            background-color: #1e1e2f; /* Темно-синий фон */
+            color: white; /* Белый текст */
+            font-family: Arial, sans-serif; /* Красивый шрифт */
+            display: flex;
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center; /* Центрируем по вертикали */
+            height: 100vh; /* Высота на весь экран */
+            margin: 0;
+        }
+        .card {
+            background-color: #2b2b40; /* Фон карточки */
+            padding: 40px;
+            border-radius: 15px; /* Закругленные углы */
+            text-align: center; /* Текст по центру */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Тень */
+        }
+        h1 {
+            color: #4CAF50; /* Зеленый заголовок */
+            margin-bottom: 10px;
+        }
+        p {
+            color: #cccccc;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Привет</h1>
-    <p>рдлоывролыврпопрвыоп</p>
+
+    <!-- Это контент твоей страницы -->
+    <div class="card">
+        <h1>Привет!</h1>
+        <p>Это мой первый сайт на GitHub Pages.</p>
+        <p>И он уже выглядит круто! 😎</p>
+    </div>
+
 </body>
 </html>
