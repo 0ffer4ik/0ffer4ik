@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Судоку 9х9</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card sudoku-card">
+        <h1>Судоку</h1>
+        
+        <!-- Кнопки сложности -->
+        <div class="difficulty-buttons">
+            <button onclick="startGame('easy')" class="btn btn-easy">Легко</button>
+            <button onclick="startGame('medium')" class="btn btn-medium">Средне</button>
+            <button onclick="startGame('hard')" class="btn btn-hard">Сложно</button>
+        </div>
+
+        <!-- Здесь будет сетка 9х9 -->
+        <div id="sudoku-board" class="sudoku-board"></div>
+
+        <p id="message" class="sudoku-message"></p>
+
+        <!-- Кнопки действий -->
+        <div class="sudoku-actions">
+            <button onclick="checkSolution()" class="btn btn-primary">Проверить</button>
+            <a href="index.html" class="btn btn-back">На главную</a>
+        </div>
+    </div>
+    <script src="sudoku.js"></script>
+</body>
+</html>

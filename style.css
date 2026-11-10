@@ -69,3 +69,79 @@ p {
 .inst { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
 .threads { background-color: #000000; border: 1px solid #555; }
 .tg { background-color: #0088cc; }
+/* --- СТИЛИ ДЛЯ СУДОКУ --- */
+.sudoku-card {
+    max-width: 500px; /* Делаем карточку шире для сетки 9х9 */
+}
+
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1px;
+    background-color: #444;
+    border: 3px solid #4CAF50;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 400px;
+    width: 100%;
+}
+
+.sudoku-cell {
+    width: 100%;
+    aspect-ratio: 1;
+    text-align: center;
+    font-size: clamp(14px, 5vw, 22px); /* Адаптивный размер шрифта */
+    border: none;
+    background-color: #1e1e2f;
+    color: #4CAF50; /* Зеленый цвет для введенных цифр */
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Стили для изначально заданных цифр */
+.sudoku-cell.fixed {
+    background-color: #2b2b40;
+    color: white;
+    font-weight: bold;
+}
+
+.sudoku-cell:focus {
+    outline: none;
+    background-color: #3a3a55;
+}
+
+/* Толстые границы для блоков 3х3 */
+.sudoku-cell.border-right {
+    border-right: 2px solid #4CAF50;
+}
+.sudoku-cell.border-bottom {
+    border-bottom: 2px solid #4CAF50;
+}
+
+/* Кнопки сложности */
+.difficulty-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-easy { background-color: #4CAF50; }
+.btn-medium { background-color: #FF9800; }
+.btn-hard { background-color: #f44336; }
+
+.sudoku-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-primary { background-color: #0077FF; }
+.btn-back { background-color: #555; }
+
+.sudoku-message {
+    font-weight: bold;
+    font-size: 18px;
+    min-height: 24px;
+}
