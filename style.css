@@ -1,6 +1,9 @@
 body {
-    /* Базовый темный фон сделаем с легким красным оттенком */
-    background-color: #1a0f0f; 
+    /* Создаем градиент из трех цветов: темно-красный, почти черный и бордовый */
+    background: linear-gradient(-45deg, #1a0f0f, #3d0e0e, #0d0505, #2c1a1a);
+    background-size: 400% 400%; /* Делаем фон больше экрана, чтобы он мог двигаться */
+    animation: gradientBG 15s ease infinite; /* Запускаем анимацию на 15 секунд по кругу */
+    
     color: white;
     font-family: Arial, sans-serif;
     display: flex;
@@ -10,6 +13,13 @@ body {
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
+}
+
+/* Сама магия анимации: двигаем фон туда-сюда */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .card {

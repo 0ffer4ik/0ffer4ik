@@ -14,8 +14,16 @@ const puzzles = {
 };
 
 let currentSolution = "";
+let timerInterval;
+let seconds = 0;
 
 function startGame(difficulty) {
+    // Сбрасываем и запускаем таймер заново
+    clearInterval(timerInterval);
+    seconds = 0;
+    document.getElementById('timer').innerText = "00:00";
+    timerInterval = setInterval(updateTimer, 1000);
+
     const board = document.getElementById('sudoku-board');
     board.innerHTML = ''; 
     document.getElementById('message').innerText = ''; 
@@ -28,13 +36,12 @@ function startGame(difficulty) {
         input.type = 'text';
         input.maxLength = 1;
         input.classList.add('sudoku-cell');
-        input.dataset.index = i; // Запоминаем индекс клетки (от 0 до 80)
+        input.dataset.index = i;
         
-        // Ограничиваем ввод и обновляем статистику при вводе
         input.addEventListener('input', function() {
             this.value = this.value.replace(/[^1-9]/g, '');
-            checkCell(this); // Проверяем конкретную клетку
-            updateStats();   // Обновляем счетчик
+            checkCell(this);
+            updateStats();
         });
 
         const value = puzzle[i];
@@ -52,75 +59,77 @@ function startGame(difficulty) {
         board.appendChild(input);
     }
     
-    updateStats(); // Первичный подсчет при старте
+    updateStats();
 }
 
-// Функция проверки ОДНОЙ клетки (для подсветки)
+// Функция для работы таймера
+function updateTimer() {
+    seconds++;
+    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    document.getElementById('timer').innerText = `${mins}:${secs}`;
+}
+
 function checkCell(input) {
-    input.classList.remove('correct', 'wrong'); // Сбрасываем старые цвета
-    
-    if (input.classList.contains('fixed') || input.value === '') {
-        return; // Если клетка изначально задана или пуста — ничего не делаем
-    }
+    input.classList.remove('correct', 'wrong'); 
+    if (input.classList.contains('fixed') || input.value === '') return;
 
     const index = parseInt(input.dataset.index);
     const correctValue = currentSolution[index];
+    const currentValue = input.value;
+    let isCorrectValue = (currentValue === correctValue);
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+    let isDuplicate = false;
+    const inputs = document.querySelectorAll('.sudoku-cell');
 
-    if (input.value === correctValue) {
+    for (let i = 0; i < 81; i++) {
+        if (i === index) continue; 
+        if ((Math.floor(i / 9) === row || i % 9 === col) && inputs[i].value === currentValue) {
+            isDuplicate = true;
+            break;
+        }
+    }
+
+    if (isCorrectValue && !isDuplicate) {
         input.classList.add('correct');
     } else {
         input.classList.add('wrong');
     }
 }
 
-// Функция подсчета статистики
 function updateStats() {
     const inputs = document.querySelectorAll('.sudoku-cell');
-    let remain = 0;
-    let correct = 0;
-    let wrong = 0;
+    let remain = 0, correct = 0, wrong = 0;
 
     inputs.forEach(input => {
-        // Считаем, сколько пустых (не считая изначально заданные)
         if (input.value === '' && !input.classList.contains('fixed')) {
             remain++;
-        } 
-        // Считаем верные и неверные (только для тех, что не были заданы изначально)
-        else if (!input.classList.contains('fixed') && input.value !== '') {
-            const index = parseInt(input.dataset.index);
-            if (input.value === currentSolution[index]) {
-                correct++;
-            } else {
-                wrong++;
-            }
+        } else if (!input.classList.contains('fixed') && input.value !== '') {
+            if (input.classList.contains('correct')) correct++;
+            else wrong++;
         }
     });
 
-    // Обновляем цифры на экране
     document.getElementById('stat-remain').innerText = remain;
     document.getElementById('stat-correct').innerText = correct;
     document.getElementById('stat-wrong').innerText = wrong;
 }
 
-// Функция финальной проверки (кнопка)
 function checkSolution() {
     const inputs = document.querySelectorAll('.sudoku-cell');
     let currentBoard = "";
-    
-    for (let i = 0; i < inputs.length; i++) {
-        currentBoard += inputs[i].value || "0";
-    }
+    for (let i = 0; i < inputs.length; i++) currentBoard += inputs[i].value || "0";
 
     const messageEl = document.getElementById('message');
-
     if (currentBoard === currentSolution) {
-        messageEl.innerText = "🎉 Победа! Ты решил судоку!";
+        messageEl.innerText = `🎉 Победа! Твое время: ${document.getElementById('timer').innerText}`;
         messageEl.style.color = "#4CAF50";
+        clearInterval(timerInterval); // Останавливаем таймер при победе
     } else {
         messageEl.innerText = "❌ Пока есть пустые клетки или ошибки, попробуй еще!";
         messageEl.style.color = "#ff4d4d";
     }
 }
 
-// Запускаем легкий уровень при загрузке страницы
 window.onload = () => startGame('easy');
