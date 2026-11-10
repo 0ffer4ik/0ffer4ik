@@ -1,0 +1,71 @@
+body {
+    background-color: #1e1e2f;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Изменили height на min-height для телефонов */
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card {
+    background-color: #2b2b40;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 400px; /* Ограничиваем ширину */
+    width: 100%;
+}
+
+h1 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #cccccc;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+/* Стили для картинки (мема) */
+.meme-img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Стили для кнопок соцсетей */
+.social-links {
+    display: flex;
+    flex-wrap: wrap; /* Кнопки будут переноситься на новую строку, если не влезут */
+    justify-content: center;
+    gap: 10px; /* Расстояние между кнопками */
+    margin-top: 25px;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.05); /* Легкое увеличение при наведении */
+    opacity: 0.9;
+}
+
+/* Цвета для конкретных соцсетей */
+.vk { background-color: #0077FF; }
+.inst { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.threads { background-color: #000000; border: 1px solid #555; }
+.tg { background-color: #0088cc; }
