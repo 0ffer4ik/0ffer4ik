@@ -16,7 +16,14 @@
             <button onclick="startGame('hard')" class="btn btn-hard">Сложно</button>
         </div>
 
-        <!-- Здесь будет сетка 9х9 -->
+        <!-- СЧЕТЧИК -->
+        <div class="stats-panel">
+            <div class="stat-item">Осталось: <span id="stat-remain">0</span></div>
+            <div class="stat-item">Верно: <span id="stat-correct" style="color: #4CAF50;">0</span></div>
+            <div class="stat-item">Ошибки: <span id="stat-wrong" style="color: #ff4d4d;">0</span></div>
+        </div>
+
+        <!-- Сетка 9х9 -->
         <div id="sudoku-board" class="sudoku-board"></div>
 
         <p id="message" class="sudoku-message"></p>

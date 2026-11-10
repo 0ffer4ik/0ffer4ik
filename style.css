@@ -145,3 +145,26 @@ p {
     font-size: 18px;
     min-height: 24px;
 }
+/* --- НОВЫЕ СТИЛИ ДЛЯ СЧЕТЧИКА И ЦВЕТОВ --- */
+.stats-panel {
+    display: flex;
+    justify-content: space-around;
+    background-color: #2b2b40;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid #444;
+}
+
+/* Цвета для правильных и неправильных введенных цифр */
+.sudoku-cell.correct {
+    color: #4CAF50 !important;
+    background-color: #233429 !important; /* Легкий зеленый фон */
+}
+
+.sudoku-cell.wrong {
+    color: #ff4d4d !important;
+    background-color: #3d2323 !important; /* Легкий красный фон */
+}

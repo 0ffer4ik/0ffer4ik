@@ -1,4 +1,3 @@
-// База данных судоку (строки, где 0 - это пустые клетки)
 const puzzles = {
     easy: {
         start: "530070000600195000098000060800060003400803001700020006060000280000419005000080079",
@@ -18,8 +17,8 @@ let currentSolution = "";
 
 function startGame(difficulty) {
     const board = document.getElementById('sudoku-board');
-    board.innerHTML = ''; // Очищаем старое поле
-    document.getElementById('message').innerText = ''; // Очищаем текст победы/ошибки
+    board.innerHTML = ''; 
+    document.getElementById('message').innerText = ''; 
 
     const puzzle = puzzles[difficulty].start;
     currentSolution = puzzles[difficulty].solution;
@@ -29,10 +28,13 @@ function startGame(difficulty) {
         input.type = 'text';
         input.maxLength = 1;
         input.classList.add('sudoku-cell');
+        input.dataset.index = i; // Запоминаем индекс клетки (от 0 до 80)
         
-        // Ограничиваем ввод только цифрами от 1 до 9
+        // Ограничиваем ввод и обновляем статистику при вводе
         input.addEventListener('input', function() {
             this.value = this.value.replace(/[^1-9]/g, '');
+            checkCell(this); // Проверяем конкретную клетку
+            updateStats();   // Обновляем счетчик
         });
 
         const value = puzzle[i];
@@ -42,7 +44,6 @@ function startGame(difficulty) {
             input.classList.add('fixed');
         }
 
-        // Добавляем толстые рамки для блоков 3х3
         const row = Math.floor(i / 9);
         const col = i % 9;
         if ((col + 1) % 3 === 0 && col !== 8) input.classList.add('border-right');
@@ -50,8 +51,58 @@ function startGame(difficulty) {
 
         board.appendChild(input);
     }
+    
+    updateStats(); // Первичный подсчет при старте
 }
 
+// Функция проверки ОДНОЙ клетки (для подсветки)
+function checkCell(input) {
+    input.classList.remove('correct', 'wrong'); // Сбрасываем старые цвета
+    
+    if (input.classList.contains('fixed') || input.value === '') {
+        return; // Если клетка изначально задана или пуста — ничего не делаем
+    }
+
+    const index = parseInt(input.dataset.index);
+    const correctValue = currentSolution[index];
+
+    if (input.value === correctValue) {
+        input.classList.add('correct');
+    } else {
+        input.classList.add('wrong');
+    }
+}
+
+// Функция подсчета статистики
+function updateStats() {
+    const inputs = document.querySelectorAll('.sudoku-cell');
+    let remain = 0;
+    let correct = 0;
+    let wrong = 0;
+
+    inputs.forEach(input => {
+        // Считаем, сколько пустых (не считая изначально заданные)
+        if (input.value === '' && !input.classList.contains('fixed')) {
+            remain++;
+        } 
+        // Считаем верные и неверные (только для тех, что не были заданы изначально)
+        else if (!input.classList.contains('fixed') && input.value !== '') {
+            const index = parseInt(input.dataset.index);
+            if (input.value === currentSolution[index]) {
+                correct++;
+            } else {
+                wrong++;
+            }
+        }
+    });
+
+    // Обновляем цифры на экране
+    document.getElementById('stat-remain').innerText = remain;
+    document.getElementById('stat-correct').innerText = correct;
+    document.getElementById('stat-wrong').innerText = wrong;
+}
+
+// Функция финальной проверки (кнопка)
 function checkSolution() {
     const inputs = document.querySelectorAll('.sudoku-cell');
     let currentBoard = "";
@@ -66,7 +117,7 @@ function checkSolution() {
         messageEl.innerText = "🎉 Победа! Ты решил судоку!";
         messageEl.style.color = "#4CAF50";
     } else {
-        messageEl.innerText = "❌ Пока есть ошибки, попробуй еще!";
+        messageEl.innerText = "❌ Пока есть пустые клетки или ошибки, попробуй еще!";
         messageEl.style.color = "#ff4d4d";
     }
 }
