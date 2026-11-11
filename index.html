@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мой первый сайт</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,11 +12,11 @@
 
     <div class="layout">
         <div class="card console-window">
-            <h1 id="secret-trigger">Привет!</h1>
+            <h1 id="secret-trigger" class="glitch" data-text="Привет!">Привет!</h1>
             
             <div class="terminal">
-                <p>> Это мой первый сайт на GitHub Pages.</p>
-                <p>> И он уже выглядит круто! 😎 <span class="cursor">_</span></p>
+                <div class="scanlines"></div>
+                <div id="terminal-output"></div>
             </div>
 
             <div class="social-links">
@@ -27,9 +28,9 @@
         </div>
 
         <div class="card meme-sheet">
-            <img src="1.jpg" alt="Мем 1" class="meme-img">
-            <img src="2.jpg" alt="Мем 2" class="meme-img">
-            <img src="3.jpg" alt="Мем 3" class="meme-img">
+            <img src="meme1.jpg" alt="Мем 1" class="meme-img">
+            <img src="meme2.jpg" alt="Мем 2" class="meme-img">
+            <img src="meme3.jpg" alt="Мем 3" class="meme-img">
         </div>
     </div>
 
@@ -44,7 +45,6 @@
     
     <script>
         const memes = document.querySelectorAll('.meme-img');
-        
         memes.forEach(meme => {
             meme.addEventListener('mousemove', (e) => {
                 const rect = meme.getBoundingClientRect();
@@ -75,15 +75,45 @@
             }
         });
 
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('show');
-        });
+        closeBtn.addEventListener('click', () => modal.classList.remove('show'));
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
 
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('show');
+        const terminalOutput = document.getElementById('terminal-output');
+        const lines = [
+            "> Initializing system...",
+            "> Bypassing firewall...",
+            "> Access granted.",
+            "> Это мой первый сайт на GitHub Pages.",
+            "> И он уже выглядит круто! 😎"
+        ];
+        let lineIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let currentText = "";
+
+        function typeTerminal() {
+            if (lineIndex < lines.length) {
+                if (!isDeleting) {
+                    if (charIndex < lines[lineIndex].length) {
+                        currentText += lines[lineIndex].charAt(charIndex);
+                        terminalOutput.innerHTML = currentText + '<span class="cursor">_</span>';
+                        charIndex++;
+                        setTimeout(typeTerminal, 50);
+                    } else {
+                        currentText += "<br>";
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(typeTerminal, 400);
+                    }
+                }
+            } else {
+                terminalOutput.innerHTML = currentText + '<span class="cursor">_</span>';
             }
-        });
+        }
+
+        window.onload = () => {
+            setTimeout(typeTerminal, 1000);
+        };
     </script>
 </body>
 </html>
