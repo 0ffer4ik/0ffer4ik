@@ -62,8 +62,8 @@ body {
 .btn-diff, .btn-action {
     padding: 8px 2px;
     background: rgba(0,0,0,0.5);
-    border: 1px solid #ff3333;
-    color: #ff3333;
+    border: 1px solid #690000;
+    color: #740000;
     border-radius: 6px;
     font-family: 'Consolas', monospace;
     font-weight: bold;
@@ -76,8 +76,8 @@ body {
     grid-template-columns: repeat(9, 1fr);
     grid-template-rows: repeat(9, 1fr);
     gap: 1px;
-    background-color: #ff3333;
-    border: 1px solid #ff3333;
+    background-color: #720202;
+    border: 1px solid #700000;
     width: 95vw;
     max-width: 450px;
     aspect-ratio: 1; 
@@ -96,16 +96,16 @@ body {
     font-weight: 900;
     line-height: 1;
     background-color: rgba(10, 5, 5, 0.95); 
-    color: #d4d4d4;s
+    color: #d4d4d4;
     font-family: 'Consolas', monospace;
     box-sizing: border-box;
     transition: background-color 0.1s;
 }
 
-.sudoku-cell.crosshair { background-color: rgba(56, 56, 56, 0.233) !important; }
+.sudoku-cell.crosshair { background-color: rgb(100, 0, 0) !important; }
 .sudoku-cell.same-num  { background-color: rgba(85, 0, 0, 0.74) !important; color:#fff !important; }
 .sudoku-cell.highlight {
-    background-color: rgba(126, 2, 2, 0.356) !important;
+    background-color: rgba(85, 0, 0, 0.459) !important;
     box-shadow: inset 0 0 0 2px #fff;
     color: #fff !important;
     z-index: 10;
@@ -113,7 +113,7 @@ body {
 .numpad button { position: relative; }
 .numpad button small {
     position: absolute; right: 5px; bottom: 2px;
-    font-size: 10px; color: #5000009c;
+    font-size: 10px; color: #680000;
 }
 
 .sudoku-cell.hinted {
