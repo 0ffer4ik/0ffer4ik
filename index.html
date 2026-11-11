@@ -9,42 +9,80 @@
 
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="card">
-        <h1>Привет!</h1>
-        
-        <img src="meme.jpg" alt="Смешной мем" class="meme-img" id="moving-meme">
-        
-        <div class="terminal">
-            <p>> Это мой первый сайт на GitHub Pages.</p>
-            <p>> И он уже выглядит круто! 😎 <span class="cursor">_</span></p>
+    <div class="layout">
+        <div class="card console-window">
+            <h1 id="secret-trigger">Привет!</h1>
+            
+            <div class="terminal">
+                <p>> Это мой первый сайт на GitHub Pages.</p>
+                <p>> И он уже выглядит круто! 😎 <span class="cursor">_</span></p>
+            </div>
+
+            <div class="social-links">
+                <a href="https://vk.com/djxdtv" class="btn btn-social" target="_blank">VK</a>
+                <a href="https://instagram.com/0ffer4ik" class="btn btn-social" target="_blank">Inst</a>
+                <a href="https://threads.net/@0ffer4ik" class="btn btn-social" target="_blank">Threads</a>
+                <a href="https://t.me/Offer4ik" class="btn btn-social" target="_blank">TG</a>
+            </div>
         </div>
 
-        <div class="social-links">
-            <a href="https://vk.com/djxdtv" class="btn btn-social" target="_blank">VK</a>
-            <a href="https://instagram.com/0ffer4ik" class="btn btn-social" target="_blank">Instagram</a>
-            <a href="https://threads.net/@0ffer4ik" class="btn btn-social" target="_blank">Threads</a>
-            <a href="https://t.me/Offer4ik" class="btn btn-social" target="_blank">Telegram</a>
+        <div class="card meme-sheet">
+            <img src="meme.jpg" alt="Мем 1" class="meme-img">
+            <img src="meme.jpg" alt="Мем 2" class="meme-img">
+            <img src="meme.jpg" alt="Мем 3" class="meme-img">
+        </div>
+    </div>
+
+    <div id="secret-modal" class="secret-modal">
+        <div class="secret-content">
+            <span class="close-btn" id="close-secret">&times;</span>
+            <img src="secret.jpg" alt="Секрет" class="secret-img">
         </div>
     </div>
 
     <script src="matrix.js"></script>
     
     <script>
-        const meme = document.getElementById('moving-meme');
+        const memes = document.querySelectorAll('.meme-img');
         
-        meme.addEventListener('mousemove', (e) => {
-            const rect = meme.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -15;
-            const rotateY = ((x - centerX) / centerX) * 15;
-            meme.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        memes.forEach(meme => {
+            meme.addEventListener('mousemove', (e) => {
+                const rect = meme.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -15;
+                const rotateY = ((x - centerX) / centerX) * 15;
+                meme.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            });
+            
+            meme.addEventListener('mouseleave', () => {
+                meme.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
         });
-        
-        meme.addEventListener('mouseleave', () => {
-            meme.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+
+        let clickCount = 0;
+        const trigger = document.getElementById('secret-trigger');
+        const modal = document.getElementById('secret-modal');
+        const closeBtn = document.getElementById('close-secret');
+
+        trigger.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                modal.classList.add('show');
+                clickCount = 0;
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
         });
     </script>
 </body>
