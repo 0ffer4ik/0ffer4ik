@@ -9,10 +9,10 @@
 
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="card" id="tilt-card">
+    <div class="card">
         <h1>Привет!</h1>
         
-        <img src="meme.jpg" alt="Смешной мем" class="meme-img">
+        <img src="meme.jpg" alt="Смешной мем" class="meme-img" id="moving-meme">
         
         <div class="terminal">
             <p>> Это мой первый сайт на GitHub Pages.</p>
@@ -20,35 +20,31 @@
         </div>
 
         <div class="social-links">
-            <a href="https://vk.com/djxdtv" class="btn vk" target="_blank">VK</a>
-            <a href="https://instagram.com/0ffer4ik" class="btn inst" target="_blank">Instagram</a>
-            <a href="https://threads.net/@0ffer4ik" class="btn threads" target="_blank">Threads</a>
-            <a href="https://t.me/Offer4ik" class="btn tg" target="_blank">Telegram</a>
-        </div>
-
-        <div style="margin-top: 30px; display: flex; justify-content: center;">
-            <button id="matrix-toggle" class="btn btn-back" style="width: 80%; padding: 15px 30px; font-size: 16px;">
-                Выключить Матрицу
-            </button>
+            <a href="https://vk.com/djxdtv" class="btn btn-social" target="_blank">VK</a>
+            <a href="https://instagram.com/0ffer4ik" class="btn btn-social" target="_blank">Instagram</a>
+            <a href="https://threads.net/@0ffer4ik" class="btn btn-social" target="_blank">Threads</a>
+            <a href="https://t.me/Offer4ik" class="btn btn-social" target="_blank">Telegram</a>
         </div>
     </div>
 
     <script src="matrix.js"></script>
     
     <script>
-        const card = document.getElementById('tilt-card');
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
+        const meme = document.getElementById('moving-meme');
+        
+        meme.addEventListener('mousemove', (e) => {
+            const rect = meme.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -10;
-            const rotateY = ((x - centerX) / centerX) * 10;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            const rotateX = ((y - centerY) / centerY) * -15;
+            const rotateY = ((x - centerX) / centerX) * 15;
+            meme.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
         });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        
+        meme.addEventListener('mouseleave', () => {
+            meme.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
     </script>
 </body>
