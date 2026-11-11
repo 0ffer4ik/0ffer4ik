@@ -74,6 +74,7 @@ body {
 .sudoku-board {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
     gap: 1px;
     background-color: #ff3333;
     border: 1px solid #ff3333;
@@ -86,17 +87,17 @@ body {
 
 .sudoku-cell {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: clamp(18px, 5vw, 24px);
-    background-color: rgba(10, 5, 5, 0.95); /* Обычный фон клетки */
+    background-color: rgba(10, 5, 5, 0.95); 
     color: #d4d4d4;
     font-family: 'Consolas', monospace;
+    box-sizing: border-box;
 }
 
-/* ЧЕРНАЯ ЗАЛИВКА ВЫБРАННОЙ КЛЕТКИ */
 .sudoku-cell.highlight {
     background-color: #000000 !important; 
     box-shadow: inset 0 0 0 2px #ffcc00; 
@@ -107,6 +108,12 @@ body {
 .sudoku-cell.fixed { color: #888; font-weight: bold; }
 .sudoku-cell.correct { color: #4CAF50; font-weight: bold; }
 .sudoku-cell.wrong { color: #ff3333; }
+
+.sudoku-cell.hinted {
+    color: #ffcc00;
+    font-weight: bold;
+    text-shadow: 0 0 5px #ffcc00;
+}
 
 .sudoku-cell.border-right { border-right: 1px solid #ff3333; }
 .sudoku-cell.border-bottom { border-bottom: 1px solid #ff3333; }
@@ -138,6 +145,11 @@ body {
     width: 95%;
 }
 
+.action-buttons button:first-child {
+    color: #ffcc00;
+    border-color: #ffcc00;
+}
+
 .sudoku-message {
     margin-top: 5px;
     font-family: 'Consolas', monospace;
@@ -145,14 +157,4 @@ body {
     color: #ff3333;
     text-align: center;
     font-size: 14px;
-}
-.sudoku-cell.hinted {
-    color: #ffcc00;
-    font-weight: bold;
-    text-shadow: 0 0 5px #ffcc00;
-}
-
-.action-buttons button:first-child {
-    color: #ffcc00;
-    border-color: #ffcc00;
 }
