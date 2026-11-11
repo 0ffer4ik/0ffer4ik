@@ -1,161 +1,149 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0; /* Убрали отступы, чтобы поле было максимально большим */
+    box-sizing: border-box;
+}
+
 .sudoku-card {
-    max-width: 500px;
-    width: 100%;
+    width: 100%; /* Карточка на весь экран */
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px; /* Уменьшили отступы, чтобы сетка стала больше */
-    margin-top: 50px;
+    padding: 5px;
+    margin-top: 40px;
+    border: none; /* Убрали лишние рамки */
+    background: transparent;
 }
 
 .back-btn {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     color: #ff3333;
     text-decoration: none;
     font-family: 'Consolas', monospace;
     border: 1px solid #ff3333;
-    padding: 8px 15px;
+    padding: 6px 12px;
     border-radius: 8px;
     background: rgba(0,0,0,0.8);
     z-index: 100;
-    transition: 0.3s;
-    font-size: 14px;
+    font-size: 13px;
 }
 
-.back-btn:hover {
-    background: #ff3333;
-    color: #000;
-}
-
-/* Панель счетчиков (сетка 2х2) */
 .stats-panel {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    width: 100%;
+    gap: 5px;
+    width: 95%;
     background: rgba(0,0,0,0.8);
-    padding: 12px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 8px;
     border: 1px solid #ff3333;
     font-family: 'Consolas', monospace;
-    font-size: 14px;
-    margin-bottom: 12px;
+    font-size: 13px;
+    margin-bottom: 8px;
     box-sizing: border-box;
     text-align: center;
 }
 
-/* Кнопки сложности */
 .difficulty-buttons {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 12px;
-    width: 100%;
+    gap: 5px;
+    margin-bottom: 8px;
+    width: 95%;
 }
 
 .btn-diff, .btn-action {
-    padding: 12px 5px;
+    padding: 8px 2px;
     background: rgba(0,0,0,0.5);
     border: 1px solid #ff3333;
     color: #ff3333;
-    border-radius: 8px;
+    border-radius: 6px;
     font-family: 'Consolas', monospace;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.btn-diff:hover, .btn-action:hover {
-    background: #ff3333;
-    color: #000;
-}
-
-/* Само поле судоку (теперь на всю ширину карточки) */
+/* САМО ПОЛЕ - максимальный размер */
 .sudoku-board {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 1px;
     background-color: #ff3333;
-    border: 2px solid #ff3333;
-    border-radius: 6px;
-    width: 100%;
-    aspect-ratio: 1; /* Идеальный квадрат */
-    margin-bottom: 15px;
+    border: 1px solid #ff3333;
+    width: 95vw; /* Занимает 95% ширины экрана телефона */
+    max-width: 450px;
+    aspect-ratio: 1; 
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
-/* Клетки */
 .sudoku-cell {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    font-size: clamp(18px, 6vw, 26px); /* Цифры стали крупнее */
+    font-size: clamp(18px, 5vw, 24px); /* Цифры адаптивные, но не слишком огромные */
     background-color: rgba(10, 5, 5, 0.95);
     color: #d4d4d4;
-    border: none;
     font-family: 'Consolas', monospace;
-    cursor: pointer;
-    transition: background-color 0.2s;
 }
 
-/* ИСПРАВЛЕННЫЙ БАГ: Подсветка выбранной клетки рамкой, а не заливкой */
+/* ИСПРАВЛЕНИЕ: Выделение ЗОЛОТИСТЫМ цветом (неоновый янтарь) */
 .sudoku-cell.highlight {
-    background-color: rgba(255, 51, 51, 0.1); 
-    box-shadow: inset 0 0 0 2px #ff3333, 0 0 10px #ff3333; 
-    z-index: 1; 
+    background-color: rgba(255, 204, 0, 0.15) !important; 
+    box-shadow: inset 0 0 0 2px #ffcc00; /* Желтая рамка */
+    color: #ffffff; /* Белая цифра для максимальной читаемости */
+    z-index: 10;
 }
 
 .sudoku-cell.fixed { color: #888; font-weight: bold; }
-.sudoku-cell.correct { color: #4CAF50; text-shadow: 0 0 5px #4CAF50; font-weight: bold;}
-.sudoku-cell.wrong { color: #ff3333; text-shadow: 0 0 5px #ff3333; }
+.sudoku-cell.correct { color: #4CAF50; font-weight: bold; text-shadow: 0 0 3px #4CAF50; }
+.sudoku-cell.wrong { color: #ff3333; text-shadow: 0 0 3px #ff3333; }
 
-/* Жирные границы блоков 3х3 */
-.sudoku-cell.border-right { border-right: 2px solid #ff3333; }
-.sudoku-cell.border-bottom { border-bottom: 2px solid #ff3333; }
+.sudoku-cell.border-right { border-right: 1px solid #ff3333; }
+.sudoku-cell.border-bottom { border-bottom: 1px solid #ff3333; }
 
-/* Клавиатура (цифры) */
 .numpad {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    width: 100%;
-    margin-bottom: 12px;
+    gap: 5px;
+    width: 95%;
+    margin-bottom: 8px;
 }
 
 .numpad button {
-    padding: 15px 0; /* Кнопки стали повыше, чтобы по ним было удобно попадать */
+    padding: 12px 0;
     background: rgba(0,0,0,0.7);
     border: 1px solid #ff3333;
     color: #fff;
-    font-size: 20px; /* Цифры на кнопках крупнее */
+    font-size: 18px;
     font-family: 'Consolas', monospace;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.1s;
+    border-radius: 6px;
 }
 
-.numpad button:active { background: #ff3333; color: #000; }
-.erase-btn { background: #440000; border-color: #ff3333; color: #ff3333 !important; font-size: 22px !important;}
+.erase-btn { background: #440000; border-color: #ff3333; color: #ff3333 !important; }
 
-/* Кнопки Подсказка и Проверить */
 .action-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    width: 100%;
+    gap: 5px;
+    width: 95%;
 }
 
 .sudoku-message {
-    margin-top: 10px;
+    margin-top: 5px;
     font-family: 'Consolas', monospace;
     font-weight: bold;
     color: #ff3333;
     text-align: center;
-    font-size: 15px;
+    font-size: 14px;
 }
