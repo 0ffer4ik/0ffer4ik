@@ -96,7 +96,7 @@ body {
     font-weight: 900;
     line-height: 1;
     background-color: rgba(10, 5, 5, 0.95); 
-    color: #d4d4d4;
+    color: #d4d4d4;s
     font-family: 'Consolas', monospace;
     box-sizing: border-box;
     transition: background-color 0.1s;
@@ -113,7 +113,7 @@ body {
 .numpad button { position: relative; }
 .numpad button small {
     position: absolute; right: 5px; bottom: 2px;
-    font-size: 10px; color: #ff6666;
+    font-size: 10px; color: #5000009c;
 }
 
 .sudoku-cell.hinted {
