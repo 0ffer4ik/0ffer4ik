@@ -146,3 +146,13 @@ body {
     text-align: center;
     font-size: 14px;
 }
+.sudoku-cell.hinted {
+    color: #ffcc00;
+    font-weight: bold;
+    text-shadow: 0 0 5px #ffcc00;
+}
+
+.action-buttons button:first-child {
+    color: #ffcc00;
+    border-color: #ffcc00;
+}

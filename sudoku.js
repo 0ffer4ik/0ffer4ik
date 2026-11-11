@@ -144,7 +144,7 @@ function giveHint() {
         const index = parseInt(randomCell.dataset.index);
         randomCell.innerText = currentSolution[index];
         randomCell.classList.remove('wrong');
-        randomCell.classList.add('correct', 'fixed');
+        randomCell.classList.add('hinted', 'fixed');
         updateStats();
     }
 }
