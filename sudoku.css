@@ -1,0 +1,144 @@
+.sudoku-card {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: #ff3333;
+    text-decoration: none;
+    font-family: 'Consolas', monospace;
+    border: 1px solid #ff3333;
+    padding: 8px 15px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: #ff3333;
+    color: #000;
+}
+
+.stats-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    background: rgba(0,0,0,0.8);
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ff3333;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    margin-bottom: 15px;
+    gap: 5px;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.btn-diff, .btn-action {
+    flex: 1;
+    padding: 10px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #ff3333;
+    color: #ff3333;
+    border-radius: 8px;
+    font-family: 'Consolas', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-diff:hover, .btn-action:hover {
+    background: #ff3333;
+    color: #000;
+}
+
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1px;
+    background-color: #ff3333;
+    border: 2px solid #ff3333;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 15px;
+}
+
+.sudoku-cell {
+    width: 100%;
+    aspect-ratio: 1;
+    text-align: center;
+    font-size: clamp(16px, 4vw, 22px);
+    background-color: rgba(10, 5, 5, 0.9);
+    color: #d4d4d4;
+    border: none;
+    font-family: 'Consolas', monospace;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sudoku-cell:focus {
+    outline: none;
+    background-color: rgba(255, 51, 51, 0.3);
+}
+
+.sudoku-cell.fixed { color: #888; font-weight: bold; }
+.sudoku-cell.correct { color: #4CAF50; text-shadow: 0 0 5px #4CAF50; }
+.sudoku-cell.wrong { color: #ff3333; text-shadow: 0 0 5px #ff3333; }
+.sudoku-cell.highlight { background-color: rgba(255, 51, 51, 0.15); }
+
+.sudoku-cell.border-right { border-right: 2px solid #ff3333; }
+.sudoku-cell.border-bottom { border-bottom: 2px solid #ff3333; }
+
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 15px;
+}
+
+.numpad button {
+    padding: 15px 0;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid #ff3333;
+    color: #fff;
+    font-size: 18px;
+    font-family: 'Consolas', monospace;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.numpad button:active { background: #ff3333; color: #000; }
+.erase-btn { background: #440000; border-color: #ff3333; }
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.sudoku-message {
+    margin-top: 15px;
+    font-family: 'Consolas', monospace;
+    font-weight: bold;
+    color: #ff3333;
+    text-align: center;
+}
