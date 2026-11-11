@@ -47,7 +47,7 @@ function drawMatrix() {
 // Управление
 function startMatrix() {
     if (intervalId) clearInterval(intervalId);
-    intervalId = setInterval(drawMatrix, 33); // ~30 кадров в секунду
+    intervalId = setInterval(drawMatrix, 80); // ~30 кадров в секунду
     isMatrixOn = true;
     toggleBtn.innerText = "Выключить Матрицу";
     canvas.style.opacity = "0.3"; // Делаем эффект полупрозрачным, чтобы не мешал читать

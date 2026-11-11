@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Мой первый сайт</title>
-    <!-- Подключаем наш новый файл со стилями -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Холст для эффекта Матрицы на фоне -->
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="card">
+    <div class="card" id="tilt-card">
         <h1>Привет!</h1>
         
-        <!-- Картинка-мем -->
         <img src="meme.jpg" alt="Смешной мем" class="meme-img">
         
-        <p>Это мой первый сайт на GitHub Pages.</p>
-        <p>И он уже выглядит круто! 😎</p>
+        <div class="terminal">
+            <p>> Это мой первый сайт на GitHub Pages.</p>
+            <p>> И он уже выглядит круто! 😎 <span class="cursor">_</span></p>
+        </div>
 
-        <!-- Кнопки соцсетей -->
         <div class="social-links">
             <a href="https://vk.com/djxdtv" class="btn vk" target="_blank">VK</a>
             <a href="https://instagram.com/0ffer4ik" class="btn inst" target="_blank">Instagram</a>
@@ -28,27 +26,30 @@
             <a href="https://t.me/Offer4ik" class="btn tg" target="_blank">Telegram</a>
         </div>
 
-        <!-- Блок с играми и переключателем -->
-        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px; align-items: center;">
-            
-            <!-- Кнопка Змейки (файл создадим на следующем шаге) -->
-            <a href="snake.html" class="btn" style="background-color: #8b0000; width: 80%; padding: 15px 30px; font-size: 18px;">
-                🐍 Играть в Змейку
-            </a>
-
-            <!-- Кнопка Судоку -->
-            <a href="sudoku.html" class="btn btn-easy" style="width: 80%; padding: 15px 30px; font-size: 18px;">
-                🎮 Играть в Судоку
-            </a>
-
-            <!-- Переключатель Матрицы -->
+        <div style="margin-top: 30px; display: flex; justify-content: center;">
             <button id="matrix-toggle" class="btn btn-back" style="width: 80%; padding: 15px 30px; font-size: 16px;">
                 Выключить Матрицу
             </button>
         </div>
     </div>
 
-    <!-- Подключаем скрипт Матрицы -->
     <script src="matrix.js"></script>
+    
+    <script>
+        const card = document.getElementById('tilt-card');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    </script>
 </body>
 </html>
