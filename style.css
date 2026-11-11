@@ -186,3 +186,24 @@ h1 {
         padding: 8px 0;
     }
 }
+
+.top-right-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(10, 5, 5, 0.8);
+    color: #ff3333;
+    border: 1px solid #ff3333;
+    padding: 10px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-family: 'Consolas', monospace;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
+    transition: 0.3s;
+}
+.top-right-btn:hover {
+    background-color: #ff3333;
+    color: #000;
+}
