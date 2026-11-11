@@ -1,121 +1,120 @@
-let currentSolution = "";
+// Нужен sudoku-core.js (подключается в HTML ДО этого файла). puzzles.js больше не нужен.
+
+let solution = [];          // готовое решение: массив из 81 числа
 let selectedCell = null;
 let timerInterval;
 let seconds = 0;
 let isGameOver = false;
 
+const allCells = () => document.querySelectorAll('.sudoku-cell');
+const isEditable = cell => !cell.classList.contains('fixed') && !cell.classList.contains('hinted');
+
+// Текущее поле из страницы: 81 число, 0 = пусто
+function getBoard() {
+    return [...allCells()].map(c => (c.innerText === '' ? 0 : parseInt(c.innerText)));
+}
+
 function startGame(difficulty) {
     clearInterval(timerInterval);
     seconds = 0;
     isGameOver = false;
-    document.getElementById('timer').innerText = "00:00";
-    document.getElementById('message').innerText = "";
-    timerInterval = setInterval(updateTimer, 1000);
+    document.getElementById('timer').innerText = '00:00';
+    document.getElementById('message').innerText = '';
 
     const board = document.getElementById('sudoku-board');
-    board.innerHTML = ''; 
+    board.innerHTML = '';
     selectedCell = null;
 
-    const randomIndex = Math.floor(Math.random() * puzzles[difficulty].length);
-    const puzzle = puzzles[difficulty][randomIndex].start;
-    currentSolution = puzzles[difficulty][randomIndex].solution;
+    const data = Sudoku.generate(difficulty);   // новое судоку с одним решением
+    solution = data.solution;
 
     for (let i = 0; i < 81; i++) {
-        const input = document.createElement('div');
-        input.classList.add('sudoku-cell');
-        input.dataset.index = i;
-        
-        input.addEventListener('click', function() {
+        const cell = document.createElement('div');
+        cell.classList.add('sudoku-cell');
+        cell.dataset.index = i;
+
+        cell.addEventListener('click', function () {
             if (isGameOver) return;
             selectCell(this);
         });
 
-        const value = puzzle[i];
-        if (value !== '0') {
-            input.innerText = value;
-            input.classList.add('fixed');
+        if (data.puzzle[i] !== 0) {
+            cell.innerText = data.puzzle[i];
+            cell.classList.add('fixed');
         }
 
         const row = Math.floor(i / 9);
         const col = i % 9;
-        if ((col + 1) % 3 === 0 && col !== 8) input.classList.add('border-right');
-        if ((row + 1) % 3 === 0 && row !== 8) input.classList.add('border-bottom');
+        if ((col + 1) % 3 === 0 && col !== 8) cell.classList.add('border-right');
+        if ((row + 1) % 3 === 0 && row !== 8) cell.classList.add('border-bottom');
 
-        board.appendChild(input);
+        board.appendChild(cell);
     }
-    
+
+    timerInterval = setInterval(updateTimer, 1000);
     updateStats();
 }
 
+// Выбор клетки: можно выбрать ЛЮБУЮ (даже заданную), чтобы увидеть, где такие же цифры
 function selectCell(cell) {
-    document.querySelectorAll('.sudoku-cell').forEach(c => {
-        c.classList.remove('highlight', 'crosshair', 'same-num');
-    });
-
-    if (!cell || cell.classList.contains('fixed')) return;
-
-    cell.classList.add('highlight');
-    const val = cell.innerText;
-    const index = parseInt(cell.dataset.index);
-    const row = Math.floor(index / 9);
-    const col = index % 9;
-
-    document.querySelectorAll('.sudoku-cell').forEach((c, i) => {
-        const r = Math.floor(i / 9);
-        const cl = i % 9;
-
-        if (r === row || cl === col) c.classList.add('crosshair');
-        if (val !== '' && c.innerText === val) c.classList.add('same-num');
-    });
-
     selectedCell = cell;
+    const cells = [...allCells()];
+    cells.forEach(c => c.classList.remove('highlight', 'crosshair', 'same-num'));
+    if (!cell) return;
+
+    const index = parseInt(cell.dataset.index);
+    const board = getBoard();
+    const val = board[index];
+    const peers = new Set(Sudoku.PEERS[index]);   // строка + столбец + блок 3x3
+
+    cells.forEach((c, i) => {
+        if (peers.has(i)) c.classList.add('crosshair');
+        if (val && i !== index && board[i] === val) c.classList.add('same-num');
+    });
+    cell.classList.add('highlight');
 }
 
 function inputNumber(num) {
-    if (!selectedCell || isGameOver) return;
-    
+    if (!selectedCell || isGameOver || !isEditable(selectedCell)) return;
+
     if (num === 0) {
         selectedCell.innerText = '';
-        selectedCell.classList.remove('correct', 'wrong', 'hinted');
+        selectedCell.classList.remove('correct', 'wrong');
     } else {
         selectedCell.innerText = num;
         checkCell(selectedCell);
     }
     updateStats();
     selectCell(selectedCell);
+    finishIfSolved();
 }
 
 function checkCell(cell) {
-    cell.classList.remove('correct', 'wrong', 'hinted');
+    cell.classList.remove('correct', 'wrong');
     if (cell.innerText === '') return;
-
     const index = parseInt(cell.dataset.index);
-    const correctValue = currentSolution[index];
-    const currentValue = cell.innerText;
-
-    if (currentValue === correctValue) {
-        cell.classList.add('correct');
-    } else {
-        cell.classList.add('wrong');
-    }
+    cell.classList.add(parseInt(cell.innerText) === solution[index] ? 'correct' : 'wrong');
 }
 
 function updateStats() {
-    const cells = document.querySelectorAll('.sudoku-cell');
     let remain = 0, correct = 0, wrong = 0;
-
-    cells.forEach(cell => {
-        if (cell.innerText === '' && !cell.classList.contains('fixed')) {
-            remain++;
-        } else if (!cell.classList.contains('fixed') && cell.innerText !== '') {
-            if (cell.classList.contains('correct') || cell.classList.contains('hinted')) correct++;
-            else wrong++;
-        }
+    allCells().forEach(cell => {
+        if (cell.classList.contains('fixed')) return;
+        if (cell.innerText === '') remain++;
+        else if (cell.classList.contains('correct') || cell.classList.contains('hinted')) correct++;
+        else wrong++;
     });
-
     document.getElementById('stat-remain').innerText = remain;
     document.getElementById('stat-correct').innerText = correct;
     document.getElementById('stat-wrong').innerText = wrong;
+
+    // Сколько каждой цифры ещё осталось (маленькая цифра на кнопке)
+    const left = Sudoku.remaining(getBoard());
+    document.querySelectorAll('#numpad button[data-n]').forEach(b => {
+        const n = parseInt(b.dataset.n);
+        b.querySelector('small').innerText = Math.max(left[n], 0);
+        b.style.visibility = left[n] <= 0 ? 'hidden' : 'visible';
+    });
 }
 
 function updateTimer() {
@@ -125,71 +124,86 @@ function updateTimer() {
     document.getElementById('timer').innerText = `${mins}:${secs}`;
 }
 
+// Победа определяется сама, кнопка «Проверить» не обязательна
+function finishIfSolved() {
+    if (!Sudoku.isSolved(getBoard(), solution)) return;
+    const messageEl = document.getElementById('message');
+    messageEl.innerText = `🎉 Победа! Время: ${document.getElementById('timer').innerText}`;
+    messageEl.style.color = '#4CAF50';
+    isGameOver = true;
+    clearInterval(timerInterval);
+}
+
 function giveHint() {
     if (isGameOver) return;
-    const cells = document.querySelectorAll('.sudoku-cell');
-    let emptyCells = [];
-    
-    cells.forEach(cell => {
-        if (cell.innerText === '' || cell.classList.contains('wrong')) {
-            emptyCells.push(cell);
-        }
-    });
+    const h = Sudoku.hint(getBoard(), solution);   // всегда правильная цифра из решения
+    if (!h) return;
 
-    if (emptyCells.length > 0) {
-        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        const index = parseInt(randomCell.dataset.index);
-        randomCell.innerText = currentSolution[index];
-        randomCell.classList.remove('wrong');
-        randomCell.classList.add('hinted', 'fixed');
-        updateStats();
-    }
+    const cell = allCells()[h.index];
+    cell.innerText = h.value;
+    cell.classList.remove('correct', 'wrong');
+    cell.classList.add('hinted');
+
+    const messageEl = document.getElementById('message');
+    messageEl.innerText = '💡 ' + h.text;
+    messageEl.style.color = '#ffcc00';
+
+    updateStats();
+    selectCell(cell);
+    finishIfSolved();
 }
 
 function checkSolution() {
     if (isGameOver) return;
-    const cells = document.querySelectorAll('.sudoku-cell');
-    let errors = 0;
-    let empty = 0;
+    let errors = 0, empty = 0;
 
-    cells.forEach(cell => {
+    allCells().forEach(cell => {
         const index = parseInt(cell.dataset.index);
         if (cell.innerText === '') {
             empty++;
-        } else if (!cell.classList.contains('fixed') && cell.innerText !== currentSolution[index]) {
+        } else if (isEditable(cell) && parseInt(cell.innerText) !== solution[index]) {
             cell.classList.add('wrong');
             errors++;
         }
     });
 
     const messageEl = document.getElementById('message');
-    if (empty === 0 && errors === 0) {
-        messageEl.innerText = `🎉 Победа! Время: ${document.getElementById('timer').innerText}`;
-        messageEl.style.color = "#4CAF50";
-        isGameOver = true;
-        clearInterval(timerInterval);
-    } else {
-        messageEl.innerText = `❌ Ошибок: ${errors} | Пустых: ${empty}`;
-        messageEl.style.color = "#ff3333";
-    }
+    messageEl.innerText = `❌ Ошибок: ${errors} | Пустых: ${empty}`;
+    messageEl.style.color = '#ff3333';
+    updateStats();
+    finishIfSolved();
 }
 
 function solveGame() {
     if (isGameOver) return;
-    const cells = document.querySelectorAll('.sudoku-cell');
-    cells.forEach((cell, index) => {
+    allCells().forEach((cell, index) => {
         if (!cell.classList.contains('fixed')) {
-            cell.innerText = currentSolution[index];
+            cell.innerText = solution[index];
+            cell.classList.remove('correct', 'wrong');
             cell.classList.add('hinted');
         }
     });
-    
+
     const messageEl = document.getElementById('message');
-    messageEl.innerText = `🤖 Судоку решено!`;
-    messageEl.style.color = "#00ffff";
+    messageEl.innerText = '🤖 Судоку решено!';
+    messageEl.style.color = '#00ffff';
     isGameOver = true;
     clearInterval(timerInterval);
     updateStats();
 }
+
+// Клавиатура: цифры, Backspace/Delete, стрелки
+document.addEventListener('keydown', e => {
+    if (e.key >= '1' && e.key <= '9') inputNumber(parseInt(e.key));
+    else if (e.key === 'Backspace' || e.key === 'Delete') inputNumber(0);
+    else if (e.key.startsWith('Arrow') && selectedCell && !isGameOver) {
+        e.preventDefault();
+        const i = parseInt(selectedCell.dataset.index);
+        const r = Math.floor(i / 9), c = i % 9;
+        const nr = Math.min(8, Math.max(0, r + (e.key === 'ArrowDown') - (e.key === 'ArrowUp')));
+        const nc = Math.min(8, Math.max(0, c + (e.key === 'ArrowRight') - (e.key === 'ArrowLeft')));
+        selectCell(allCells()[nr * 9 + nc]);
+    }
+});
 
 window.onload = () => startGame('easy');

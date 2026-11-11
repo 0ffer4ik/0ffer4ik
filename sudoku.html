@@ -32,15 +32,15 @@
         <div id="sudoku-board" class="sudoku-board"></div>
 
         <div class="numpad" id="numpad">
-            <button onclick="inputNumber(1)">1</button>
-            <button onclick="inputNumber(2)">2</button>
-            <button onclick="inputNumber(3)">3</button>
-            <button onclick="inputNumber(4)">4</button>
-            <button onclick="inputNumber(5)">5</button>
-            <button onclick="inputNumber(6)">6</button>
-            <button onclick="inputNumber(7)">7</button>
-            <button onclick="inputNumber(8)">8</button>
-            <button onclick="inputNumber(9)">9</button>
+            <button data-n="1" onclick="inputNumber(1)">1<small></small></button>
+            <button data-n="2" onclick="inputNumber(2)">2<small></small></button>
+            <button data-n="3" onclick="inputNumber(3)">3<small></small></button>
+            <button data-n="4" onclick="inputNumber(4)">4<small></small></button>
+            <button data-n="5" onclick="inputNumber(5)">5<small></small></button>
+            <button data-n="6" onclick="inputNumber(6)">6<small></small></button>
+            <button data-n="7" onclick="inputNumber(7)">7<small></small></button>
+            <button data-n="8" onclick="inputNumber(8)">8<small></small></button>
+            <button data-n="9" onclick="inputNumber(9)">9<small></small></button>
             <button onclick="inputNumber(0)" class="erase-btn">⌫</button>
         </div>
 
@@ -54,7 +54,7 @@
     </div>
 
     <script src="matrix.js"></script>
-    <script src="puzzles.js"></script>
+    <script src="sudoku-core.js"></script>
     <script src="sudoku.js"></script>
 </body>
 </html>
