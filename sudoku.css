@@ -97,11 +97,10 @@ body {
     font-family: 'Consolas', monospace;
 }
 
-/* ИСПРАВЛЕНИЕ: Выделение ЗОЛОТИСТЫМ цветом (неоновый янтарь) */
 .sudoku-cell.highlight {
-    background-color: rgba(255, 204, 0, 0.15) !important; 
-    box-shadow: inset 0 0 0 2px #ffcc00; /* Желтая рамка */
-    color: #ffffff; /* Белая цифра для максимальной читаемости */
+    background-color: transparent !important; /* Полностью убираем заливку */
+    box-shadow: inset 0 0 0 2px #ffcc00; /* Оставляем только желтую рамку */
+    color: #ffcc00; /* Делаем текст желтым, чтобы он не сливался с фоном */
     z-index: 10;
 }
 
