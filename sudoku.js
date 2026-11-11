@@ -8,8 +8,8 @@ const puzzles = {
         solution: "435269781682571493197834562826195347374682915951743628519326874248957136763418259"
     },
     hard: {
-        start: "000000907000420180000705026100904000050000040000507009920108000034059000507000000",
-        solution: "483651927265429183719735426132984675856173249947562318921348765634597812578216394"
+        start: "000000010400000000020000000000050407008000300001090000300400200050100000000806000",
+        solution: "693784512487512936125963874932651487568247391741398625319475268856129743274836159"
     }
 };
 
@@ -70,7 +70,7 @@ function inputNumber(num) {
     
     if (num === 0) {
         selectedCell.innerText = '';
-        selectedCell.classList.remove('correct', 'wrong');
+        selectedCell.classList.remove('correct', 'wrong', 'hinted');
     } else {
         selectedCell.innerText = num;
         checkCell(selectedCell);
@@ -79,7 +79,7 @@ function inputNumber(num) {
 }
 
 function checkCell(cell) {
-    cell.classList.remove('correct', 'wrong');
+    cell.classList.remove('correct', 'wrong', 'hinted');
     if (cell.innerText === '') return;
 
     const index = parseInt(cell.dataset.index);
@@ -111,7 +111,7 @@ function updateStats() {
         if (cell.innerText === '' && !cell.classList.contains('fixed')) {
             remain++;
         } else if (!cell.classList.contains('fixed') && cell.innerText !== '') {
-            if (cell.classList.contains('correct')) correct++;
+            if (cell.classList.contains('correct') || cell.classList.contains('hinted')) correct++;
             else wrong++;
         }
     });
