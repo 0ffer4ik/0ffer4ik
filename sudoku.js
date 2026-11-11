@@ -1,18 +1,3 @@
-const puzzles = {
-    easy: {
-        start: "530070000600195000098000060800060003400803001700020006060000280000419005000080079",
-        solution: "534678912672195348198342567859761423426853791713924856961537284287419635345286179"
-    },
-    medium: {
-        start: "000260701680070090190004500820100040004602900050003028009300074040050036703018000",
-        solution: "435269781682571493197834562826195347374682915951743628519326874248957136763418259"
-    },
-    hard: {
-        start: "000000010400000000020000000000050407008000300001090000300400200050100000000806000",
-        solution: "693784512487512936125963874932651487568247391741398625319475268856129743274836159"
-    }
-};
-
 let currentSolution = "";
 let selectedCell = null;
 let timerInterval;
@@ -31,8 +16,9 @@ function startGame(difficulty) {
     board.innerHTML = ''; 
     selectedCell = null;
 
-    const puzzle = puzzles[difficulty].start;
-    currentSolution = puzzles[difficulty].solution;
+    const randomIndex = Math.floor(Math.random() * puzzles[difficulty].length);
+    const puzzle = puzzles[difficulty][randomIndex].start;
+    currentSolution = puzzles[difficulty][randomIndex].solution;
 
     for (let i = 0; i < 81; i++) {
         const input = document.createElement('div');
