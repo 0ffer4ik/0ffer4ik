@@ -4,19 +4,19 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     margin: 0;
-    padding: 0; /* Убрали отступы, чтобы поле было максимально большим */
+    padding: 0;
     box-sizing: border-box;
 }
 
 .sudoku-card {
-    width: 100%; /* Карточка на весь экран */
+    width: 100%;
     max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 5px;
     margin-top: 40px;
-    border: none; /* Убрали лишние рамки */
+    border: none;
     background: transparent;
 }
 
@@ -71,14 +71,13 @@ body {
     cursor: pointer;
 }
 
-/* САМО ПОЛЕ - максимальный размер */
 .sudoku-board {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 1px;
     background-color: #ff3333;
     border: 1px solid #ff3333;
-    width: 95vw; /* Занимает 95% ширины экрана телефона */
+    width: 95vw;
     max-width: 450px;
     aspect-ratio: 1; 
     margin-bottom: 10px;
@@ -91,22 +90,23 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: clamp(18px, 5vw, 24px); /* Цифры адаптивные, но не слишком огромные */
+    font-size: clamp(18px, 5vw, 24px);
     background-color: rgba(10, 5, 5, 0.95);
     color: #d4d4d4;
     font-family: 'Consolas', monospace;
 }
 
+/* ТОЛЬКО ЖЕЛТАЯ РАМКА, БЕЗ ЗАЛИВКИ */
 .sudoku-cell.highlight {
-    background-color: transparent !important; /* Полностью убираем заливку */
-    box-shadow: inset 0 0 0 2px #ffcc00; /* Оставляем только желтую рамку */
-    color: #ffcc00; /* Делаем текст желтым, чтобы он не сливался с фоном */
+    background-color: transparent !important; 
+    box-shadow: inset 0 0 0 2px #ffcc00; 
+    color: #ffcc00; 
     z-index: 10;
 }
 
 .sudoku-cell.fixed { color: #888; font-weight: bold; }
-.sudoku-cell.correct { color: #4CAF50; font-weight: bold; text-shadow: 0 0 3px #4CAF50; }
-.sudoku-cell.wrong { color: #ff3333; text-shadow: 0 0 3px #ff3333; }
+.sudoku-cell.correct { color: #4CAF50; font-weight: bold; }
+.sudoku-cell.wrong { color: #ff3333; }
 
 .sudoku-cell.border-right { border-right: 1px solid #ff3333; }
 .sudoku-cell.border-bottom { border-bottom: 1px solid #ff3333; }
