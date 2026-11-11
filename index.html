@@ -10,27 +10,20 @@
 
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="layout">
-        <div class="card console-window">
-            <h1 id="secret-trigger" class="glitch" data-text="Привет!">Привет!</h1>
-            
-            <div class="terminal">
-                <div class="scanlines"></div>
-                <div id="terminal-output"></div>
-            </div>
-
-            <div class="social-links">
-                <a href="https://vk.com/djxdtv" class="btn btn-social" target="_blank">VK</a>
-                <a href="https://instagram.com/0ffer4ik" class="btn btn-social" target="_blank">Inst</a>
-                <a href="https://threads.net/@0ffer4ik" class="btn btn-social" target="_blank">Threads</a>
-                <a href="https://t.me/Offer4ik" class="btn btn-social" target="_blank">TG</a>
-            </div>
+    <div class="card">
+        <h1 id="secret-trigger">Привет!</h1>
+        
+        <div class="terminal">
+            <div id="terminal-output"></div>
         </div>
 
-        <div class="card meme-sheet">
-            <img src="meme1.jpg" alt="Мем 1" class="meme-img">
-            <img src="meme2.jpg" alt="Мем 2" class="meme-img">
-            <img src="meme3.jpg" alt="Мем 3" class="meme-img">
+        <img src="meme.jpg" alt="Смешной мем" class="meme-img" id="main-meme">
+
+        <div class="social-links">
+            <a href="https://vk.com/djxdtv" class="btn btn-social" target="_blank">VK</a>
+            <a href="https://instagram.com/0ffer4ik" class="btn btn-social" target="_blank">Inst</a>
+            <a href="https://threads.net/@0ffer4ik" class="btn btn-social" target="_blank">Threads</a>
+            <a href="https://t.me/Offer4ik" class="btn btn-social" target="_blank">TG</a>
         </div>
     </div>
 
@@ -44,22 +37,21 @@
     <script src="matrix.js"></script>
     
     <script>
-        const memes = document.querySelectorAll('.meme-img');
-        memes.forEach(meme => {
-            meme.addEventListener('mousemove', (e) => {
-                const rect = meme.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -15;
-                const rotateY = ((x - centerX) / centerX) * 15;
-                meme.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-            });
-            
-            meme.addEventListener('mouseleave', () => {
-                meme.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-            });
+        const meme = document.getElementById('main-meme');
+        
+        meme.addEventListener('mousemove', (e) => {
+            const rect = meme.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -15;
+            const rotateY = ((x - centerX) / centerX) * 15;
+            meme.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        });
+        
+        meme.addEventListener('mouseleave', () => {
+            meme.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
 
         let clickCount = 0;
@@ -80,31 +72,28 @@
 
         const terminalOutput = document.getElementById('terminal-output');
         const lines = [
-            "> Initializing system...",
-            "> Bypassing firewall...",
-            "> Access granted.",
-            "> Это мой первый сайт на GitHub Pages.",
-            "> И он уже выглядит круто! 😎"
+            "system_init() ... OK",
+            "bypass_firewall() ... OK",
+            "access_granted()",
+            "Это мой первый сайт на GitHub Pages.",
+            "И он уже выглядит круто! 😎"
         ];
         let lineIndex = 0;
         let charIndex = 0;
-        let isDeleting = false;
         let currentText = "";
 
         function typeTerminal() {
             if (lineIndex < lines.length) {
-                if (!isDeleting) {
-                    if (charIndex < lines[lineIndex].length) {
-                        currentText += lines[lineIndex].charAt(charIndex);
-                        terminalOutput.innerHTML = currentText + '<span class="cursor">_</span>';
-                        charIndex++;
-                        setTimeout(typeTerminal, 50);
-                    } else {
-                        currentText += "<br>";
-                        lineIndex++;
-                        charIndex = 0;
-                        setTimeout(typeTerminal, 400);
-                    }
+                if (charIndex < lines[lineIndex].length) {
+                    currentText += lines[lineIndex].charAt(charIndex);
+                    terminalOutput.innerHTML = currentText + '<span class="cursor">_</span>';
+                    charIndex++;
+                    setTimeout(typeTerminal, 50);
+                } else {
+                    currentText += "<br>";
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeTerminal, 400);
                 }
             } else {
                 terminalOutput.innerHTML = currentText + '<span class="cursor">_</span>';
@@ -112,7 +101,7 @@
         }
 
         window.onload = () => {
-            setTimeout(typeTerminal, 1000);
+            setTimeout(typeTerminal, 500);
         };
     </script>
 </body>

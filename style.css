@@ -18,113 +18,50 @@ body {
     100% { background-size: 200% 200%; background-position: center; }
 }
 
-.layout {
-    display: flex;
-    gap: 20px;
-    max-width: 900px;
+.card {
+    background-color: rgba(15, 15, 15, 0.95); 
+    padding: 30px;
+    border-radius: 20px; 
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+    border: 1px solid #332222;
+    position: relative;
+    max-width: 450px;
     width: 100%;
     z-index: 10;
-    align-items: stretch;
-}
-
-.card {
-    background-color: rgba(10, 5, 5, 0.95); 
-    padding: 30px;
-    border-radius: 10px; 
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4), inset 0 0 20px rgba(255, 0, 0, 0.1);
-    border: 1px solid #ff3333;
-    position: relative;
-}
-
-.console-window {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    text-align: left;
+    gap: 20px;
 }
 
-.glitch {
-    position: relative;
+h1 {
     color: #ff3333; 
-    margin-top: 0;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
+    margin: 0;
+    letter-spacing: 1px;
     text-align: center;
     cursor: pointer;
     user-select: none;
     font-family: 'Consolas', monospace;
-    text-transform: uppercase;
-}
-
-.glitch::before, .glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0a0505;
-}
-
-.glitch::before {
-    left: 2px;
-    text-shadow: -2px 0 #00ffff;
-    clip: rect(24px, 550px, 90px, 0);
-    animation: glitch-anim 3s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-    left: -2px;
-    text-shadow: -2px 0 #ff3333;
-    clip: rect(85px, 550px, 140px, 0);
-    animation: glitch-anim 2s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-anim {
-    0% { clip: rect(10px, 9999px, 44px, 0); }
-    20% { clip: rect(62px, 9999px, 98px, 0); }
-    40% { clip: rect(33px, 9999px, 21px, 0); }
-    60% { clip: rect(89px, 9999px, 63px, 0); }
-    80% { clip: rect(12px, 9999px, 88px, 0); }
-    100% { clip: rect(55px, 9999px, 11px, 0); }
 }
 
 .terminal {
-    background-color: #000;
+    background-color: #1e1e1e;
     padding: 20px;
-    border-radius: 5px;
-    border: 1px solid #550000;
+    border-radius: 12px;
+    border: 1px solid #333;
     font-family: 'Consolas', 'Courier New', monospace;
-    margin-bottom: 30px;
-    box-shadow: inset 0 0 20px rgba(255,0,0,0.2);
-    flex-grow: 1;
-    position: relative;
-    overflow: hidden;
-    min-height: 150px;
-}
-
-.scanlines {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-    background-size: 100% 4px;
-    pointer-events: none;
+    min-height: 120px;
 }
 
 #terminal-output {
-    color: #00ff00;
+    color: #d4d4d4;
     margin: 0;
     font-size: 15px;
     line-height: 1.6;
-    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
 }
 
 .cursor {
     animation: blink 1s step-end infinite;
-    color: #00ff00;
+    color: #d4d4d4;
 }
 
 @keyframes blink {
@@ -132,11 +69,20 @@ body {
     50% { opacity: 0; }
 }
 
+.meme-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+    border: 1px solid #333;
+}
+
 .social-links {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    margin-top: auto;
 }
 
 .btn-social {
@@ -144,10 +90,10 @@ body {
     text-align: center;
     text-decoration: none;
     padding: 10px 0;
-    border-radius: 4px;
-    background-color: #1a0000;
-    border: 1px solid #ff3333;
-    color: #ff3333;
+    border-radius: 12px;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #ccc;
     font-family: 'Consolas', monospace;
     font-weight: bold;
     font-size: 14px;
@@ -156,27 +102,8 @@ body {
 
 .btn-social:hover {
     background-color: #ff3333;
-    color: #000;
-    box-shadow: 0 0 15px #ff3333;
-}
-
-.meme-sheet {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    overflow-y: auto;
-    max-height: 80vh;
-}
-
-.meme-img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-    display: block;
-    transition: transform 0.1s ease-out;
-    transform-style: preserve-3d;
-    border: 1px solid #330000;
+    border-color: #ff3333;
+    color: #fff;
 }
 
 #matrix-canvas {
@@ -187,7 +114,7 @@ body {
     height: 100%;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
 .secret-modal {
@@ -227,8 +154,8 @@ body {
 .secret-img {
     max-width: 100%;
     max-height: 85vh;
-    border-radius: 5px;
-    box-shadow: 0 0 40px rgba(255, 50, 50, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(255, 50, 50, 0.6);
     border: 2px solid #ff3333;
     display: block;
 }
@@ -251,25 +178,12 @@ body {
     box-shadow: 0 0 15px rgba(255, 50, 50, 0.8);
 }
 
-@media (max-width: 768px) {
-    .layout {
-        flex-direction: column;
-        gap: 15px;
-    }
+@media (max-width: 480px) {
     .card {
         padding: 20px;
     }
-    .meme-sheet {
-        max-height: none;
-    }
-    .glitch {
-        font-size: 24px;
-    }
-    #terminal-output {
-        font-size: 13px;
-    }
     .btn-social {
-        padding: 8px 0;
         font-size: 12px;
+        padding: 8px 0;
     }
 }
