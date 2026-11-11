@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Судоку</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="sudoku.css?v=3">
+    <link rel="stylesheet" href="sudoku.css?v=4">
 </head>
 <body>
 
@@ -47,6 +47,7 @@
         <div class="action-buttons">
             <button onclick="giveHint()" class="btn-action">💡 Подсказка</button>
             <button onclick="checkSolution()" class="btn-action">Проверить</button>
+            <button onclick="solveGame()" class="btn-action" style="grid-column: span 2; color: #00ffff; border-color: #00ffff;">🤖 Показать ответ</button>
         </div>
         
         <p id="message" class="sudoku-message"></p>

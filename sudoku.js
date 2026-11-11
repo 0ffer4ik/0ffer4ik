@@ -27,11 +27,7 @@ function startGame(difficulty) {
         
         input.addEventListener('click', function() {
             if (isGameOver) return;
-            if (this.classList.contains('fixed')) return;
-            
-            document.querySelectorAll('.sudoku-cell').forEach(c => c.classList.remove('highlight'));
-            this.classList.add('highlight');
-            selectedCell = this;
+            selectCell(this);
         });
 
         const value = puzzle[i];
@@ -51,6 +47,30 @@ function startGame(difficulty) {
     updateStats();
 }
 
+function selectCell(cell) {
+    document.querySelectorAll('.sudoku-cell').forEach(c => {
+        c.classList.remove('highlight', 'crosshair', 'same-num');
+    });
+
+    if (!cell || cell.classList.contains('fixed')) return;
+
+    cell.classList.add('highlight');
+    const val = cell.innerText;
+    const index = parseInt(cell.dataset.index);
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+
+    document.querySelectorAll('.sudoku-cell').forEach((c, i) => {
+        const r = Math.floor(i / 9);
+        const cl = i % 9;
+
+        if (r === row || cl === col) c.classList.add('crosshair');
+        if (val !== '' && c.innerText === val) c.classList.add('same-num');
+    });
+
+    selectedCell = cell;
+}
+
 function inputNumber(num) {
     if (!selectedCell || isGameOver) return;
     
@@ -62,6 +82,7 @@ function inputNumber(num) {
         checkCell(selectedCell);
     }
     updateStats();
+    selectCell(selectedCell);
 }
 
 function checkCell(cell) {
@@ -71,22 +92,12 @@ function checkCell(cell) {
     const index = parseInt(cell.dataset.index);
     const correctValue = currentSolution[index];
     const currentValue = cell.innerText;
-    let isCorrectValue = (currentValue === correctValue);
-    const row = Math.floor(index / 9);
-    const col = index % 9;
-    let isDuplicate = false;
-    const cells = document.querySelectorAll('.sudoku-cell');
 
-    for (let i = 0; i < 81; i++) {
-        if (i === index) continue; 
-        if ((Math.floor(i / 9) === row || i % 9 === col) && cells[i].innerText === currentValue) {
-            isDuplicate = true;
-            break;
-        }
+    if (currentValue === correctValue) {
+        cell.classList.add('correct');
+    } else {
+        cell.classList.add('wrong');
     }
-
-    if (isCorrectValue && !isDuplicate) cell.classList.add('correct');
-    else cell.classList.add('wrong');
 }
 
 function updateStats() {
@@ -138,19 +149,47 @@ function giveHint() {
 function checkSolution() {
     if (isGameOver) return;
     const cells = document.querySelectorAll('.sudoku-cell');
-    let currentBoard = "";
-    for (let i = 0; i < cells.length; i++) currentBoard += cells[i].innerText || "0";
+    let errors = 0;
+    let empty = 0;
+
+    cells.forEach(cell => {
+        const index = parseInt(cell.dataset.index);
+        if (cell.innerText === '') {
+            empty++;
+        } else if (!cell.classList.contains('fixed') && cell.innerText !== currentSolution[index]) {
+            cell.classList.add('wrong');
+            errors++;
+        }
+    });
 
     const messageEl = document.getElementById('message');
-    if (currentBoard === currentSolution) {
+    if (empty === 0 && errors === 0) {
         messageEl.innerText = `🎉 Победа! Время: ${document.getElementById('timer').innerText}`;
         messageEl.style.color = "#4CAF50";
         isGameOver = true;
         clearInterval(timerInterval);
     } else {
-        messageEl.innerText = "❌ Есть ошибки или пустые клетки!";
+        messageEl.innerText = `❌ Ошибок: ${errors} | Пустых: ${empty}`;
         messageEl.style.color = "#ff3333";
     }
+}
+
+function solveGame() {
+    if (isGameOver) return;
+    const cells = document.querySelectorAll('.sudoku-cell');
+    cells.forEach((cell, index) => {
+        if (!cell.classList.contains('fixed')) {
+            cell.innerText = currentSolution[index];
+            cell.classList.add('hinted');
+        }
+    });
+    
+    const messageEl = document.getElementById('message');
+    messageEl.innerText = `🤖 Судоку решено!`;
+    messageEl.style.color = "#00ffff";
+    isGameOver = true;
+    clearInterval(timerInterval);
+    updateStats();
 }
 
 window.onload = () => startGame('easy');
