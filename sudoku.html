@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Судоку</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="sudoku.css">
+</head>
+<body>
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <a href="index.html" class="back-btn">← Назад</a>
+
+    <div class="card sudoku-card">
+        <h1>Судоку</h1>
+        
+        <div class="stats-panel">
+            <div class="stat-item">Время: <span id="timer">00:00</span></div>
+            <div class="stat-item">Осталось: <span id="stat-remain">0</span></div>
+            <div class="stat-item" style="color: #4CAF50;">Верно: <span id="stat-correct">0</span></div>
+            <div class="stat-item" style="color: #ff3333;">Ошибки: <span id="stat-wrong">0</span></div>
+        </div>
+
+        <div class="difficulty-buttons">
+            <button onclick="startGame('easy')" class="btn-diff">Легко</button>
+            <button onclick="startGame('medium')" class="btn-diff">Средне</button>
+            <button onclick="startGame('hard')" class="btn-diff">Сложно</button>
+        </div>
+
+        <div id="sudoku-board" class="sudoku-board"></div>
+
+        <div class="numpad" id="numpad">
+            <button onclick="inputNumber(1)">1</button>
+            <button onclick="inputNumber(2)">2</button>
+            <button onclick="inputNumber(3)">3</button>
+            <button onclick="inputNumber(4)">4</button>
+            <button onclick="inputNumber(5)">5</button>
+            <button onclick="inputNumber(6)">6</button>
+            <button onclick="inputNumber(7)">7</button>
+            <button onclick="inputNumber(8)">8</button>
+            <button onclick="inputNumber(9)">9</button>
+            <button onclick="inputNumber(0)" class="erase-btn">X</button>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="giveHint()" class="btn-action">💡 Подсказка</button>
+            <button onclick="checkSolution()" class="btn-action">Проверить</button>
+        </div>
+        
+        <p id="message" class="sudoku-message"></p>
+    </div>
+
+    <script src="matrix.js"></script>
+    <script src="sudoku.js"></script>
+</body>
+</html>
