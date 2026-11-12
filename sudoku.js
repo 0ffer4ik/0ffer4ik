@@ -3,6 +3,10 @@ let selectedCell = null;
 let timerInterval;
 let seconds = 0;
 let isGameOver = false;
+let currentGameId = null;
+let rankedGame = false;
+let assistedGame = false;
+let gameRequestId = 0;
 
 const allCells = () => document.querySelectorAll('.sudoku-cell');
 const isEditable = cell => !cell.classList.contains('fixed') && !cell.classList.contains('hinted');
@@ -12,10 +16,14 @@ function getBoard() {
     return [...allCells()].map(c => (c.innerText === '' ? 0 : parseInt(c.innerText)));
 }
 
-function startGame(difficulty) {
+async function startGame(difficulty) {
+    const requestId = ++gameRequestId;
     clearInterval(timerInterval);
     seconds = 0;
     isGameOver = false;
+    currentGameId = null;
+    rankedGame = false;
+    assistedGame = false;
     document.getElementById('timer').innerText = '00:00';
     document.getElementById('message').innerText = '';
 
@@ -23,7 +31,30 @@ function startGame(difficulty) {
     board.innerHTML = '';
     selectedCell = null;
 
-    const data = Sudoku.generate(difficulty);  
+    let data;
+    let startNotice = '';
+    const auth = window.SudokuAuth;
+    if (auth?.isSignedIn()) {
+        document.getElementById('message').innerText = 'Создаём рейтинговую игру…';
+        try {
+            const ranked = await auth.createRankedGame(difficulty);
+            if (requestId !== gameRequestId) return;
+            data = { puzzle: ranked.puzzle, solution: Sudoku.solve(ranked.puzzle) };
+            if (!data.solution) throw new Error('Сервер прислал нерешаемую головоломку.');
+            currentGameId = ranked.gameId;
+            rankedGame = true;
+        } catch (error) {
+            if (requestId !== gameRequestId) return;
+            console.error('Could not start ranked Sudoku:', error);
+            startNotice = 'Рейтинговая игра недоступна: ' + (error.message || 'ошибка сервера') + ' Запущена локальная игра.';
+            data = Sudoku.generate(difficulty);
+        }
+    } else {
+        data = Sudoku.generate(difficulty);
+    }
+
+    if (requestId !== gameRequestId) return;
+    document.getElementById('message').innerText = startNotice;
     solution = data.solution;
 
     for (let i = 0; i < 81; i++) {
@@ -127,10 +158,31 @@ function finishIfSolved() {
     messageEl.style.color = '#ff6577';
     isGameOver = true;
     clearInterval(timerInterval);
+
+    if (rankedGame && currentGameId && !assistedGame) {
+        messageEl.innerText += ' Сохраняем результат…';
+        window.SudokuAuth.submitRankedGame(currentGameId, getBoard())
+            .then(result => {
+                messageEl.innerText = `🎉 Рекорд принят! Время сервера: ${formatElapsed(result.elapsed_seconds)}. Лучшее: ${formatElapsed(result.best_seconds)}.`;
+            })
+            .catch(error => {
+                console.error('Could not submit Sudoku result:', error);
+                messageEl.innerText = 'Победа! Не удалось сохранить результат: ' + (error.message || 'ошибка сервера');
+            });
+    } else if (rankedGame && assistedGame) {
+        messageEl.innerText += ' Игра с подсказкой не попадает в рейтинг.';
+    }
+}
+
+function formatElapsed(value) {
+    const minutes = Math.floor(value / 60).toString().padStart(2, '0');
+    const secs = (value % 60).toString().padStart(2, '0');
+    return `${minutes}:${secs}`;
 }
 
 function giveHint() {
     if (isGameOver) return;
+    assistedGame = true;
     const h = Sudoku.hint(getBoard(), solution);
     if (!h) return;
 
@@ -164,13 +216,14 @@ function checkSolution() {
 
     const messageEl = document.getElementById('message');
     messageEl.innerText = `❌ Ошибок: ${errors} | Пустых: ${empty}`;
-    messageEl.style.color = '#ff3333';
+    messageEl.style.color = '#ff203b';
     updateStats();
     finishIfSolved();
 }
 
 function solveGame() {
     if (isGameOver) return;
+    assistedGame = true;
     allCells().forEach((cell, index) => {
         if (!cell.classList.contains('fixed')) {
             cell.innerText = solution[index];

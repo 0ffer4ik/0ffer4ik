@@ -29,6 +29,30 @@
             <button onclick="startGame('hard')" class="btn-diff">Сложно</button>
         </div>
 
+        <section class="account-panel" aria-labelledby="account-title">
+            <div class="account-heading">
+                <h2 id="account-title">Аккаунт и рейтинг</h2>
+                <span id="auth-status" class="auth-status">Подключаемся…</span>
+            </div>
+            <form id="auth-form" class="auth-form">
+                <label class="auth-signup-only">Никнейм
+                    <input id="auth-username" name="username" autocomplete="nickname" minlength="3" maxlength="20" placeholder="Например, Offer4ik">
+                </label>
+                <label>Email
+                    <input id="auth-email" name="email" type="email" autocomplete="email" required>
+                </label>
+                <label>Пароль
+                    <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" required>
+                </label>
+                <div class="auth-actions">
+                    <button class="btn-action" type="submit" data-auth-action="sign-in">Войти</button>
+                    <button class="btn-action" type="button" id="sign-up-button">Создать аккаунт</button>
+                    <button class="btn-action" type="button" id="sign-out-button" hidden>Выйти</button>
+                </div>
+            </form>
+            <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
+        </section>
+
         <div id="sudoku-board" class="sudoku-board"></div>
 
         <div class="numpad" id="numpad">
@@ -51,9 +75,31 @@
         </div>
         
         <p id="message" class="sudoku-message"></p>
+
+        <section class="leaderboard-panel" aria-labelledby="leaderboard-title">
+            <div class="leaderboard-heading">
+                <h2 id="leaderboard-title">Лучшие результаты</h2>
+                <label class="leaderboard-filter">Сложность
+                    <select id="leaderboard-difficulty">
+                        <option value="easy">Легко</option>
+                        <option value="medium">Средне</option>
+                        <option value="hard">Сложно</option>
+                    </select>
+                </label>
+            </div>
+            <div class="leaderboard-scroll">
+                <table class="leaderboard">
+                    <thead><tr><th>#</th><th>Игрок</th><th>Лучшее время</th><th>Решено</th></tr></thead>
+                    <tbody id="leaderboard-body"><tr><td colspan="4">Загрузка рейтинга…</td></tr></tbody>
+                </table>
+            </div>
+        </section>
     </div>
 
     <script src="matrix.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="sudoku-auth.js"></script>
     <script src="sudoku-core.js"></script>
     <script src="sudoku.js"></script>
 </body>

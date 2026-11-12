@@ -172,7 +172,7 @@ body {
 }
 
 .sudoku-card {
-    max-width: 560px;
+    max-width: 760px;
     gap: 14px;
     margin: 0 auto;
     padding: clamp(16px, 3vw, 28px);
@@ -274,6 +274,96 @@ body {
 .action-buttons button:first-child { color: #ff6577; border-color: rgba(255, 32, 59, 0.3); }
 .solve-button { grid-column: span 2; }
 
+[hidden] { display: none !important; }
+
+.account-panel, .leaderboard-panel {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid rgba(255, 40, 60, 0.14);
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.36);
+}
+
+.account-heading, .leaderboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.account-heading h2, .leaderboard-heading h2 {
+    margin: 0;
+    color: #ff6577;
+    font: 700 17px 'Consolas', monospace;
+}
+
+.auth-status, .auth-message {
+    color: #a69a9c;
+    font: 12px 'Consolas', monospace;
+}
+
+.auth-message { min-height: 1em; margin: 10px 0 0; }
+.auth-message.is-error { color: #ff5268; }
+
+.auth-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    align-items: end;
+}
+
+.auth-form label, .leaderboard-filter {
+    display: grid;
+    gap: 6px;
+    color: #a69a9c;
+    text-align: left;
+    font: 12px 'Consolas', monospace;
+}
+
+.auth-form input, .leaderboard-filter select {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 11px;
+    color: #f5f5f5;
+    background: #080203;
+    border: 1px solid rgba(255, 32, 59, 0.24);
+    border-radius: 10px;
+    font: 14px 'Consolas', monospace;
+}
+
+.auth-form input:focus, .leaderboard-filter select:focus {
+    outline: 2px solid rgba(255, 32, 59, 0.55);
+    outline-offset: 1px;
+}
+
+.auth-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.auth-actions .btn-action {
+    flex: 1 1 140px;
+    padding: 10px;
+}
+
+.leaderboard-heading { margin-top: 2px; }
+.leaderboard-heading h2 { font-size: 16px; }
+.leaderboard-filter { width: min(160px, 42%); }
+.leaderboard-scroll { width: 100%; overflow-x: auto; }
+.leaderboard { width: 100%; border-collapse: collapse; font: 13px 'Consolas', monospace; }
+.leaderboard th, .leaderboard td {
+    padding: 10px 8px;
+    border-bottom: 1px solid rgba(255, 40, 60, 0.1);
+    text-align: left;
+}
+.leaderboard th { color: #ff6577; font-weight: 700; }
+.leaderboard td { color: #e8dfe1; }
+.leaderboard th:first-child, .leaderboard td:first-child { width: 42px; color: #ff4058; }
+.leaderboard td[colspan] { color: #a69a9c; text-align: center; }
+
 @media (max-width: 480px) {
     body { padding: 68px 10px 24px; }
     .sudoku-card { padding: 14px 10px; gap: 11px; border-radius: 20px; }
@@ -282,4 +372,10 @@ body {
     .numpad { gap: 5px; }
     .numpad button { padding: 11px 0; }
     .back-btn { top: 12px; left: 10px; padding: 8px 11px; }
+    .account-panel, .leaderboard-panel { padding: 12px; }
+    .auth-form { grid-template-columns: 1fr; }
+    .auth-actions { grid-column: auto; }
+    .account-heading, .leaderboard-heading { align-items: flex-start; }
+    .account-heading { flex-direction: column; gap: 5px; }
+    .leaderboard { font-size: 12px; }
 }
