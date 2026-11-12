@@ -117,7 +117,6 @@ function buildLive() {
     const head = (title, fn) => `<div class="live-head"><span>${title}</span><button class="live-refresh" data-fn="${fn}" title="Обновить">↻</button></div>`;
     root.innerHTML = `
         <section class="live-section">
-            <h2 class="section-title"><span class="section-num">02</span> Live</h2>
             <div class="live-grid">
                 <div class="live-card">${head('Сейчас играет', 'loadNow')}<div id="live-now" class="live-now"></div></div>
                 <div class="live-card">${head('Telegram', 'loadTelegram')}<div id="live-tg" class="live-stats two"></div></div>
