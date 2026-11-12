@@ -178,42 +178,36 @@
         };
     </script>
 
-    <script>
+        <script>
         const phoneContainer = document.getElementById('phone-container');
         const phoneWrapper = document.getElementById('phone-wrapper');
         let isPhoneFlipped = false;
 
-        // 1. Логика переворота по клику
         phoneWrapper.addEventListener('click', () => {
             isPhoneFlipped = !isPhoneFlipped;
             phoneWrapper.classList.toggle('flipped', isPhoneFlipped);
-            
-            // Сбрасываем инлайн-стили, чтобы сработала CSS-анимация переворота
             phoneWrapper.style.transform = ''; 
         });
 
-        // 2. Логика 3D-наклона за мышкой (работает только если телефон не перевернут)
         phoneContainer.addEventListener('mousemove', (e) => {
-            if (isPhoneFlipped) return; // Если перевернут — не наклоняем
-            
             const rect = phoneContainer.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -20; // Наклон по вертикали
-            const rotateY = ((x - centerX) / centerX) * 20;  // Наклон по горизонтали
+            const rotateX = ((y - centerY) / centerY) * -20;
+            const tiltY = ((x - centerX) / centerX) * 20;
             
-            phoneWrapper.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            const baseRotateY = isPhoneFlipped ? 180 : 0;
+            const finalRotateY = baseRotateY + tiltY;
+            
+            phoneWrapper.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${finalRotateY}deg)`;
         });
 
         phoneContainer.addEventListener('mouseleave', () => {
-            if (!isPhoneFlipped) {
-                // Плавно возвращаем в исходное положение
-                phoneWrapper.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            }
+            const baseRotateY = isPhoneFlipped ? 180 : 0;
+            phoneWrapper.style.transform = `perspective(1000px) rotateX(0deg) rotateY(${baseRotateY}deg)`;
         });
-
     </script>
 
 </body>
