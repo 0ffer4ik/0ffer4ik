@@ -241,17 +241,11 @@ h1 {
     content: "";
     position: absolute;
     z-index: -1;
-    width: 330px;
+    width: 350px;
     max-width: 90%;
-    aspect-ratio: 0.82;
-    border: 1px solid rgba(255, 117, 132, 0.28);
-    border-radius: 52% 48% 62% 38% / 40% 43% 57% 60%;
-    background:
-        radial-gradient(ellipse at 29% 27%, rgba(255, 91, 112, 0.82), transparent 28%),
-        radial-gradient(ellipse at 74% 77%, rgba(150, 0, 29, 0.82), transparent 39%),
-        linear-gradient(145deg, #700018, #30000e 58%, #130009);
-    box-shadow: 0 0 75px rgba(255, 20, 45, 0.2), inset 0 1px 18px rgba(255, 174, 184, 0.12);
-    animation: material-you-shape 14s ease-in-out infinite;
+    aspect-ratio: 1;
+    background: url("material-you-shape.svg") center / contain no-repeat;
+    filter: drop-shadow(0 0 30px rgba(255, 20, 45, 0.28));
     pointer-events: none;
 }
 
@@ -366,17 +360,6 @@ h1 {
     overflow-wrap: anywhere;
 }
 
-@keyframes material-you-shape {
-    0%, 100% {
-        border-radius: 52% 48% 62% 38% / 40% 43% 57% 60%;
-        transform: rotate(-8deg) scale(0.97);
-    }
-    50% {
-        border-radius: 43% 57% 47% 53% / 56% 45% 55% 44%;
-        transform: rotate(5deg) scale(1.02);
-    }
-}
-
 @media (max-width: 768px) {
     .device-card {
         flex-direction: column;
@@ -388,7 +371,7 @@ h1 {
         padding: 20px;
     }
     .device-image::before {
-        width: 250px;
+        width: 270px;
     }
     .device-info {
         padding: 20px;

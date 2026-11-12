@@ -48,7 +48,7 @@ body {
     border-right: 0;
     border-bottom: 1px solid var(--line);
 }
-.device-image::before { width: 230px; }
+.device-image::before { width: 250px; }
 .device-badge { top: 12px; left: 12px; font-size: 10px; }
 .phone-model { min-height: 300px; max-width: 100%; }
 .device-info { padding: 20px; }
