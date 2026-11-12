@@ -7,6 +7,7 @@
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="live.css">
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
 </head>
 <body>
    
@@ -180,41 +181,6 @@
         window.onload = () => {
             setTimeout(typeTerminal, 500);
         };
-    </script>
-
-                <script>
-        const phoneContainer = document.getElementById('phone-container');
-        const phoneWrapper = document.getElementById('phone-wrapper');
-        let isPhoneFlipped = false;
-
-        phoneWrapper.addEventListener('click', () => {
-            isPhoneFlipped = !isPhoneFlipped;
-            phoneWrapper.classList.toggle('flipped', isPhoneFlipped);
-            phoneWrapper.style.transform = ''; 
-        });
-
-        phoneContainer.addEventListener('mousemove', (e) => {
-            const rect = phoneContainer.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const dir = isPhoneFlipped ? -1 : 1;
-            
-            const rotateX = ((y - centerY) / centerY) * -20 * dir;
-            const tiltY = ((x - centerX) / centerX) * 20 * dir;
-            
-            const baseRotateY = isPhoneFlipped ? 180 : 0;
-            const finalRotateY = baseRotateY + tiltY;
-            
-            phoneWrapper.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${finalRotateY}deg)`;
-        });
-
-        phoneContainer.addEventListener('mouseleave', () => {
-            const baseRotateY = isPhoneFlipped ? 180 : 0;
-            phoneWrapper.style.transform = `perspective(1000px) rotateX(0deg) rotateY(${baseRotateY}deg)`;
-        });
     </script>
 
 </body>

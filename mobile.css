@@ -1,0 +1,73 @@
+/* =====================================================
+   mobile.css — отдельная версия для телефонов.
+   Подключён с media="(max-width: 768px)", поэтому на компьютере
+   этот файл вообще не действует. Грузится ПОСЛЕДНИМ (после live.css).
+   ===================================================== */
+
+/* Главная причина «съезжания» вбок: ширина считалась без учёта отступов */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+a, button { -webkit-tap-highlight-color: transparent; }
+
+body {
+    padding: 12px;
+    overflow-x: hidden;      /* никакой прокрутки вбок */
+    animation: none;         /* анимация фона сильно грузит телефон */
+    background-size: 100% 100%;
+}
+
+/* Кнопка «Судоку» */
+.top-right-btn { top: 12px; right: 12px; padding: 8px 14px; font-size: 13px; }
+
+/* Главная карточка: всё в один столбец */
+.card.hero {
+    max-width: 100%;
+    margin-top: 56px;        /* чтобы кнопка «Судоку» не перекрывала */
+    padding: 18px;
+    gap: 14px;
+    grid-template-columns: 1fr;
+}
+.card.hero h1 { font-size: 28px; }
+.terminal { padding: 14px; min-height: 0; }
+#terminal-output { font-size: 13px; line-height: 1.5; }
+
+/* Секции: одинаковая ширина и без боковых отступов */
+.device-section, .live-section, .contact-section {
+    max-width: 100%;
+    margin: 28px 0;
+    padding: 0;
+}
+.section-title { font-size: 22px; margin-bottom: 14px; }
+
+/* Устройство */
+.device-card { flex-direction: column; }
+.device-image {
+    flex: none;
+    width: 100%;
+    padding: 10px;
+    border-right: none;
+    border-bottom: 1px solid #333;
+}
+.phone-model { min-height: 320px; max-width: 100%; }
+.device-info { padding: 18px; }
+.device-info h3 { font-size: 22px; }
+.device-specs { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Live */
+.live-grid { grid-template-columns: 1fr; gap: 12px; }
+.live-card { padding: 16px; border-radius: 16px; }
+.live-stats.two { grid-template-columns: 1fr 1fr; }
+.live-stats.three { grid-template-columns: 1fr; }
+.live-top { grid-template-columns: 1fr; }
+.live-num { font-size: 22px; }
+.live-refresh { width: 40px; height: 40px; }
+
+/* Связь: две карточки в ряд */
+.contact-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+.contact-card { padding: 14px; border-radius: 16px; }
+.contact-top { margin-bottom: 12px; }
+.contact-name { font-size: 15px; }
+.contact-handle { font-size: 12px; overflow-wrap: anywhere; }
+
+/* На сенсорном экране «наведение» не нужно (иначе карточка залипает после тапа) */
+.contact-card:hover { transform: none; box-shadow: none; border-color: #333; }
