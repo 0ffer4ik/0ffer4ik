@@ -124,7 +124,7 @@ function finishIfSolved() {
     if (!Sudoku.isSolved(getBoard(), solution)) return;
     const messageEl = document.getElementById('message');
     messageEl.innerText = `🎉 Победа! Время: ${document.getElementById('timer').innerText}`;
-    messageEl.style.color = '#4CAF50';
+    messageEl.style.color = '#ff6577';
     isGameOver = true;
     clearInterval(timerInterval);
 }
@@ -141,7 +141,7 @@ function giveHint() {
 
     const messageEl = document.getElementById('message');
     messageEl.innerText = '💡 ' + h.text;
-    messageEl.style.color = '#ffcc00';
+    messageEl.style.color = '#ff6577';
 
     updateStats();
     selectCell(cell);
@@ -181,7 +181,7 @@ function solveGame() {
 
     const messageEl = document.getElementById('message');
     messageEl.innerText = '🤖 Судоку решено!';
-    messageEl.style.color = '#00ffff';
+    messageEl.style.color = '#ff6577';
     isGameOver = true;
     clearInterval(timerInterval);
     updateStats();

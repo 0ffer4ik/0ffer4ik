@@ -1,11 +1,28 @@
+:root {
+    --bg-1: #000;
+    --bg-2: #100004;
+    --surface: rgba(12, 3, 5, 0.94);
+    --surface-strong: rgba(20, 4, 7, 0.98);
+    --surface-muted: rgba(255, 20, 40, 0.06);
+    --accent: #b00018;
+    --accent-strong: #ff203b;
+    --accent-soft: rgba(255, 20, 45, 0.16);
+    --text: #f5f5f5;
+    --text-soft: #a69a9c;
+    --line: rgba(255, 40, 60, 0.16);
+    --shadow: 0 18px 42px rgba(0, 0, 0, 0.6);
+    --glow: 0 0 24px rgba(255, 20, 45, 0.28);
+    --content-width: 1080px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-    background: radial-gradient(circle at center, #1a0000 0%, #050000 100%);
-    background-size: 150% 150%;
-    animation: pulseCenter 10s ease-in-out infinite alternate;
-    color: white;
+    background: radial-gradient(ellipse at 50% 0%, rgba(120, 0, 16, 0.14), transparent 38%), linear-gradient(180deg, #080002 0%, #000 55%);
+    color: var(--text);
     font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
@@ -14,28 +31,25 @@ body {
     box-sizing: border-box;
 }
 
-@keyframes pulseCenter {
-    0% { background-size: 100% 100%; background-position: center; }
-    100% { background-size: 200% 200%; background-position: center; }
-}
-
 .card {
-    background-color: rgba(10, 5, 5, 0.7); 
+    background: linear-gradient(145deg, rgba(21, 4, 7, 0.96), rgba(7, 2, 3, 0.97));
     padding: 30px;
-    border-radius: 20px; 
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-    border: 2px solid #ff3333;
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
     position: relative;
-    max-width: 450px;
+    max-width: var(--content-width);
     width: 100%;
     z-index: 10;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    backdrop-filter: blur(12px);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 h1 {
-    color: #ff3333; 
+    color: #ff354d;
     margin: 0;
     letter-spacing: 1px;
     text-align: center;
@@ -45,16 +59,17 @@ h1 {
 }
 
 .terminal {
-    background-color: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #ff3333;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     font-family: 'Consolas', 'Courier New', monospace;
     min-height: 120px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 #terminal-output {
-    color: #d4d4d4;
+    color: #f2f2f2;
     margin: 0;
     font-size: 15px;
     line-height: 1.6;
@@ -62,48 +77,12 @@ h1 {
 
 .cursor {
     animation: blink 1s step-end infinite;
-    color: #d4d4d4;
+    color: var(--accent-strong);
 }
 
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
-}
-
-.meme-img {
-    width: 100%;
-    height: auto;
-    border-radius: 15px;
-    display: block;
-    transition: transform 0.1s ease-out;
-    transform-style: preserve-3d;
-    border: 1px solid #ff3333;
-}
-
-.social-links {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.btn-social {
-    flex: 1;
-    text-align: center;
-    text-decoration: none;
-    padding: 10px 0;
-    border-radius: 12px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid #ff3333;
-    color: #ff3333;
-    font-family: 'Consolas', monospace;
-    font-weight: bold;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-.btn-social:hover {
-    background-color: #ff3333;
-    color: #000;
 }
 
 #matrix-canvas {
@@ -114,7 +93,7 @@ h1 {
     height: 100%;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.2;
+    opacity: 0.25;
 }
 
 .secret-modal {
@@ -124,8 +103,8 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(10px);
     z-index: 100;
     justify-content: center;
     align-items: center;
@@ -145,6 +124,9 @@ h1 {
     max-height: 90vh;
     transform: scale(0.7);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: rgba(20, 3, 6, 0.96);
+    border-radius: 24px;
+    padding: 12px;
 }
 
 .secret-modal.show .secret-content {
@@ -155,8 +137,8 @@ h1 {
     max-width: 100%;
     max-height: 85vh;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(255, 50, 50, 0.6);
-    border: 2px solid #ff3333;
+    box-shadow: 0 0 40px rgba(255, 20, 45, 0.45);
+    border: 2px solid var(--accent-strong);
     display: block;
 }
 
@@ -164,7 +146,7 @@ h1 {
     position: absolute;
     top: -15px;
     right: -15px;
-    background-color: #ff3333;
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
     color: white;
     width: 35px;
     height: 35px;
@@ -175,16 +157,12 @@ h1 {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 0 15px rgba(255, 50, 50, 0.8);
+    box-shadow: var(--glow);
 }
 
 @media (max-width: 480px) {
     .card {
         padding: 20px;
-    }
-    .btn-social {
-        font-size: 12px;
-        padding: 8px 0;
     }
 }
 
@@ -192,35 +170,36 @@ h1 {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: rgba(10, 5, 5, 0.8);
-    color: #ff3333;
-    border: 1px solid #ff3333;
+    background: rgba(18, 3, 5, 0.94);
+    color: var(--text);
+    border: 1px solid var(--line);
     padding: 10px 20px;
-    border-radius: 12px;
+    border-radius: 14px;
     text-decoration: none;
     font-family: 'Consolas', monospace;
     font-weight: bold;
     z-index: 1000;
-    box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
-    transition: 0.3s;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    transition: 0.3s ease;
 }
 .top-right-btn:hover {
-    background-color: #ff3333;
-    color: #000;
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    color: #fff;
+    transform: translateY(-1px);
 }
 
 .device-section {
     width: 100%;
-    max-width: 900px;
+    max-width: var(--content-width);
     margin: 50px auto;
-    padding: 0 20px;
+    padding: 0;
     font-family: 'Century Gothic', 'CenturyGothic', sans-serif;
     z-index: 10;
     position: relative;
 }
 
 .section-title {
-    color: #ff3333;
+    color: var(--accent-strong);
     font-size: 28px;
     margin-bottom: 20px;
     font-weight: bold;
@@ -237,21 +216,23 @@ h1 {
 
 .device-card {
     display: flex;
-    background-color: rgba(15, 15, 15, 0.95);
-    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(18, 3, 6, 0.97), rgba(6, 2, 3, 0.98));
+    border-radius: 28px;
     overflow: hidden;
-    border: 1px solid #ff3333;
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.15);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .device-image {
-    flex: 0 0 45%; 
-    background-color: rgba(0, 0, 0, 0.6);
+    flex: 0 0 45%;
+    background: radial-gradient(circle at center, rgba(176, 0, 24, 0.18), rgba(0,0,0,0.2) 65%);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px; /* Уменьшили отступ, чтобы модель заняла больше места */
-    border-right: 1px solid #333;
+    padding: 14px;
+    border-right: 1px solid var(--line);
 }
 
 .phone-model {
@@ -260,7 +241,7 @@ h1 {
     min-height: 450px; 
     max-width: 320px;  
     outline: none;
-    filter: drop-shadow(0 0 20px rgba(255, 51, 51, 0.5)); 
+    filter: drop-shadow(0 0 20px rgba(255, 20, 45, 0.34));
 }
 
 .device-info {
@@ -291,14 +272,17 @@ h1 {
 }
 
 .tag {
-    background-color: rgba(255, 51, 51, 0.1);
-    border: 1px solid #ff3333;
-    color: #ff3333;
-    padding: 6px 14px;
-    border-radius: 8px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(255, 32, 59, 0.3);
+    color: #ff6678;
+    padding: 7px 14px;
+    border-radius: 999px;
     font-size: 13px;
     font-family: 'Consolas', monospace;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.tag:hover { border-color: var(--accent-strong); box-shadow: 0 0 14px rgba(255, 20, 45, 0.2); }
 
 .device-specs {
     display: grid;
@@ -308,29 +292,31 @@ h1 {
 }
 
 .spec-item {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid #333;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 40, 60, 0.09);
     padding: 12px 15px;
-    border-radius: 10px;
+    border-radius: 18px;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    transition: 0.3s;
+    transition: 0.3s ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .spec-item:hover {
-    border-color: #ff3333;
+    border-color: rgba(255, 32, 59, 0.55);
+    box-shadow: var(--glow);
 }
 
 .spec-label {
     font-size: 12px;
-    color: #888;
+    color: var(--text-soft);
     font-family: 'Consolas', monospace;
 }
 
 .spec-value {
     font-size: 14px;
-    color: #d4d4d4;
+    color: var(--text);
     line-height: 1.4;
 }
 
@@ -353,25 +339,94 @@ h1 {
 
 /* ===== Горизонтальная главная карточка ===== */
 .card.hero {
-    max-width: 900px;
+    max-width: var(--content-width);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr);
+    grid-template-areas: "copy logo";
+    gap: 30px;
+    align-items: center;
 }
-.card.hero h1 { grid-column: 1 / -1; }
-.card.hero .terminal { box-sizing: border-box; }
+.hero-copy { grid-area: copy; display: grid; gap: 20px; min-width: 0; }
+.card.hero h1 { text-align: left; font-size: clamp(32px, 5vw, 56px); }
+.card.hero .terminal { box-sizing: border-box; width: 100%; }
+.hero-logo {
+    grid-area: logo;
+    min-height: 250px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 18px;
+    position: relative;
+    isolation: isolate;
+    transition: filter 0.25s ease;
+}
+.hero-logo:hover { filter: drop-shadow(0 0 18px rgba(255, 20, 45, 0.35)); }
+.logo-orbit {
+    position: absolute;
+    width: 190px;
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 32, 59, 0.4);
+    border-radius: 50%;
+    box-shadow: inset 0 0 32px rgba(176, 0, 24, 0.18), 0 0 32px rgba(176, 0, 24, 0.16);
+    animation: orbit-pulse 3.2s ease-in-out infinite;
+}
+.logo-orbit::before, .logo-orbit::after {
+    content: "";
+    position: absolute;
+    inset: 14px -10px;
+    border: 1px solid rgba(255, 32, 59, 0.28);
+    border-radius: 50%;
+    transform: rotate(45deg);
+}
+.logo-orbit::after { transform: rotate(-45deg); }
+.logo-core {
+    width: 112px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 32, 59, 0.62);
+    border-radius: 34px;
+    background: radial-gradient(circle at 30% 25%, #3a0710, #100205 70%);
+    box-shadow: 0 0 30px rgba(255, 20, 45, 0.28), inset 0 0 24px rgba(255, 20, 45, 0.12);
+    transform: rotate(45deg);
+    animation: logo-float 4s ease-in-out infinite;
+}
+.logo-core span {
+    color: #ff304a;
+    font: 900 68px/1 'Consolas', monospace;
+    text-shadow: 0 0 20px rgba(255, 20, 45, 0.7);
+    transform: rotate(-45deg);
+}
+.logo-wordmark {
+    z-index: 1;
+    color: #ff6577;
+    font: 700 14px/1 'Consolas', monospace;
+    letter-spacing: 0.38em;
+    text-shadow: 0 0 14px rgba(255, 20, 45, 0.55);
+}
+@keyframes orbit-pulse {
+    0%, 100% { transform: scale(0.94) rotate(0deg); opacity: 0.6; }
+    50% { transform: scale(1.05) rotate(12deg); opacity: 1; }
+}
+@keyframes logo-float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -7px; }
+}
 
 @media (max-width: 768px) {
-    .card.hero { grid-template-columns: 1fr; }
+    .card.hero { grid-template-columns: 1fr; gap: 12px; }
+    .hero-logo { min-height: 180px; }
+    .logo-orbit { width: 140px; }
+    .logo-core { width: 82px; border-radius: 26px; }
+    .logo-core span { font-size: 50px; }
 }
 
 /* ===== Связь ===== */
 .contact-section {
     width: 100%;
-    max-width: 900px;
+    max-width: var(--content-width);
     margin: 50px auto;
-    padding: 0 20px;
+    padding: 0;
     box-sizing: border-box;
     position: relative;
     z-index: 10;
@@ -387,15 +442,18 @@ h1 {
     flex-direction: column;
     gap: 6px;
     padding: 20px;
-    background: rgba(15, 15, 15, 0.95);
-    border: 1px solid #333;
-    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(20, 4, 7, 0.96), rgba(8, 2, 3, 0.98));
+    border: 1px solid rgba(255, 40, 60, 0.14);
+    border-radius: 22px;
     text-decoration: none;
-    transition: 0.3s;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
 }
 .contact-card:hover {
-    border-color: #ff3333;
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.25);
+    border-color: rgba(255, 32, 59, 0.62);
+    box-shadow: var(--glow), 0 18px 30px rgba(0,0,0,0.42);
     transform: translateY(-3px);
 }
 .contact-top {
@@ -405,91 +463,44 @@ h1 {
     margin-bottom: 18px;
 }
 .contact-icon {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    background: rgba(255, 51, 51, 0.1);
-    border: 1px solid #ff3333;
-    color: #ff3333;
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(255, 32, 59, 0.24);
+    color: #ff596d;
     display: flex; justify-content: center; align-items: center;
     font-weight: bold; font-size: 14px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .contact-icon svg {
     width: 20px; height: 20px;
     fill: none; stroke: currentColor; stroke-width: 2;
     stroke-linecap: round; stroke-linejoin: round;
 }
-.contact-arrow { color: #888; font-size: 18px; }
-.contact-name { color: #fff; font-size: 17px; font-weight: bold; }
-.contact-handle { color: #888; font-size: 13px; }
+.contact-arrow { color: var(--text-soft); font-size: 18px; }
+.contact-name { color: var(--text); font-size: 17px; font-weight: bold; }
+.contact-handle { color: var(--text-soft); font-size: 13px; }
 
-/* =========================================
-   МОБИЛЬНАЯ ВЕРСИЯ (АДАПТИВ)
-   ========================================= */
-@media (max-width: 768px) {
-    /* 1. Отступы для body, чтобы ничего не прилипало к краям */
-    body {
-        padding: 10px;
-    }
+.card:hover, .device-card:hover {
+    border-color: rgba(255, 32, 59, 0.55);
+    box-shadow: var(--glow), var(--shadow);
+}
 
-    /* 2. Кнопка Судоку - делаем меньше и ставим аккуратнее */
-    .top-right-btn {
-        top: 15px;
-        right: 15px;
-        padding: 6px 12px;
-        font-size: 12px;
-        box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
-    }
+.top-right-btn:focus-visible, .close-btn:focus-visible, .contact-card:focus-visible,
+.live-refresh:focus-visible, a:focus-visible {
+    outline: 2px solid var(--accent-strong);
+    outline-offset: 3px;
+}
 
-    /* 3. Главная карточка - делаем отступ сверху, чтобы кнопка Судоку ее не перекрывала */
-    .card {
-        margin-top: 60px; 
-        padding: 20px;
-        gap: 15px;
-    }
-
-    /* 4. Терминал - чуть уменьшаем шрифт, чтобы влезало больше текста */
-    #terminal-output {
-        font-size: 13px;
-    }
-
-    /* 5. Блок с устройством */
-    .device-section {
-        margin: 30px auto;
-        padding: 0 10px;
-    }
-
-    /* 6. Карточка телефона - на мобилках всегда в колонку */
-    .device-card {
-        flex-direction: column;
-    }
-
-    .device-image {
-        padding: 15px;
-        border-right: none;
-        border-bottom: 1px solid #333;
-        flex: none;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* 7. Настройки 3D-модели для мобилок (чтобы было не слишком огромной) */
-    .phone-model {
-        min-height: 350px; 
-        max-width: 100%;  
-    }
-
-    .device-info {
-        padding: 20px;
-    }
-
-    /* 8. Характеристики в одну колонку (чтобы текст не сжимался) */
-    .device-specs {
-        grid-template-columns: 1fr;
-    }
-
-    /* 9. Кнопки соцсетей - делаем чуть меньше */
-    .btn-social {
-        font-size: 12px;
-        padding: 8px 0;
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
     }
 }
+
+html { scrollbar-color: #650012 #050002; }
+html::-webkit-scrollbar { width: 9px; }
+html::-webkit-scrollbar-track { background: #050002; }
+html::-webkit-scrollbar-thumb { background: #650012; border-radius: 9px; }

@@ -61,9 +61,14 @@ async function loadNow() {
                 <div class="live-muted">${esc(artistsOf(t))}</div>`;
         } else {
             box.innerHTML = `
-                <div class="live-cover"><div class="live-cover-empty">🔇</div></div>
-                <div class="live-big">Тишина</div>
-                <div class="live-muted">Сейчас ничего не играет</div>`;
+                <div class="live-idle" role="status">
+                    <div class="live-idle-visual" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <span class="live-idle-label">ОЖИДАНИЕ ТРЕКА</span>
+                    <div class="live-big">Сейчас тихо</div>
+                    <div class="live-muted">Новый трек появится здесь автоматически</div>
+                </div>`;
         }
     } catch (e) { box.innerHTML = errorBox(e); }
 }
