@@ -39,7 +39,7 @@
     justify-content: space-between;
     align-items: center;
     color: var(--text-soft, #a69a9c);
-    font-size: 13px;
+    font-size: 15px;
     margin-bottom: 16px;
 }
 
@@ -81,7 +81,7 @@
 .live-idle-visual span:nth-child(2), .live-idle-visual span:nth-child(4) { animation-delay: 0.18s; }
 .live-idle-visual span:nth-child(3) { animation-delay: 0.36s; }
 .live-idle-visual span:nth-child(5) { animation-delay: 0.54s; }
-.live-idle-label { color: #ff6577; font-size: 10px; letter-spacing: 0.18em; }
+.live-idle-label { color: #ff6577; font-size: 12px; letter-spacing: 0.18em; }
 @keyframes idle-wave { 0%, 100% { height: 8px; opacity: 0.55; } 50% { height: 28px; opacity: 1; } }
 .live-cover {
     width: 90px; height: 90px;
@@ -95,8 +95,8 @@
 }
 .live-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .live-cover-empty { font-size: 32px; color: var(--accent-strong); }
-.live-big { color: var(--text); font-size: 20px; font-weight: bold; margin-bottom: 4px; }
-.live-muted { color: var(--text-soft); font-size: 13px; }
+.live-big { color: var(--text); font-size: 22px; font-weight: bold; margin-bottom: 4px; }
+.live-muted { color: var(--text-soft); font-size: 15px; }
 
 /* Плитки статистики */
 .live-stats { display: grid; gap: 8px; }
@@ -112,10 +112,10 @@
     transition: 0.3s;
 }
 .live-stat:hover { border-color: rgba(255, 32, 59, 0.5); box-shadow: 0 0 16px rgba(255, 20, 45, 0.14); }
-.live-label { color: var(--text-soft); font-size: 12px; }
-.live-num { color: var(--text); font-size: 24px; font-weight: bold; }
-.live-num small { font-size: 14px; }
-.live-sub { color: #9a9a9a; font-size: 12px; }
+.live-label { color: var(--text-soft); font-size: 14px; }
+.live-num { color: var(--text); font-size: 26px; font-weight: bold; }
+.live-num small { font-size: 15px; }
+.live-sub { color: #9a9a9a; font-size: 14px; }
 
 /* Топ треков */
 .live-top { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -127,7 +127,7 @@
     padding: 8px 12px;
     min-width: 0;
 }
-.live-rank { color: #9a9a9a; font-size: 13px; width: 14px; text-align: center; }
+.live-rank { color: #9a9a9a; font-size: 15px; width: 18px; text-align: center; }
 .live-mini {
     width: 44px; height: 44px; flex: 0 0 44px;
     border-radius: 10px; overflow: hidden;
@@ -138,10 +138,10 @@
 .live-mini .live-cover-empty { font-size: 20px; }
 .live-track-info { flex: 1; min-width: 0; }
 .live-track-name {
-    color: var(--text); font-size: 14px; font-weight: bold;
+    color: var(--text); font-size: 16px; font-weight: bold;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.live-count { color: var(--text-soft); font-size: 12px; white-space: nowrap; }
+.live-count { color: var(--text-soft); font-size: 14px; white-space: nowrap; }
 
 @media (max-width: 768px) {
     .live-grid { grid-template-columns: 1fr; }

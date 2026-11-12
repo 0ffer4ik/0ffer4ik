@@ -20,6 +20,7 @@
 body {
     background: radial-gradient(ellipse at 50% 0%, rgba(120, 0, 16, 0.14), transparent 38%), linear-gradient(180deg, #080002 0%, #000 55%);
     color: var(--text);
+    font-size: 17px;
     font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;
     display: flex;
     flex-direction: column;
@@ -71,7 +72,7 @@ h1 {
 #terminal-output {
     color: #f2f2f2;
     margin: 0;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.6;
 }
 
@@ -200,7 +201,7 @@ h1 {
 
 .section-title {
     color: var(--accent-strong);
-    font-size: 28px;
+    font-size: 30px;
     margin-bottom: 20px;
     font-weight: bold;
     display: flex;
@@ -210,7 +211,7 @@ h1 {
 }
 
 .section-num {
-    font-size: 14px;
+    font-size: 16px;
     color: #888;
 }
 
@@ -253,13 +254,13 @@ h1 {
 
 .device-info h3 {
     color: #ffffff;
-    font-size: 26px;
+    font-size: 28px;
     margin: 0 0 10px 0;
 }
 
 .device-desc {
     color: #aaaaaa;
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.5;
     margin-bottom: 20px;
 }
@@ -277,7 +278,7 @@ h1 {
     color: #ff6678;
     padding: 7px 14px;
     border-radius: 999px;
-    font-size: 13px;
+    font-size: 15px;
     font-family: 'Consolas', monospace;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -309,13 +310,13 @@ h1 {
 }
 
 .spec-label {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-soft);
     font-family: 'Consolas', monospace;
 }
 
 .spec-value {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text);
     line-height: 1.4;
 }
@@ -347,7 +348,7 @@ h1 {
     align-items: center;
 }
 .hero-copy { grid-area: copy; display: grid; gap: 20px; min-width: 0; }
-.card.hero h1 { text-align: left; font-size: clamp(32px, 5vw, 56px); }
+.card.hero h1 { text-align: left; font-size: clamp(34px, 5vw, 58px); }
 .card.hero .terminal { box-sizing: border-box; width: 100%; }
 .hero-logo {
     grid-area: logo;
@@ -400,7 +401,7 @@ h1 {
 .logo-wordmark {
     z-index: 1;
     color: #ff6577;
-    font: 700 14px/1 'Consolas', monospace;
+    font: 700 15px/1 'Consolas', monospace;
     letter-spacing: 0.38em;
     text-shadow: 0 0 14px rgba(255, 20, 45, 0.55);
 }
@@ -478,8 +479,8 @@ h1 {
     stroke-linecap: round; stroke-linejoin: round;
 }
 .contact-arrow { color: var(--text-soft); font-size: 18px; }
-.contact-name { color: var(--text); font-size: 17px; font-weight: bold; }
-.contact-handle { color: var(--text-soft); font-size: 13px; }
+.contact-name { color: var(--text); font-size: 18px; font-weight: bold; }
+.contact-handle { color: var(--text-soft); font-size: 15px; }
 
 .card:hover, .device-card:hover {
     border-color: rgba(255, 32, 59, 0.55);

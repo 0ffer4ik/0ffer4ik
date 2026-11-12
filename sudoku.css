@@ -32,7 +32,7 @@ body {
     border-radius: 8px;
     background: rgba(0,0,0,0.8);
     z-index: 100;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .stats-panel {
@@ -45,7 +45,7 @@ body {
     border-radius: 8px;
     border: 1px solid #ff3333;
     font-family: 'Consolas', monospace;
-    font-size: 13px;
+    font-size: 15px;
     margin-bottom: 8px;
     box-sizing: border-box;
     text-align: center;
@@ -67,7 +67,7 @@ body {
     border-radius: 6px;
     font-family: 'Consolas', monospace;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 15px;
     cursor: pointer;
 }
 
@@ -113,7 +113,7 @@ body {
 .numpad button { position: relative; }
 .numpad button small {
     position: absolute; right: 5px; bottom: 2px;
-    font-size: 15px; color: #ffffff;
+    font-size: 16px; color: #ffffff;
 }
 
 .sudoku-cell.hinted {
@@ -163,7 +163,7 @@ body {
     font-weight: bold;
     color: #ff3333;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 body {
@@ -216,7 +216,7 @@ body {
     border-radius: 999px;
     color: #ff6577;
     background: rgba(12, 3, 5, 0.94);
-    font: 700 13px 'Consolas', monospace;
+    font: 700 15px 'Consolas', monospace;
     cursor: pointer;
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -258,7 +258,7 @@ body {
     margin: -5px 0 0;
     color: #a69a9c;
     text-align: center;
-    font: 12px 'Consolas', monospace;
+    font: 14px 'Consolas', monospace;
 }
 .save-note.is-saved { color: #ff6577; }
 .btn-diff, .btn-action, .numpad button {
@@ -347,7 +347,7 @@ body {
 .profile-dialog-header h2, .profile-stats h3 {
     margin: 0;
     color: #ff6577;
-    font: 700 18px 'Consolas', monospace;
+    font: 700 20px 'Consolas', monospace;
 }
 
 .profile-close {
@@ -378,13 +378,13 @@ body {
     object-fit: cover;
 }
 
-.profile-identity strong { color: #f5e8ea; font: 700 17px 'Consolas', monospace; }
+.profile-identity strong { color: #f5e8ea; font: 700 18px 'Consolas', monospace; }
 .profile-tools { display: grid; justify-items: start; gap: 7px; }
 .avatar-upload { position: relative; display: inline-flex; width: auto; cursor: pointer; }
 .avatar-upload input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.avatar-hint { margin: 0; color: #a69a9c; font: 11px 'Consolas', monospace; }
+.avatar-hint { margin: 0; color: #a69a9c; font: 13px 'Consolas', monospace; }
 .profile-stats { display: grid; gap: 10px; }
-.profile-total { margin: 0; color: #e8dfe1; font: 13px 'Consolas', monospace; }
+.profile-total { margin: 0; color: #e8dfe1; font: 15px 'Consolas', monospace; }
 .profile-records { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .profile-record {
     display: grid;
@@ -394,7 +394,7 @@ body {
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.4);
     text-align: center;
-    font: 12px 'Consolas', monospace;
+    font: 14px 'Consolas', monospace;
 }
 
 .profile-record span { color: #a69a9c; }
@@ -411,12 +411,12 @@ body {
 .leaderboard-heading h2 {
     margin: 0;
     color: #ff6577;
-    font: 700 17px 'Consolas', monospace;
+    font: 700 19px 'Consolas', monospace;
 }
 
 .auth-status, .auth-message {
     color: #a69a9c;
-    font: 12px 'Consolas', monospace;
+    font: 14px 'Consolas', monospace;
 }
 
 .auth-message { min-height: 1em; margin: 10px 0 0; }
@@ -434,7 +434,7 @@ body {
     gap: 6px;
     color: #a69a9c;
     text-align: left;
-    font: 12px 'Consolas', monospace;
+    font: 14px 'Consolas', monospace;
 }
 
 .auth-form input, .leaderboard-filter select {
@@ -445,7 +445,7 @@ body {
     background: #080203;
     border: 1px solid rgba(255, 32, 59, 0.24);
     border-radius: 10px;
-    font: 14px 'Consolas', monospace;
+    font: 16px 'Consolas', monospace;
 }
 
 .auth-form input:focus, .leaderboard-filter select:focus {
@@ -466,10 +466,10 @@ body {
 }
 
 .leaderboard-heading { margin-top: 2px; }
-.leaderboard-heading h2 { font-size: 16px; }
+.leaderboard-heading h2 { font-size: 18px; }
 .leaderboard-filter { width: min(160px, 42%); }
 .leaderboard-scroll { width: 100%; overflow-x: auto; }
-.leaderboard { width: 100%; border-collapse: collapse; font: 13px 'Consolas', monospace; }
+.leaderboard { width: 100%; border-collapse: collapse; font: 15px 'Consolas', monospace; }
 .leaderboard th, .leaderboard td {
     padding: 10px 8px;
     border-bottom: 1px solid rgba(255, 40, 60, 0.1);
@@ -491,22 +491,22 @@ body {
     border-radius: 50%;
     background: #21060b;
     color: #ff9aa6;
-    font: 700 12px 'Consolas', monospace;
+    font: 700 14px 'Consolas', monospace;
 }
 .leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 @media (max-width: 480px) {
     body { padding: 68px 10px 24px; }
     .sudoku-card { padding: 14px 10px; gap: 11px; border-radius: 20px; }
-    .stats-panel { font-size: 12px; }
+    .stats-panel { font-size: 14px; }
     .difficulty-buttons, .action-buttons { gap: 6px; }
     .numpad { gap: 5px; }
     .numpad button { padding: 11px 0; }
     .back-btn { top: 12px; left: 10px; padding: 8px 11px; }
-    .profile-trigger { top: 12px; right: 10px; padding: 5px 9px 5px 5px; font-size: 12px; }
+    .profile-trigger { top: 12px; right: 10px; padding: 5px 9px 5px 5px; font-size: 14px; }
     .profile-trigger-avatar { width: 28px; height: 28px; }
     .auth-form { grid-template-columns: 1fr; }
     .auth-actions { grid-column: auto; }
     .profile-dialog-content { gap: 15px; padding: 18px; }
-    .leaderboard { font-size: 12px; }
+    .leaderboard { font-size: 14px; }
 }
