@@ -1,14 +1,14 @@
 // ===== НАСТРОЙКИ (заполни свои) =====
 const LIVE = {
-    statsfmUser: 'ТВОЙ_НИК_В_STATSFM',   // ник или customId из ссылки на твой профиль stats.fm
+    statsfmUser: '31zampzx6vdwi7qqah3yttplww2q',   // ник или customId из ссылки на твой профиль stats.fm
     // Любимые треки (показываются первые 3). Меняй прямо здесь:
     //   title  — название, artist — исполнитель,
     //   cover  — картинка (ссылка или файл из репозитория, например 'covers/1.jpg'), можно оставить '',
     //   link   — ссылка на трек (можно оставить '')
     favorites: [
-        { title: 'Название трека 1', artist: 'Исполнитель', cover: '', link: '' },
-        { title: 'Название трека 2', artist: 'Исполнитель', cover: '', link: '' },
-        { title: 'Название трека 3', artist: 'Исполнитель', cover: '', link: '' }
+        { title: 'Блондинка', artist: 'GSPD', cover: '', link: 'https://open.spotify.com/track/50IKCZwA8w4mON9FDDkciA?si=4a1883c281834593' },
+        { title: 'Мементо Мори', artist: 'ксюшенька.', cover: '', link: 'https://open.spotify.com/track/48ZD4nRdh4V6EzxhtKoGSh?si=866fcb2dff154e1c' },
+        { title: 'SOLO', artist: 'lightprey', cover: '', link: 'https://open.spotify.com/track/484u1CQG998X0poznDaSHM?si=f433fe56c84a4b91' }
     ],
     refreshSec: 30                       // как часто обновлять «Сейчас играет»
 };
