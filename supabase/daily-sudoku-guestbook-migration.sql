@@ -312,3 +312,5 @@ $$;
 
 revoke all on function public.record_sudoku_daily_result(uuid, uuid, integer[]) from public, anon, authenticated;
 grant execute on function public.record_sudoku_daily_result(uuid, uuid, integer[]) to service_role;
+
+notify pgrst, 'reload schema';

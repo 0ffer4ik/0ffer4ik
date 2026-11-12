@@ -261,6 +261,7 @@ async function startDailyChallenge() {
     const button = document.getElementById('daily-start-button');
     button.disabled = true;
     document.getElementById('daily-note').textContent = 'Загружаем задание дня…';
+    let failureMessage = null;
     try {
         const challenge = await auth.createDailyGame();
         if (challenge.completed) {
@@ -297,12 +298,16 @@ async function startDailyChallenge() {
         document.getElementById('message').textContent = 'Ежедневное задание загружено. Удачи!';
     } catch (error) {
         console.error('Could not start daily Sudoku:', error);
-        document.getElementById('daily-note').textContent =
-            'Не удалось загрузить задание. Проверьте применение миграции и обновление функции Supabase.';
-        document.getElementById('message').textContent = error.message || 'Ежедневное задание недоступно.';
+        failureMessage = error?.message || 'Ежедневное задание недоступно.';
+        document.getElementById('daily-note').textContent = `Не удалось загрузить задание: ${failureMessage}`;
+        document.getElementById('message').textContent = failureMessage;
     } finally {
         button.disabled = false;
         await refreshDailyStats();
+        if (failureMessage) {
+            document.getElementById('daily-note').textContent =
+                `Ошибка загрузки: ${failureMessage}. Проверьте SQL-миграцию и публикацию функции sudoku-game.`;
+        }
     }
 }
 

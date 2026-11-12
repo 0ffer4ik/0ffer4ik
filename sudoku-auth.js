@@ -42,6 +42,19 @@
         avatarFile.disabled = value;
     }
 
+    async function readFunctionError(error) {
+        const response = error?.context;
+        if (response && typeof response.clone === 'function') {
+            try {
+                const payload = await response.clone().json();
+                if (typeof payload?.error === 'string') return new Error(payload.error);
+            } catch (parseError) {
+                console.warn('Could not parse Sudoku function error response:', parseError);
+            }
+        }
+        return error;
+    }
+
     function setAuthView(user) {
         const signedIn = Boolean(user);
         const username = user?.user_metadata?.username || 'игрок';
@@ -443,7 +456,7 @@
             const { data, error } = await client.functions.invoke('sudoku-game', {
                 body: { action: 'new_game', difficulty },
             });
-            if (error) throw error;
+            if (error) throw await readFunctionError(error);
             if (!data?.gameId || !Array.isArray(data.puzzle) || data.puzzle.length !== 81) {
                 throw new Error('Сервер вернул некорректную головоломку.');
             }
@@ -454,7 +467,7 @@
             const { data, error } = await client.functions.invoke('sudoku-game', {
                 body: { action: 'daily_new_game' },
             });
-            if (error) throw error;
+            if (error) throw await readFunctionError(error);
             if (data?.completed) return data;
             if (!data?.gameId || !/^\d{4}-\d{2}-\d{2}$/.test(data.challengeDate) ||
                 !Array.isArray(data.puzzle) || data.puzzle.length !== 81 ||
@@ -467,7 +480,7 @@
             const { data, error } = await client.functions.invoke('sudoku-game', {
                 body: { action: 'daily_submit', gameId, board },
             });
-            if (error) throw error;
+            if (error) throw await readFunctionError(error);
             return data;
         },
         async loadDailyStats() {
@@ -494,7 +507,7 @@
             const { data, error } = await client.functions.invoke('sudoku-game', {
                 body: { action: 'submit', gameId, board },
             });
-            if (error) throw error;
+            if (error) throw await readFunctionError(error);
             await loadLeaderboard();
             if (session?.user) await loadProfileData(session.user);
             return data;
