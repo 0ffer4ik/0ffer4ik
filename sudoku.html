@@ -35,13 +35,10 @@
                 <span id="auth-status" class="auth-status">Подключаемся…</span>
             </div>
             <form id="auth-form" class="auth-form">
-                <label class="auth-signup-only">Никнейм
-                    <input id="auth-username" name="username" autocomplete="nickname" minlength="3" maxlength="20" placeholder="Например, Offer4ik">
+                <label class="auth-credential">Никнейм
+                    <input id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_-]{3,20}" placeholder="Например, Offer4ik" required>
                 </label>
-                <label>Email
-                    <input id="auth-email" name="email" type="email" autocomplete="email" required>
-                </label>
-                <label>Пароль
+                <label class="auth-credential">Пароль
                     <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" required>
                 </label>
                 <div class="auth-actions">

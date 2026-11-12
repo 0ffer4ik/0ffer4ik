@@ -2,9 +2,8 @@
     const client = window.sudokuSupabase;
     const form = document.getElementById('auth-form');
     const usernameInput = document.getElementById('auth-username');
-    const emailInput = document.getElementById('auth-email');
     const passwordInput = document.getElementById('auth-password');
-    const usernameLabel = document.querySelector('.auth-signup-only');
+    const credentialFields = form.querySelectorAll('.auth-credential');
     const status = document.getElementById('auth-status');
     const message = document.getElementById('auth-message');
     const signUpButton = document.getElementById('sign-up-button');
@@ -29,10 +28,9 @@
 
     function setAuthView(user) {
         const signedIn = Boolean(user);
-        status.textContent = signedIn ? `В сети: ${user.email}` : 'Войдите, чтобы сохранить рекорд';
-        usernameLabel.hidden = signedIn;
-        emailInput.closest('label').hidden = signedIn;
-        passwordInput.closest('label').hidden = signedIn;
+        const username = user?.user_metadata?.username || 'игрок';
+        status.textContent = signedIn ? `В сети: ${username}` : 'Войдите, чтобы сохранить рекорд';
+        credentialFields.forEach(field => { field.hidden = signedIn; });
         form.querySelector('[data-auth-action="sign-in"]').hidden = signedIn;
         signUpButton.hidden = signedIn;
         signOutButton.hidden = !signedIn;
@@ -83,8 +81,12 @@
     }
 
     async function signIn() {
+        const username = usernameInput.value.trim();
+        if (!/^[A-Za-z0-9_-]{3,20}$/.test(username)) {
+            throw new Error('Никнейм: 3–20 латинских букв, цифр, дефисов или подчёркиваний.');
+        }
         const { error } = await client.auth.signInWithPassword({
-            email: emailInput.value.trim(),
+            email: authEmailForUsername(username),
             password: passwordInput.value,
         });
         if (error) throw error;
@@ -93,21 +95,24 @@
 
     async function signUp() {
         const username = usernameInput.value.trim();
-        if (!/^[\p{L}\p{N}_-]{3,20}$/u.test(username)) {
-            throw new Error('Никнейм: 3–20 букв, цифр, дефисов или подчёркиваний.');
+        if (!/^[A-Za-z0-9_-]{3,20}$/.test(username)) {
+            throw new Error('Никнейм: 3–20 латинских букв, цифр, дефисов или подчёркиваний.');
         }
         const { data, error } = await client.auth.signUp({
-            email: emailInput.value.trim(),
+            email: authEmailForUsername(username),
             password: passwordInput.value,
-            options: {
-                data: { username },
-                emailRedirectTo: window.SUDOKU_EMAIL_REDIRECT_URL,
-            },
+            options: { data: { username } },
         });
         if (error) throw error;
-        showMessage(data.session
-            ? 'Аккаунт создан. Можно начинать ranked-игру!'
-            : 'Аккаунт создан. Подтвердите email по ссылке из письма, затем войдите.');
+        if (!data.session) {
+            showMessage('Supabase всё ещё требует подтверждение email. Выключи Confirm email в настройках Auth и удали незавершённый аккаунт перед повторной регистрацией.', true);
+            return;
+        }
+        showMessage('Аккаунт создан. Можно начинать рейтинговую игру!');
+    }
+
+    function authEmailForUsername(username) {
+        return `${username.toLowerCase()}@accounts.0ffer4ik.invalid`;
     }
 
     if (!client) {
