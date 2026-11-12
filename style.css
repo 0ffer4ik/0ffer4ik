@@ -207,3 +207,143 @@ h1 {
     background-color: #ff3333;
     color: #000;
 }
+
+.device-section {
+    width: 100%;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+    font-family: 'Century Gothic', 'CenturyGothic', sans-serif;
+    z-index: 10;
+    position: relative;
+}
+
+.section-title {
+    color: #ff3333;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    font-family: 'Consolas', monospace;
+}
+
+.section-num {
+    font-size: 14px;
+    color: #888;
+}
+
+.device-card {
+    display: flex;
+    background-color: rgba(15, 15, 15, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #ff3333;
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.15);
+}
+
+.device-image {
+    flex: 0 0 40%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    border-right: 1px solid #333;
+}
+
+.device-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.3));
+}
+
+.device-info {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.device-info h3 {
+    color: #ffffff;
+    font-size: 26px;
+    margin: 0 0 10px 0;
+}
+
+.device-desc {
+    color: #aaaaaa;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.device-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tag {
+    background-color: rgba(255, 51, 51, 0.1);
+    border: 1px solid #ff3333;
+    color: #ff3333;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Consolas', monospace;
+}
+
+.device-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.spec-item {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: 0.3s;
+}
+
+.spec-item:hover {
+    border-color: #ff3333;
+}
+
+.spec-label {
+    font-size: 12px;
+    color: #888;
+    font-family: 'Consolas', monospace;
+}
+
+.spec-value {
+    font-size: 14px;
+    color: #d4d4d4;
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .device-card {
+        flex-direction: column;
+    }
+    .device-image {
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 20px;
+    }
+    .device-info {
+        padding: 20px;
+    }
+    .device-specs {
+        grid-template-columns: 1fr;
+    }
+}
