@@ -421,3 +421,75 @@ h1 {
 .contact-arrow { color: #888; font-size: 18px; }
 .contact-name { color: #fff; font-size: 17px; font-weight: bold; }
 .contact-handle { color: #888; font-size: 13px; }
+
+/* =========================================
+   МОБИЛЬНАЯ ВЕРСИЯ (АДАПТИВ)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Отступы для body, чтобы ничего не прилипало к краям */
+    body {
+        padding: 10px;
+    }
+
+    /* 2. Кнопка Судоку - делаем меньше и ставим аккуратнее */
+    .top-right-btn {
+        top: 15px;
+        right: 15px;
+        padding: 6px 12px;
+        font-size: 12px;
+        box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+    }
+
+    /* 3. Главная карточка - делаем отступ сверху, чтобы кнопка Судоку ее не перекрывала */
+    .card {
+        margin-top: 60px; 
+        padding: 20px;
+        gap: 15px;
+    }
+
+    /* 4. Терминал - чуть уменьшаем шрифт, чтобы влезало больше текста */
+    #terminal-output {
+        font-size: 13px;
+    }
+
+    /* 5. Блок с устройством */
+    .device-section {
+        margin: 30px auto;
+        padding: 0 10px;
+    }
+
+    /* 6. Карточка телефона - на мобилках всегда в колонку */
+    .device-card {
+        flex-direction: column;
+    }
+
+    .device-image {
+        padding: 15px;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        flex: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* 7. Настройки 3D-модели для мобилок (чтобы было не слишком огромной) */
+    .phone-model {
+        min-height: 350px; 
+        max-width: 100%;  
+    }
+
+    .device-info {
+        padding: 20px;
+    }
+
+    /* 8. Характеристики в одну колонку (чтобы текст не сжимался) */
+    .device-specs {
+        grid-template-columns: 1fr;
+    }
+
+    /* 9. Кнопки соцсетей - делаем чуть меньше */
+    .btn-social {
+        font-size: 12px;
+        padding: 8px 0;
+    }
+}
