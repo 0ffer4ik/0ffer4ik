@@ -8,16 +8,33 @@ const corsHeaders = {
 
 const levels = { easy: 40, medium: 32, hard: 26 } as const;
 type Difficulty = keyof typeof levels;
+type RandomSource = () => number;
 
-function shuffled<T>(items: T[]): T[] {
+function shuffled<T>(items: T[], random: RandomSource = Math.random): T[] {
   for (let i = items.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(random() * (i + 1));
     [items[i], items[j]] = [items[j], items[i]];
   }
   return items;
 }
 
-function generatePuzzle(difficulty: Difficulty) {
+function seededRandom(seedText: string): RandomSource {
+  let seed = 2166136261;
+  for (const character of seedText) {
+    seed = Math.imul(seed ^ character.charCodeAt(0), 16777619);
+  }
+  if (seed === 0) seed = 1;
+
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let value = seed;
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function generatePuzzle(difficulty: Difficulty, random: RandomSource = Math.random) {
   const peers = Array.from({ length: 81 }, (_, index) => {
     const row = Math.floor(index / 9);
     const col = index % 9;
@@ -56,7 +73,7 @@ function generatePuzzle(difficulty: Difficulty) {
     const cell = nextCell(board);
     if (cell.index === -1) return true;
     if (cell.values.length === 0) return false;
-    for (const digit of shuffled(cell.values)) {
+    for (const digit of shuffled(cell.values, random)) {
       board[cell.index] = digit;
       if (fill(board)) return true;
     }
@@ -82,7 +99,7 @@ function generatePuzzle(difficulty: Difficulty) {
   if (!fill(solution)) throw new Error("Could not generate a Sudoku solution");
   const puzzle = solution.slice();
   let clues = 81;
-  for (const index of shuffled(Array.from({ length: 81 }, (_, i) => i))) {
+  for (const index of shuffled(Array.from({ length: 81 }, (_, i) => i), random)) {
     if (clues <= levels[difficulty]) break;
     const value = puzzle[index];
     puzzle[index] = 0;
@@ -139,11 +156,98 @@ Deno.serve(async (request) => {
       return Response.json({ gameId: game.id, puzzle }, { headers: corsHeaders });
     }
 
+    if (body.action === "daily_new_game") {
+      const challengeDate = new Date().toISOString().slice(0, 10);
+      const { data: stats, error: statsError } = await admin
+        .from("sudoku_daily_stats")
+        .select("last_challenge_date")
+        .eq("user_id", userData.user.id)
+        .maybeSingle();
+      if (statsError) throw statsError;
+      if (stats?.last_challenge_date === challengeDate) {
+        return Response.json({ completed: true, challengeDate }, { headers: corsHeaders });
+      }
+
+      const { data: activeGame, error: activeError } = await admin
+        .from("sudoku_games")
+        .select("id, puzzle")
+        .eq("user_id", userData.user.id)
+        .eq("mode", "daily")
+        .eq("challenge_date", challengeDate)
+        .is("completed_at", null)
+        .maybeSingle();
+      if (activeError) throw activeError;
+      if (activeGame) {
+        return Response.json({
+          gameId: activeGame.id,
+          puzzle: activeGame.puzzle,
+          challengeDate,
+        }, { headers: corsHeaders });
+      }
+
+      const { puzzle, solution } = generatePuzzle("medium", seededRandom(challengeDate));
+      const { data: game, error: insertError } = await admin
+        .from("sudoku_games")
+        .insert({
+          user_id: userData.user.id,
+          difficulty: "medium",
+          puzzle,
+          solution,
+          mode: "daily",
+          challenge_date: challengeDate,
+        })
+        .select("id")
+        .single();
+      if (insertError?.code === "23505") {
+        const { data: completedStats, error: completedStatsError } = await admin
+          .from("sudoku_daily_stats")
+          .select("last_challenge_date")
+          .eq("user_id", userData.user.id)
+          .maybeSingle();
+        if (completedStatsError) throw completedStatsError;
+        if (completedStats?.last_challenge_date === challengeDate) {
+          return Response.json({ completed: true, challengeDate }, { headers: corsHeaders });
+        }
+
+        const { data: concurrentGame, error: retryError } = await admin
+          .from("sudoku_games")
+          .select("id, puzzle")
+          .eq("user_id", userData.user.id)
+          .eq("mode", "daily")
+          .eq("challenge_date", challengeDate)
+          .is("completed_at", null)
+          .maybeSingle();
+        if (retryError) throw retryError;
+        if (concurrentGame) {
+          return Response.json({
+            gameId: concurrentGame.id,
+            puzzle: concurrentGame.puzzle,
+            challengeDate,
+          }, { headers: corsHeaders });
+        }
+      }
+      if (insertError) throw insertError;
+      return Response.json({ gameId: game.id, puzzle, challengeDate }, { headers: corsHeaders });
+    }
+
     if (body.action === "submit") {
       if (typeof body.gameId !== "string" || !Array.isArray(body.board) ||
           body.board.length !== 81 || body.board.some((value: unknown) =>
             typeof value !== "number" || !Number.isInteger(value) || value < 1 || value > 9)) {
         return Response.json({ error: "Invalid completed board" }, { status: 400, headers: corsHeaders });
+      }
+      const { data: game, error: gameError } = await admin
+        .from("sudoku_games")
+        .select("mode")
+        .eq("id", body.gameId)
+        .eq("user_id", userData.user.id)
+        .maybeSingle();
+      if (gameError) throw gameError;
+      if (game?.mode !== "ranked") {
+        return Response.json({ error: "Start a new ranked game before submitting a result" }, {
+          status: 400,
+          headers: corsHeaders,
+        });
       }
       const { data, error } = await admin.rpc("record_sudoku_score", {
         p_game_id: body.gameId,
@@ -152,6 +256,27 @@ Deno.serve(async (request) => {
       });
       if (error) {
         return Response.json({ error: "The result could not be verified. Start a new ranked game." }, {
+          status: 400,
+          headers: corsHeaders,
+        });
+      }
+      return Response.json(data[0], { headers: corsHeaders });
+    }
+
+    if (body.action === "daily_submit") {
+      if (typeof body.gameId !== "string" || !Array.isArray(body.board) ||
+          body.board.length !== 81 || body.board.some((value: unknown) =>
+            typeof value !== "number" || !Number.isInteger(value) || value < 1 || value > 9)) {
+        return Response.json({ error: "Invalid completed board" }, { status: 400, headers: corsHeaders });
+      }
+      const { data, error } = await admin.rpc("record_sudoku_daily_result", {
+        p_game_id: body.gameId,
+        p_user_id: userData.user.id,
+        p_board: body.board,
+      });
+      if (error) {
+        console.error("Daily Sudoku result verification failed:", error);
+        return Response.json({ error: "The result could not be verified. Start today's challenge again." }, {
           status: 400,
           headers: corsHeaders,
         });

@@ -57,6 +57,7 @@
         renderAvatar(null, signedIn ? username : '?');
         profileTotal.textContent = signedIn ? 'Загружаем результаты…' : '';
         if (!signedIn) profileRecords.replaceChildren();
+        window.setTimeout(() => window.dispatchEvent(new Event('sudoku-auth-change')), 0);
     }
 
     function renderAvatar(url, username = 'игрок') {
@@ -410,6 +411,33 @@
                 .eq('user_id', session.user.id);
             if (error) throw error;
         },
+        async loadDailyProgress() {
+            await sessionReady;
+            if (!session?.access_token) return null;
+            const { data, error } = await client
+                .from('sudoku_daily_progress')
+                .select('state, updated_at')
+                .eq('user_id', session.user.id)
+                .maybeSingle();
+            if (error) throw error;
+            return data?.state ? { ...data.state, savedAt: Date.parse(data.updated_at) } : null;
+        },
+        async saveDailyProgress(progress) {
+            if (!session?.access_token) return false;
+            const { error } = await client
+                .from('sudoku_daily_progress')
+                .upsert({ user_id: session.user.id, state: progress }, { onConflict: 'user_id' });
+            if (error) throw error;
+            return true;
+        },
+        async clearDailyProgress() {
+            if (!session?.access_token) return;
+            const { error } = await client
+                .from('sudoku_daily_progress')
+                .delete()
+                .eq('user_id', session.user.id);
+            if (error) throw error;
+        },
         async createRankedGame(difficulty) {
             if (!session?.access_token) throw new Error('Сначала войдите в аккаунт.');
             const { data, error } = await client.functions.invoke('sudoku-game', {
@@ -420,6 +448,47 @@
                 throw new Error('Сервер вернул некорректную головоломку.');
             }
             return { gameId: data.gameId, puzzle: data.puzzle };
+        },
+        async createDailyGame() {
+            if (!session?.access_token) throw new Error('Сначала войдите в аккаунт.');
+            const { data, error } = await client.functions.invoke('sudoku-game', {
+                body: { action: 'daily_new_game' },
+            });
+            if (error) throw error;
+            if (data?.completed) return data;
+            if (!data?.gameId || !/^\d{4}-\d{2}-\d{2}$/.test(data.challengeDate) ||
+                !Array.isArray(data.puzzle) || data.puzzle.length !== 81 ||
+                data.puzzle.some(value => !Number.isInteger(value) || value < 0 || value > 9)) {
+                throw new Error('Сервер вернул некорректное ежедневное задание.');
+            }
+            return data;
+        },
+        async submitDailyGame(gameId, board) {
+            const { data, error } = await client.functions.invoke('sudoku-game', {
+                body: { action: 'daily_submit', gameId, board },
+            });
+            if (error) throw error;
+            return data;
+        },
+        async loadDailyStats() {
+            await sessionReady;
+            if (!session?.access_token) return null;
+            const [statsResult, achievementsResult] = await Promise.all([
+                client.from('sudoku_daily_stats')
+                    .select('completed_days, current_streak, best_streak, last_challenge_date')
+                    .eq('user_id', session.user.id)
+                    .maybeSingle(),
+                client.from('sudoku_achievements')
+                    .select('code, unlocked_at')
+                    .eq('user_id', session.user.id)
+                    .order('unlocked_at', { ascending: true }),
+            ]);
+            if (statsResult.error) throw statsResult.error;
+            if (achievementsResult.error) throw achievementsResult.error;
+            return {
+                stats: statsResult.data,
+                achievements: achievementsResult.data || [],
+            };
         },
         async submitRankedGame(gameId, board) {
             const { data, error } = await client.functions.invoke('sudoku-game', {

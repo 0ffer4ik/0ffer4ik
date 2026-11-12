@@ -22,9 +22,9 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="style.css?v=7">
     <link rel="stylesheet" href="live.css?v=2">
-    <link rel="stylesheet" href="mobile.css?v=3" media="(max-width: 768px)">
+    <link rel="stylesheet" href="mobile.css?v=4" media="(max-width: 768px)">
 </head>
 <body>
    
@@ -136,6 +136,29 @@
         </div>
     </section>
 
+    <section class="guestbook-section" aria-labelledby="guestbook-title">
+        <div class="guestbook-heading">
+            <div>
+                <h2 class="section-title" id="guestbook-title">Гостевая книга</h2>
+                <p>Оставь пару слов — сообщения увидят все посетители.</p>
+            </div>
+            <a class="guestbook-login" id="guestbook-login" href="sudoku.html?profile=1" hidden>Войти через Sudoku</a>
+        </div>
+        <div class="guestbook-card">
+            <form class="guestbook-form" id="guestbook-form" hidden>
+                <label for="guestbook-message">Сообщение</label>
+                <textarea id="guestbook-message" name="message" maxlength="500" rows="3" placeholder="Напиши что-нибудь хорошее…" required></textarea>
+                <div class="guestbook-form-footer">
+                    <span>До 500 символов</span>
+                    <button class="guestbook-submit" type="submit">Оставить запись</button>
+                </div>
+            </form>
+            <p class="guestbook-status" id="guestbook-auth-note">Войди через страницу Sudoku, чтобы оставить запись.</p>
+            <p class="guestbook-status" id="guestbook-status" role="status" aria-live="polite">Загружаем гостевую книгу…</p>
+            <ol class="guestbook-list" id="guestbook-list" aria-live="polite"></ol>
+        </div>
+    </section>
+
     <div id="secret-modal" class="secret-modal">
         <div class="secret-content">
             <span class="close-btn" id="close-secret">&times;</span>
@@ -145,6 +168,9 @@
 
     <script src="matrix.js"></script>
     <script src="live.js?v=2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="guestbook.js?v=1"></script>
     
     <script>
         let clickCount = 0;

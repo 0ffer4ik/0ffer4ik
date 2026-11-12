@@ -77,6 +77,15 @@ body {
 .contact-icon { width: 40px; height: 40px; }
 .contact-name { font-size: 17px; }
 .contact-handle { font-size: 14px; overflow-wrap: anywhere; }
+.guestbook-section { margin: 32px auto; }
+.guestbook-heading { align-items: flex-start; flex-direction: column; gap: 12px; }
+.guestbook-heading .section-title { margin-bottom: 8px; }
+.guestbook-login { width: 100%; }
+.guestbook-card { padding: 16px; border-radius: 20px; }
+.guestbook-form-footer { align-items: stretch; flex-direction: column; }
+.guestbook-submit { width: 100%; }
+.guestbook-entry { padding: 13px; }
+.guestbook-date { font-size: 11px; }
 
 @media (max-width: 380px) {
     body { padding-right: 10px; padding-left: 10px; }

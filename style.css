@@ -465,6 +465,132 @@ h1 {
     .logo-core span { font-size: 50px; }
 }
 
+/* ===== Гостевая книга ===== */
+.guestbook-section {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 50px auto;
+    font-family: 'Consolas', monospace;
+}
+.guestbook-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+.guestbook-heading .section-title { margin: 0 0 8px; }
+.guestbook-heading p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 15px;
+}
+.guestbook-section [hidden] { display: none !important; }
+.guestbook-login, .guestbook-submit {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 32, 59, 0.35);
+    border-radius: 14px;
+    background: rgba(255, 20, 45, 0.08);
+    color: #ff6577;
+    font: 700 14px 'Consolas', monospace;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.guestbook-login:hover, .guestbook-submit:hover {
+    border-color: var(--accent-strong);
+    background: rgba(176, 0, 24, 0.24);
+    transform: translateY(-1px);
+}
+.guestbook-login:focus-visible, .guestbook-submit:focus-visible, .guestbook-form textarea:focus-visible, .guestbook-delete:focus-visible {
+    outline: 2px solid var(--accent-strong);
+    outline-offset: 2px;
+}
+.guestbook-card {
+    display: grid;
+    gap: 16px;
+    padding: clamp(16px, 3vw, 24px);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(20, 4, 7, 0.96), rgba(8, 2, 3, 0.98));
+    box-shadow: var(--shadow);
+}
+.guestbook-form { display: grid; gap: 9px; }
+.guestbook-form label { color: #ff9aa6; font-size: 15px; font-weight: 700; }
+.guestbook-form textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    padding: 13px 14px;
+    border: 1px solid rgba(255, 40, 60, 0.2);
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.42);
+    color: var(--text);
+    font: 15px/1.5 'Consolas', monospace;
+}
+.guestbook-form textarea::placeholder { color: #807477; }
+.guestbook-form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-soft);
+    font-size: 13px;
+}
+.guestbook-submit:disabled { cursor: wait; opacity: 0.6; transform: none; }
+.guestbook-status { margin: 0; color: var(--text-soft); font-size: 14px; }
+.guestbook-status.is-error { color: #ff5268; }
+.guestbook-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.guestbook-entry {
+    display: grid;
+    gap: 8px;
+    padding: 15px;
+    border: 1px solid rgba(255, 40, 60, 0.12);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.28);
+}
+.guestbook-entry-header { display: flex; align-items: center; gap: 10px; }
+.guestbook-avatar {
+    display: grid;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 32, 59, 0.3);
+    border-radius: 50%;
+    background: #21060b;
+    color: #ff9aa6;
+    font-size: 14px;
+    font-weight: 700;
+}
+.guestbook-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.guestbook-author { color: #ff9aa6; font-size: 15px; font-weight: 700; }
+.guestbook-date { margin-left: auto; color: var(--text-soft); font-size: 12px; }
+.guestbook-message {
+    margin: 0;
+    color: #e8dfe1;
+    font: 15px/1.55 'Consolas', monospace;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+.guestbook-delete {
+    justify-self: end;
+    padding: 4px 0;
+    border: 0;
+    background: none;
+    color: var(--text-soft);
+    font: 13px 'Consolas', monospace;
+    cursor: pointer;
+}
+.guestbook-delete:hover { color: #ff6577; }
+
 /* ===== Связь ===== */
 .contact-section {
     width: 100%;
