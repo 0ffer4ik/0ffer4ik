@@ -5,11 +5,12 @@ body {
     color: white;
     font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column; 
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 40px 20px;
     box-sizing: border-box;
 }
 
