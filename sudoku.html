@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Судоку</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="sudoku.css?v=4">
+    <link rel="stylesheet" href="sudoku.css?v=5">
 </head>
 <body>
 
     <canvas id="matrix-canvas"></canvas>
 
     <a href="index.html" class="back-btn">← Назад</a>
+    <button class="profile-trigger" id="profile-trigger" type="button" aria-haspopup="dialog" aria-controls="profile-dialog">
+        <span class="profile-trigger-avatar" id="profile-trigger-avatar" aria-hidden="true">?</span>
+        <span id="profile-trigger-label">Профиль</span>
+    </button>
 
     <div class="card sudoku-card">
         <h1>Судоку</h1>
@@ -28,27 +32,7 @@
             <button onclick="startGame('medium')" class="btn-diff">Средне</button>
             <button onclick="startGame('hard')" class="btn-diff">Сложно</button>
         </div>
-
-        <section class="account-panel" aria-labelledby="account-title">
-            <div class="account-heading">
-                <h2 id="account-title">Аккаунт и рейтинг</h2>
-                <span id="auth-status" class="auth-status">Подключаемся…</span>
-            </div>
-            <form id="auth-form" class="auth-form">
-                <label class="auth-credential">Никнейм
-                    <input id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_-]{3,20}" placeholder="Например, Offer4ik" required>
-                </label>
-                <label class="auth-credential">Пароль
-                    <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" required>
-                </label>
-                <div class="auth-actions">
-                    <button class="btn-action" type="submit" data-auth-action="sign-in">Войти</button>
-                    <button class="btn-action" type="button" id="sign-up-button">Создать аккаунт</button>
-                    <button class="btn-action" type="button" id="sign-out-button" hidden>Выйти</button>
-                </div>
-            </form>
-            <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
-        </section>
+        <p class="save-note" id="save-note" role="status">Прогресс сохраняется в браузере и синхронизируется после входа.</p>
 
         <div id="sudoku-board" class="sudoku-board"></div>
 
@@ -93,11 +77,54 @@
         </section>
     </div>
 
+    <dialog class="profile-dialog" id="profile-dialog" aria-labelledby="profile-title">
+        <div class="profile-dialog-content">
+            <header class="profile-dialog-header">
+                <h2 id="profile-title">Профиль игрока</h2>
+                <button class="profile-close" id="profile-close" type="button" aria-label="Закрыть профиль">×</button>
+            </header>
+            <div class="profile-identity">
+                <span class="profile-avatar" id="profile-avatar-placeholder" aria-hidden="true">?</span>
+                <img class="profile-avatar" id="profile-avatar" alt="Аватар профиля" hidden>
+                <div>
+                    <strong id="profile-username">Гость</strong>
+                    <span id="auth-status" class="auth-status">Подключаемся…</span>
+                </div>
+            </div>
+            <form id="auth-form" class="auth-form">
+                <label class="auth-credential">Никнейм
+                    <input id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_-]{3,20}" placeholder="Например, Offer4ik" required>
+                </label>
+                <label class="auth-credential">Пароль
+                    <input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" required>
+                </label>
+                <div class="auth-actions">
+                    <button class="btn-action" type="submit" data-auth-action="sign-in">Войти</button>
+                    <button class="btn-action" type="button" id="sign-up-button">Создать аккаунт</button>
+                    <button class="btn-action" type="button" id="sign-out-button" hidden>Выйти</button>
+                </div>
+            </form>
+            <div class="profile-tools" id="profile-tools" hidden>
+                <label class="btn-action avatar-upload">
+                    Загрузить аватар
+                    <input id="avatar-file" type="file" accept="image/png,image/jpeg,image/webp">
+                </label>
+                <p class="avatar-hint">Изображение будет уменьшено до 256 × 256 px и сжато.</p>
+            </div>
+            <section class="profile-stats" id="profile-stats" aria-labelledby="profile-stats-title" hidden>
+                <h3 id="profile-stats-title">Моя статистика</h3>
+                <p class="profile-total" id="profile-total">Загружаем результаты…</p>
+                <div class="profile-records" id="profile-records"></div>
+            </section>
+            <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
+        </div>
+    </dialog>
+
     <script src="matrix.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
-    <script src="sudoku-auth.js"></script>
+    <script src="sudoku-auth.js?v=2"></script>
     <script src="sudoku-core.js"></script>
-    <script src="sudoku.js"></script>
+    <script src="sudoku.js?v=2"></script>
 </body>
 </html>

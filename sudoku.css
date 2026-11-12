@@ -203,6 +203,43 @@ body {
     box-shadow: 0 0 18px rgba(255, 20, 45, 0.28);
 }
 
+.profile-trigger {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 12px 7px 7px;
+    border: 1px solid rgba(255, 32, 59, 0.35);
+    border-radius: 999px;
+    color: #ff6577;
+    background: rgba(12, 3, 5, 0.94);
+    font: 700 13px 'Consolas', monospace;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-trigger:hover, .profile-trigger:focus-visible {
+    border-color: var(--accent-strong, #ff203b);
+    box-shadow: 0 0 18px rgba(255, 20, 45, 0.28);
+}
+
+.profile-trigger-avatar {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 32, 59, 0.4);
+    border-radius: 50%;
+    background: #21060b;
+    color: #ff9aa6;
+}
+
+.profile-trigger-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
 .stats-panel {
     width: 100%;
     gap: 9px;
@@ -216,6 +253,14 @@ body {
 .stat-wrong { color: #ff4058; }
 
 .difficulty-buttons, .numpad, .action-buttons { width: 100%; gap: 8px; }
+.save-note {
+    width: 100%;
+    margin: -5px 0 0;
+    color: #a69a9c;
+    text-align: center;
+    font: 12px 'Consolas', monospace;
+}
+.save-note.is-saved { color: #ff6577; }
 .btn-diff, .btn-action, .numpad button {
     border-color: rgba(255, 32, 59, 0.3);
     border-radius: 12px;
@@ -276,7 +321,7 @@ body {
 
 [hidden] { display: none !important; }
 
-.account-panel, .leaderboard-panel {
+.leaderboard-panel {
     width: 100%;
     padding: 16px;
     border: 1px solid rgba(255, 40, 60, 0.14);
@@ -284,7 +329,78 @@ body {
     background: rgba(0, 0, 0, 0.36);
 }
 
-.account-heading, .leaderboard-heading {
+.profile-dialog {
+    width: min(460px, calc(100vw - 28px));
+    max-height: min(88vh, 760px);
+    padding: 0;
+    overflow: auto;
+    border: 1px solid rgba(255, 40, 60, 0.3);
+    border-radius: 22px;
+    color: #f0e9ea;
+    background: linear-gradient(145deg, #180509, #060203);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 32px rgba(176, 0, 24, 0.18);
+}
+
+.profile-dialog::backdrop { background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(5px); }
+.profile-dialog-content { display: grid; gap: 18px; padding: 22px; }
+.profile-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.profile-dialog-header h2, .profile-stats h3 {
+    margin: 0;
+    color: #ff6577;
+    font: 700 18px 'Consolas', monospace;
+}
+
+.profile-close {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 32, 59, 0.3);
+    border-radius: 50%;
+    color: #ff6577;
+    background: transparent;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.profile-identity { display: flex; align-items: center; gap: 14px; }
+.profile-identity > div { display: grid; gap: 5px; }
+.profile-avatar {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(255, 32, 59, 0.5);
+    border-radius: 50%;
+    background: #21060b;
+    color: #ff9aa6;
+    font: 700 24px 'Consolas', monospace;
+    object-fit: cover;
+}
+
+.profile-identity strong { color: #f5e8ea; font: 700 17px 'Consolas', monospace; }
+.profile-tools { display: grid; justify-items: start; gap: 7px; }
+.avatar-upload { position: relative; display: inline-flex; width: auto; cursor: pointer; }
+.avatar-upload input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.avatar-hint { margin: 0; color: #a69a9c; font: 11px 'Consolas', monospace; }
+.profile-stats { display: grid; gap: 10px; }
+.profile-total { margin: 0; color: #e8dfe1; font: 13px 'Consolas', monospace; }
+.profile-records { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.profile-record {
+    display: grid;
+    gap: 6px;
+    padding: 11px 8px;
+    border: 1px solid rgba(255, 40, 60, 0.16);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    text-align: center;
+    font: 12px 'Consolas', monospace;
+}
+
+.profile-record span { color: #a69a9c; }
+.profile-record strong { color: #ff9aa6; }
+
+.leaderboard-heading {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -292,7 +408,7 @@ body {
     margin-bottom: 12px;
 }
 
-.account-heading h2, .leaderboard-heading h2 {
+.leaderboard-heading h2 {
     margin: 0;
     color: #ff6577;
     font: 700 17px 'Consolas', monospace;
@@ -372,10 +488,10 @@ body {
     .numpad { gap: 5px; }
     .numpad button { padding: 11px 0; }
     .back-btn { top: 12px; left: 10px; padding: 8px 11px; }
-    .account-panel, .leaderboard-panel { padding: 12px; }
+    .profile-trigger { top: 12px; right: 10px; padding: 5px 9px 5px 5px; font-size: 12px; }
+    .profile-trigger-avatar { width: 28px; height: 28px; }
     .auth-form { grid-template-columns: 1fr; }
     .auth-actions { grid-column: auto; }
-    .account-heading, .leaderboard-heading { align-items: flex-start; }
-    .account-heading { flex-direction: column; gap: 5px; }
+    .profile-dialog-content { gap: 15px; padding: 18px; }
     .leaderboard { font-size: 12px; }
 }
