@@ -245,7 +245,7 @@ h1 {
     max-width: 90%;
     aspect-ratio: 1;
     background: url("material-you-shape.svg") center / contain no-repeat;
-    filter: drop-shadow(0 0 30px rgba(255, 20, 45, 0.28));
+    filter: drop-shadow(0 0 24px rgba(255, 20, 45, 0.18));
     pointer-events: none;
 }
 

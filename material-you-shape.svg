@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
   <defs>
     <linearGradient id="material-red" gradientUnits="userSpaceOnUse" x1="72" y1="25" x2="340" y2="370">
-      <stop stop-color="#dc314c"/>
-      <stop offset=".48" stop-color="#a00025"/>
-      <stop offset="1" stop-color="#4f0015"/>
+      <stop stop-color="#8e172f"/>
+      <stop offset=".48" stop-color="#68001b"/>
+      <stop offset="1" stop-color="#36000e"/>
     </linearGradient>
   </defs>
   <path fill="url(#material-red)" d="M 200 15
