@@ -1,19 +1,18 @@
 // ===== НАСТРОЙКИ (заполни свои) =====
 const LIVE = {
-    lastfmUser: 'ТВОЙ_НИК_В_LASTFM',
-    lastfmKey:  'ТВОЙ_API_KEY',      // бесплатно: https://www.last.fm/api/account/create
+    statsfmUser: '0ffer4ik',   // ник или customId из ссылки на твой профиль stats.fm
     // Telegram автоматически получить нельзя, поэтому значения в МИНУТАХ вводишь сам:
     telegram: { today: 155, week: 1590, month: 4443, avg: 412 },
-    refreshSec: 30                   // как часто обновлять «Сейчас играет»
+    refreshSec: 30                       // как часто обновлять «Сейчас играет»
 };
 
-// ===== помощники =====
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = m => {
     const h = Math.floor(m / 60), mm = m % 60;
     return h ? `${h}<small>ч</small> ${mm}<small>м</small>` : `${mm}<small>м</small>`;
 };
+const fmtMs = ms => fmt(Math.round(ms / 60000));
 const plural = (n, f) => {
     const a = Math.abs(n) % 100, b = a % 10;
     if (a > 10 && a < 20) return f[2];
@@ -22,35 +21,36 @@ const plural = (n, f) => {
     return f[2];
 };
 const tracksWord = n => `${n} ${plural(n, ['трек', 'трека', 'треков'])}`;
-const PLACEHOLDER = '2a96cbd8b46e442fc41c2b86b821562f'; // «пустая» картинка Last.fm
 
-async function lfm(method, params = {}) {
-    const q = new URLSearchParams({ method, user: LIVE.lastfmUser, api_key: LIVE.lastfmKey, format: 'json', ...params });
-    const r = await fetch('https://ws.audioscrobbler.com/2.0/?' + q);
+const API = 'https://api.stats.fm/api/v1/users/';
+async function sfm(path, params = {}) {
+    const q = new URLSearchParams(params);
+    const r = await fetch(`${API}${encodeURIComponent(LIVE.statsfmUser)}${path}?${q}`);
+    if (r.status === 404 && path === '/streams/current') return null;      // ничего не играет
+    if (r.status === 403) throw new Error('профиль закрыт: включи публичность в настройках stats.fm');
+    if (r.status === 404) throw new Error('пользователь не найден, проверь ник');
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    const d = await r.json();
-    if (d.error) throw new Error(d.message);
-    return d;
+    return r.json();
 }
 const coverOf = t => {
-    const url = (t.image || []).slice().reverse().map(i => i['#text']).find(u => u && !u.includes(PLACEHOLDER));
+    const url = t && t.albums && t.albums[0] && t.albums[0].image;
     return url ? `<img src="${esc(url)}" alt="">` : '<div class="live-cover-empty">♪</div>';
 };
+const artistsOf = t => (t.artists || []).map(a => a.name).join(', ');
 const errorBox = e => `<p class="live-muted">Не удалось загрузить: ${esc(e.message)}</p>`;
 
 // ===== загрузчики =====
 async function loadNow() {
     const box = $('live-now');
     try {
-        const d = await lfm('user.getRecentTracks', { limit: 1 });
-        let t = d.recenttracks.track;
-        t = Array.isArray(t) ? t[0] : t;
-        const playing = t && t['@attr'] && t['@attr'].nowplaying === 'true';
-        if (playing) {
+        const d = await sfm('/streams/current');
+        const it = d && d.item;
+        const t = it && it.track;
+        if (t && it.isPlaying !== false) {
             box.innerHTML = `
                 <div class="live-cover">${coverOf(t)}</div>
                 <div class="live-big">${esc(t.name)}</div>
-                <div class="live-muted">${esc(t.artist['#text'] || t.artist.name)}</div>`;
+                <div class="live-muted">${esc(artistsOf(t))}</div>`;
         } else {
             box.innerHTML = `
                 <div class="live-cover"><div class="live-cover-empty">🔇</div></div>
@@ -66,39 +66,47 @@ function loadTelegram() {
     $('live-tg').innerHTML = item('Сегодня', t.today) + item('За неделю', t.week) + item('За месяц', t.month) + item('В среднем за день', t.avg);
 }
 
+async function rangeStats(afterMs) {
+    const d = await sfm('/streams/stats', { after: afterMs, before: Date.now() });
+    const i = d.items || d;
+    return { ms: i.durationMs || 0, count: i.count || 0 };
+}
+
 async function loadMusic() {
     const box = $('live-music');
     try {
         const start = new Date(); start.setHours(0, 0, 0, 0);
-        const day = Math.floor(start.getTime() / 1000);
-        const month = Math.floor(Date.now() / 1000) - 30 * 86400;
-        const [a, b] = await Promise.all([
-            lfm('user.getRecentTracks', { limit: 1, from: day }),
-            lfm('user.getRecentTracks', { limit: 1, from: month })
+        const [today, month] = await Promise.all([
+            rangeStats(start.getTime()),
+            rangeStats(Date.now() - 30 * 86400000)
         ]);
-        const today = parseInt(a.recenttracks['@attr'].total);
-        const mon = parseInt(b.recenttracks['@attr'].total);
-        const avg = Math.round(mon / 30);
-        const item = (label, n) => `<div class="live-stat"><span class="live-label">${label}</span><span class="live-num">${n}</span><span class="live-sub">${plural(n, ['прослушивание', 'прослушивания', 'прослушиваний'])}</span></div>`;
-        box.innerHTML = item('Сегодня', today) + item('За 30 дней', mon) + item('В среднем за день', avg);
+        const item = (label, ms, count) => `<div class="live-stat"><span class="live-label">${label}</span><span class="live-num">${fmtMs(ms)}</span><span class="live-sub">${tracksWord(count)}</span></div>`;
+        box.innerHTML =
+            item('Сегодня', today.ms, today.count) +
+            item('За 30 дней', month.ms, month.count) +
+            item('В среднем за день', month.ms / 30, Math.round(month.count / 30));
     } catch (e) { box.innerHTML = errorBox(e); }
 }
 
 async function loadTop() {
     const box = $('live-top');
     try {
-        const d = await lfm('user.getTopTracks', { period: '1month', limit: 6 });
-        const list = d.toptracks.track || [];
-        box.innerHTML = list.map((t, i) => `
+        const d = await sfm('/top/tracks', { range: 'weeks', limit: 6 });
+        const list = (d.items || []).slice(0, 6);
+        box.innerHTML = list.map((x, i) => {
+            const t = x.track || {};
+            const n = x.streams ?? x.count ?? 0;
+            return `
             <div class="live-track">
                 <span class="live-rank">${i + 1}</span>
                 <div class="live-mini">${coverOf(t)}</div>
                 <div class="live-track-info">
                     <div class="live-track-name">${esc(t.name)}</div>
-                    <div class="live-muted">${esc(t.artist.name)}</div>
+                    <div class="live-muted">${esc(artistsOf(t))}</div>
                 </div>
-                <span class="live-count">${esc(t.playcount)} ${plural(parseInt(t.playcount), ['раз', 'раза', 'раз'])}</span>
-            </div>`).join('') || '<p class="live-muted">Пока пусто</p>';
+                <span class="live-count">${n} ${plural(n, ['раз', 'раза', 'раз'])}</span>
+            </div>`;
+        }).join('') || '<p class="live-muted">Пока пусто</p>';
     } catch (e) { box.innerHTML = errorBox(e); }
 }
 
@@ -114,7 +122,7 @@ function buildLive() {
                 <div class="live-card">${head('Сейчас играет', 'loadNow')}<div id="live-now" class="live-now"></div></div>
                 <div class="live-card">${head('Telegram', 'loadTelegram')}<div id="live-tg" class="live-stats two"></div></div>
                 <div class="live-card live-wide">${head('Музыка', 'loadMusic')}<div id="live-music" class="live-stats three"></div></div>
-                <div class="live-card live-wide">${head('Топ треков (30 дней)', 'loadTop')}<div id="live-top" class="live-top"></div></div>
+                <div class="live-card live-wide">${head('Топ треков (4 недели)', 'loadTop')}<div id="live-top" class="live-top"></div></div>
             </div>
         </section>`;
     const fns = { loadNow, loadTelegram, loadMusic, loadTop };
