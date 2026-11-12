@@ -178,7 +178,7 @@
         };
     </script>
 
-        <script>
+            <script>
         const phoneContainer = document.getElementById('phone-container');
         const phoneWrapper = document.getElementById('phone-wrapper');
         let isPhoneFlipped = false;
@@ -195,8 +195,11 @@
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -20;
-            const tiltY = ((x - centerX) / centerX) * 20;
+            
+            const dir = isPhoneFlipped ? -1 : 1;
+            
+            const rotateX = ((y - centerY) / centerY) * -20 * dir;
+            const tiltY = ((x - centerX) / centerX) * 20 * dir;
             
             const baseRotateY = isPhoneFlipped ? 180 : 0;
             const finalRotateY = baseRotateY + tiltY;
