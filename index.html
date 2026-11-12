@@ -3,11 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>0ffer4ik</title>
+    <meta name="description" content="Личный цифровой уголок 0ffer4ik: Samsung Galaxy S24 Ultra, музыка и Sudoku.">
+    <meta name="theme-color" content="#080002">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="0ffer4ik">
+    <meta property="og:title" content="0ffer4ik — мой цифровой уголок">
+    <meta property="og:description" content="Техника, музыка и Sudoku в моём личном уголке интернета.">
+    <meta property="og:url" content="https://0ffer4ik.github.io/">
+    <meta property="og:image" content="https://0ffer4ik.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="0ffer4ik — техника, музыка и Sudoku">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="0ffer4ik — мой цифровой уголок">
+    <meta name="twitter:description" content="Техника, музыка и Sudoku в моём личном уголке интернета.">
+    <meta name="twitter:image" content="https://0ffer4ik.github.io/og-image.png">
+    <title>0ffer4ik — мой цифровой уголок</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
     <link rel="stylesheet" href="live.css?v=2">
-    <link rel="stylesheet" href="mobile.css?v=2" media="(max-width: 768px)">
+    <link rel="stylesheet" href="mobile.css?v=3" media="(max-width: 768px)">
 </head>
 <body>
    
@@ -29,14 +46,15 @@
         </div>
     </div>
 
-    <section class="device-section">
-    <h2 class="section-title"> Устройство</h2>
+    <section class="device-section" id="device">
+    <h2 class="section-title">Моё устройство</h2>
     
     <div class="device-card">
-                        <div class="device-image" id="phone-container">
+        <div class="device-image" id="phone-container">
+            <span class="device-badge">SAMSUNG · GALAXY</span>
             <model-viewer 
                 src="phone.glb" 
-                alt="3D модель телефона" 
+                alt="Трёхмерная модель Samsung Galaxy S24 Ultra"
                 auto-rotate 
                 auto-rotate-delay="0"
                 rotation-per-second="30deg"
@@ -44,36 +62,46 @@
                 disable-zoom
                 shadow-intensity="1"
                 environment-image="neutral"
+                loading="lazy"
                 class="phone-model">
             </model-viewer>
         </div>
         
         <div class="device-info">
-            <h3>S24Ultra</h3>
-            <p class="device-desc">Тут можно написать пару слов о телефоне. Например, что на нём тестируются приложения и выживает ли он после падений на асфальт.</p>
+            <p class="device-kicker">МОЙ СМАРТФОН</p>
+            <h3>Samsung Galaxy S24 Ultra</h3>
+            <p class="device-desc">Флагман с большим Dynamic AMOLED 2X-дисплеем, встроенным S Pen и камерой на 200 МП.</p>
             
             <div class="device-tags">
-                <span class="tag">Snapdragon 8 gen3</span>
-                <span class="tag">5000 mAh</span>
                 <span class="tag">S Pen</span>
+                <span class="tag">Титановая рамка</span>
+                <span class="tag">Защита IP68</span>
             </div>
             
             <div class="device-specs">
                 <div class="spec-item">
+                    <span class="spec-label">Дисплей</span>
+                    <span class="spec-value">6,8″ Dynamic AMOLED 2X · 1–120 Гц</span>
+                </div>
+                <div class="spec-item">
                     <span class="spec-label">Процессор</span>
-                    <span class="spec-value">8 Gen3</span>
+                    <span class="spec-value">Snapdragon 8 Gen 3 for Galaxy</span>
                 </div>
                 <div class="spec-item">
-                    <span class="spec-label">Камера</span>
-                    <span class="spec-value">Твоя модель</span>
+                    <span class="spec-label">Основные камеры</span>
+                    <span class="spec-value">200 + 50 + 10 + 12 МП</span>
                 </div>
                 <div class="spec-item">
-                    <span class="spec-label">Батарея</span>
-                    <span class="spec-value">5000 mAh</span>
+                    <span class="spec-label">Аккумулятор</span>
+                    <span class="spec-value">5000 мА·ч</span>
                 </div>
                 <div class="spec-item">
-                    <span class="spec-label">Память</span>
-                    <span class="spec-value">12/512</span>
+                    <span class="spec-label">Оперативная память</span>
+                    <span class="spec-value">12 ГБ</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Хранилище</span>
+                    <span class="spec-value">512 ГБ</span>
                 </div>
             </div>
         </div>
@@ -116,7 +144,7 @@
     </div>
 
     <script src="matrix.js"></script>
-    <script src="live.js"></script>
+    <script src="live.js?v=2"></script>
     
     <script>
         let clickCount = 0;

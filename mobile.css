@@ -43,15 +43,23 @@ body {
 .device-image {
     flex: none;
     width: 100%;
-    padding: 8px;
+    min-height: 320px;
+    padding: 36px 8px 8px;
     border-right: 0;
     border-bottom: 1px solid var(--line);
 }
-.phone-model { min-height: 290px; max-width: 100%; }
+.device-image::before { width: 250px; }
+.device-badge { top: 12px; left: 12px; font-size: 10px; }
+.phone-model { min-height: 300px; max-width: 100%; }
 .device-info { padding: 20px; }
-.device-info h3 { font-size: 25px; }
+.device-info h3 { font-size: 24px; }
+.device-kicker { font-size: 12px; }
+.device-tags { gap: 8px; margin-bottom: 18px; }
+.tag { padding: 7px 10px; font-size: 13px; }
 .device-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .spec-item { padding: 11px; }
+.spec-label { font-size: 12px; }
+.spec-value { font-size: 14px; }
 
 .live-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .live-wide { grid-column: auto; }
