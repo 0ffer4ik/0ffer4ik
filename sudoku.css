@@ -113,7 +113,7 @@ body {
 .numpad button { position: relative; }
 .numpad button small {
     position: absolute; right: 5px; bottom: 2px;
-    font-size: 17px; color: #ffffff;
+    font-size: 15px; color: #ffffff;
 }
 
 .sudoku-cell.hinted {
@@ -138,7 +138,7 @@ body {
     background: rgba(0,0,0,0.7);
     border: 1px solid #ff3333;
     color: #fff;
-    font-size: 18px;
+    font-size: 20px;
     font-family: 'Consolas', monospace;
     border-radius: 6px;
 }
