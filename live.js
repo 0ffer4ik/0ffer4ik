@@ -1,6 +1,6 @@
 // ===== НАСТРОЙКИ (заполни свои) =====
 const LIVE = {
-    statsfmUser: '0ffer4ik',   // ник или customId из ссылки на твой профиль stats.fm
+    statsfmUser: '31zampzx6vdwi7qqah3yttplww2q',   // ник или customId из ссылки на твой профиль stats.fm
     // Telegram автоматически получить нельзя, поэтому значения в МИНУТАХ вводишь сам:
     telegram: { today: 155, week: 1590, month: 4443, avg: 412 },
     refreshSec: 30                       // как часто обновлять «Сейчас играет»
