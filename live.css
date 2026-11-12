@@ -112,3 +112,8 @@
     .live-stats.three { grid-template-columns: 1fr; }
     .live-top { grid-template-columns: 1fr; }
 }
+
+/* Любимые треки */
+.live-fav { display: grid; gap: 8px; }
+a.live-track { text-decoration: none; transition: 0.3s; }
+a.live-track:hover { border-color: #ff3333; }
