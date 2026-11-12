@@ -62,8 +62,8 @@ body {
 .btn-diff, .btn-action {
     padding: 8px 2px;
     background: rgba(0,0,0,0.5);
-    border: 1px solid #ff0000d3;
-    color: #ff0000bb;
+    border: 1px solid #ff3333;
+    color: #ff3333;
     border-radius: 6px;
     font-family: 'Consolas', monospace;
     font-weight: bold;
@@ -113,7 +113,7 @@ body {
 .numpad button { position: relative; }
 .numpad button small {
     position: absolute; right: 5px; bottom: 2px;
-    font-size: 10px; color: #ff6666;
+    font-size: 17px; color: #ffffff;
 }
 
 .sudoku-cell.hinted {
