@@ -372,3 +372,74 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== Горизонтальная главная карточка ===== */
+.card.hero {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+.card.hero h1 { grid-column: 1 / -1; }
+.card.hero .terminal { box-sizing: border-box; }
+
+@media (max-width: 768px) {
+    .card.hero { grid-template-columns: 1fr; }
+}
+
+/* ===== Связь ===== */
+.contact-section {
+    width: 100%;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+    font-family: 'Consolas', monospace;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+}
+.contact-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid #333;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.contact-card:hover {
+    border-color: #ff3333;
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.25);
+    transform: translateY(-3px);
+}
+.contact-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.contact-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 51, 51, 0.1);
+    border: 1px solid #ff3333;
+    color: #ff3333;
+    display: flex; justify-content: center; align-items: center;
+    font-weight: bold; font-size: 14px;
+}
+.contact-icon svg {
+    width: 20px; height: 20px;
+    fill: none; stroke: currentColor; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+}
+.contact-arrow { color: #888; font-size: 18px; }
+.contact-name { color: #fff; font-size: 17px; font-weight: bold; }
+.contact-handle { color: #888; font-size: 13px; }
