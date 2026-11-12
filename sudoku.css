@@ -479,6 +479,21 @@ body {
 .leaderboard td { color: #e8dfe1; }
 .leaderboard th:first-child, .leaderboard td:first-child { width: 42px; color: #ff4058; }
 .leaderboard td[colspan] { color: #a69a9c; text-align: center; }
+.leaderboard-player { display: flex; align-items: center; gap: 8px; }
+.leaderboard-avatar {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 32, 59, 0.35);
+    border-radius: 50%;
+    background: #21060b;
+    color: #ff9aa6;
+    font: 700 12px 'Consolas', monospace;
+}
+.leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 @media (max-width: 480px) {
     body { padding: 68px 10px 24px; }

@@ -165,11 +165,35 @@
 
         rows.forEach((score, index) => {
             const row = leaderboardBody.insertRow();
-            [String(index + 1), score.profiles?.username || 'Игрок', formatTime(score.best_seconds), String(score.completed_games)]
-                .forEach(value => {
-                    const cell = row.insertCell();
-                    cell.textContent = value;
-                });
+            const username = score.profiles?.username || 'Игрок';
+            const rankCell = row.insertCell();
+            rankCell.textContent = String(index + 1);
+
+            const playerCell = row.insertCell();
+            playerCell.className = 'leaderboard-player';
+            const avatar = document.createElement('span');
+            avatar.className = 'leaderboard-avatar';
+            const initial = username.slice(0, 1).toUpperCase();
+            avatar.textContent = initial;
+            if (score.profiles?.avatar_url) {
+                const image = document.createElement('img');
+                image.src = score.profiles.avatar_url;
+                image.alt = '';
+                image.onerror = () => {
+                    image.remove();
+                    avatar.textContent = initial;
+                };
+                avatar.textContent = '';
+                avatar.appendChild(image);
+            }
+            const name = document.createElement('span');
+            name.textContent = username;
+            playerCell.append(avatar, name);
+
+            [formatTime(score.best_seconds), String(score.completed_games)].forEach(value => {
+                const cell = row.insertCell();
+                cell.textContent = value;
+            });
         });
     }
 
@@ -178,7 +202,7 @@
         leaderboardBody.innerHTML = '<tr><td colspan="4">Загружаем рейтинг…</td></tr>';
         const { data, error } = await client
             .from('sudoku_scores')
-            .select('user_id, best_seconds, completed_games, profiles(username)')
+            .select('user_id, best_seconds, completed_games, profiles(username, avatar_url)')
             .eq('difficulty', leaderboardDifficulty.value)
             .order('best_seconds', { ascending: true })
             .limit(20);

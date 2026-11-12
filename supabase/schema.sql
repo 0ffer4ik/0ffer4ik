@@ -63,10 +63,23 @@ create policy "Scores are publicly readable"
     on public.sudoku_scores for select to anon, authenticated using (true);
 
 drop policy if exists "Users can manage their own Sudoku progress" on public.sudoku_progress;
-create policy "Users can manage their own Sudoku progress"
-    on public.sudoku_progress for all to authenticated
+drop policy if exists "Users can read own Sudoku progress" on public.sudoku_progress;
+drop policy if exists "Users can insert own Sudoku progress" on public.sudoku_progress;
+drop policy if exists "Users can update own Sudoku progress" on public.sudoku_progress;
+drop policy if exists "Users can delete own Sudoku progress" on public.sudoku_progress;
+create policy "Users can read own Sudoku progress"
+    on public.sudoku_progress for select to authenticated
+    using (user_id = (select auth.uid()));
+create policy "Users can insert own Sudoku progress"
+    on public.sudoku_progress for insert to authenticated
+    with check (user_id = (select auth.uid()));
+create policy "Users can update own Sudoku progress"
+    on public.sudoku_progress for update to authenticated
     using (user_id = (select auth.uid()))
     with check (user_id = (select auth.uid()));
+create policy "Users can delete own Sudoku progress"
+    on public.sudoku_progress for delete to authenticated
+    using (user_id = (select auth.uid()));
 
 revoke all on public.sudoku_games from anon, authenticated;
 revoke all on public.profiles, public.sudoku_scores from anon, authenticated;
@@ -117,6 +130,14 @@ create policy "Users can update own profile avatar"
         and (storage.foldername(name))[1] = (select auth.uid())::text
     )
     with check (
+        bucket_id = 'profile-avatars'
+        and (storage.foldername(name))[1] = (select auth.uid())::text
+    );
+
+drop policy if exists "Users can read own profile avatar" on storage.objects;
+create policy "Users can read own profile avatar"
+    on storage.objects for select to authenticated
+    using (
         bucket_id = 'profile-avatars'
         and (storage.foldername(name))[1] = (select auth.uid())::text
     );
