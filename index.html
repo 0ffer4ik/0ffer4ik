@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>0ffer4ik</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="live.css">
 </head>
@@ -27,11 +28,19 @@
     <h2 class="section-title"> Устройство</h2>
     
     <div class="device-card">
-                <div class="device-image" id="phone-container">
-            <div class="phone-3d-wrapper" id="phone-wrapper">
-                <img src="myphone.png" alt="Передняя часть" class="phone-img front">
-                <img src="myphone-back.png" alt="Задняя часть" class="phone-img back">
-            </div>
+                        <div class="device-image" id="phone-container">
+            <model-viewer 
+                src="phone.glb" 
+                alt="3D модель телефона" 
+                auto-rotate 
+                auto-rotate-delay="0"
+                rotation-per-second="30deg"
+                camera-controls 
+                disable-zoom
+                shadow-intensity="1"
+                environment-image="neutral"
+                class="phone-model">
+            </model-viewer>
         </div>
         
         <div class="device-info">
