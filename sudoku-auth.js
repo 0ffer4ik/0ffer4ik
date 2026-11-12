@@ -99,7 +99,10 @@
         const { data, error } = await client.auth.signUp({
             email: emailInput.value.trim(),
             password: passwordInput.value,
-            options: { data: { username } },
+            options: {
+                data: { username },
+                emailRedirectTo: window.SUDOKU_EMAIL_REDIRECT_URL,
+            },
         });
         if (error) throw error;
         showMessage(data.session
