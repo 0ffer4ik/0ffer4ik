@@ -7,7 +7,7 @@ const LIVE = {
     //   link   — ссылка на трек (можно оставить '')
     favorites: [
         { title: 'Блондинка', artist: 'GSPD', cover: '', link: 'https://open.spotify.com/track/50IKCZwA8w4mON9FDDkciA?si=4a1883c281834593' },
-        { title: 'Мементо Мори', artist: 'ксюшенька.', cover: '', link: 'https://open.spotify.com/track/48ZD4nRdh4V6EzxhtKoGSh?si=866fcb2dff154e1c' },
+        { title: 'Мементо Мори', artist: 'ксюшенька.', cover: '', link: 'https://music.yandex.com/album/40513185/track/147876905?utm_source=web&utm_medium=copy_link' },
         { title: 'SOLO', artist: 'lightprey', cover: '', link: 'https://open.spotify.com/track/484u1CQG998X0poznDaSHM?si=f433fe56c84a4b91' }
     ],
     refreshSec: 30                       // как часто обновлять «Сейчас играет»
