@@ -14,7 +14,6 @@ const Sudoku = (() => {
     PEERS.push(list);
   }
 
-  // 27 «юнитов»: 9 строк, 9 столбцов, 9 блоков
   const UNITS = [];
   for (let k = 0; k < 9; k++) {
     const r = [], c = [], b = [];
@@ -36,7 +35,6 @@ const Sudoku = (() => {
 
   const bitCount = m => { let n = 0; while (m) { m &= m - 1; n++; } return n; };
 
-  // Какие цифры можно поставить в клетку i (битовая маска)
   function candMask(b, i) {
     let used = 0;
     for (const p of PEERS[i]) if (b[p]) used |= 1 << (b[p] - 1);
@@ -108,7 +106,7 @@ const Sudoku = (() => {
   }
 
   function hint(board, solution) {
-    // 0) Сначала ошибки игрока
+
     for (let i = 0; i < 81; i++) {
       if (board[i] && board[i] !== solution[i]) {
         return { index: i, value: solution[i], text: 'Здесь стоит неверная цифра. Правильная: ' + solution[i] };
