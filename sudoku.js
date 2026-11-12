@@ -1,6 +1,4 @@
-// Нужен sudoku-core.js (подключается в HTML ДО этого файла). puzzles.js больше не нужен.
-
-let solution = [];          // готовое решение: массив из 81 числа
+let solution = [];         
 let selectedCell = null;
 let timerInterval;
 let seconds = 0;
@@ -9,7 +7,7 @@ let isGameOver = false;
 const allCells = () => document.querySelectorAll('.sudoku-cell');
 const isEditable = cell => !cell.classList.contains('fixed') && !cell.classList.contains('hinted');
 
-// Текущее поле из страницы: 81 число, 0 = пусто
+
 function getBoard() {
     return [...allCells()].map(c => (c.innerText === '' ? 0 : parseInt(c.innerText)));
 }
@@ -25,7 +23,7 @@ function startGame(difficulty) {
     board.innerHTML = '';
     selectedCell = null;
 
-    const data = Sudoku.generate(difficulty);   // новое судоку с одним решением
+    const data = Sudoku.generate(difficulty);  
     solution = data.solution;
 
     for (let i = 0; i < 81; i++) {
@@ -55,7 +53,6 @@ function startGame(difficulty) {
     updateStats();
 }
 
-// Выбор клетки: можно выбрать ЛЮБУЮ (даже заданную), чтобы увидеть, где такие же цифры
 function selectCell(cell) {
     selectedCell = cell;
     const cells = [...allCells()];
@@ -65,7 +62,7 @@ function selectCell(cell) {
     const index = parseInt(cell.dataset.index);
     const board = getBoard();
     const val = board[index];
-    const peers = new Set(Sudoku.PEERS[index]);   // строка + столбец + блок 3x3
+    const peers = new Set(Sudoku.PEERS[index]); 
 
     cells.forEach((c, i) => {
         if (peers.has(i)) c.classList.add('crosshair');
@@ -108,7 +105,6 @@ function updateStats() {
     document.getElementById('stat-correct').innerText = correct;
     document.getElementById('stat-wrong').innerText = wrong;
 
-    // Сколько каждой цифры ещё осталось (маленькая цифра на кнопке)
     const left = Sudoku.remaining(getBoard());
     document.querySelectorAll('#numpad button[data-n]').forEach(b => {
         const n = parseInt(b.dataset.n);
@@ -124,7 +120,6 @@ function updateTimer() {
     document.getElementById('timer').innerText = `${mins}:${secs}`;
 }
 
-// Победа определяется сама, кнопка «Проверить» не обязательна
 function finishIfSolved() {
     if (!Sudoku.isSolved(getBoard(), solution)) return;
     const messageEl = document.getElementById('message');
@@ -136,7 +131,7 @@ function finishIfSolved() {
 
 function giveHint() {
     if (isGameOver) return;
-    const h = Sudoku.hint(getBoard(), solution);   // всегда правильная цифра из решения
+    const h = Sudoku.hint(getBoard(), solution);
     if (!h) return;
 
     const cell = allCells()[h.index];
@@ -192,7 +187,6 @@ function solveGame() {
     updateStats();
 }
 
-// Клавиатура: цифры, Backspace/Delete, стрелки
 document.addEventListener('keydown', e => {
     if (e.key >= '1' && e.key <= '9') inputNumber(parseInt(e.key));
     else if (e.key === 'Backspace' || e.key === 'Delete') inputNumber(0);

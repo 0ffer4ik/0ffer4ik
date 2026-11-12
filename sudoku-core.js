@@ -1,14 +1,10 @@
-/* sudoku-core.js
- * Поле = массив из 81 числа, 0 = пустая клетка. Индекс клетки: i = строка*9 + столбец.
- * Подключение: <script src="sudoku-core.js"></script>  → доступен объект Sudoku
- */
+
 const Sudoku = (() => {
   const ALL = 0x1FF; // 9 бит: бит 0 = цифра 1, ... бит 8 = цифра 9
   const row = i => (i / 9) | 0;
   const col = i => i % 9;
   const box = i => ((row(i) / 3) | 0) * 3 + ((col(i) / 3) | 0);
 
-  // «Соседи» клетки: все клетки в её строке, столбце и блоке 3x3
   const PEERS = [];
   for (let i = 0; i < 81; i++) {
     const list = [];
@@ -47,7 +43,6 @@ const Sudoku = (() => {
     return ALL & ~used;
   }
 
-  // Ищем пустую клетку с наименьшим числом вариантов (так перебор быстрее)
   function pickCell(b) {
     let best = -1, bestMask = 0, bestN = 10;
     for (let i = 0; i < 81; i++) {
@@ -59,7 +54,6 @@ const Sudoku = (() => {
     return { index: best, mask: bestMask };
   }
 
-  // Считает решения (останавливается на limit). Нужно, чтобы у судоку было РОВНО одно решение.
   function countSolutions(b, limit = 2) {
     const c = pickCell(b);
     if (c.dead) return 0;
@@ -75,7 +69,6 @@ const Sudoku = (() => {
     return total;
   }
 
-  // Заполняет поле (случайно или нет). Возвращает true, если получилось.
   function fill(b, randomize) {
     const c = pickCell(b);
     if (c.dead) return false;
@@ -98,28 +91,22 @@ const Sudoku = (() => {
 
   const CLUES = { easy: 40, medium: 32, hard: 26 };
 
-  /* Главная функция: делает судоку.
-   * level: 'easy' | 'medium' | 'hard'
-   * Возвращает { puzzle, solution }. У puzzle гарантированно ровно одно решение. */
   function generate(level = 'medium') {
     const solution = new Array(81).fill(0);
-    fill(solution, true);                       // 1) полная правильная сетка
+    fill(solution, true);               
     const puzzle = solution.slice();
     const target = CLUES[level] ?? 32;
     let clues = 81;
-    for (const i of shuffle([...Array(81).keys()])) {   // 2) убираем цифры по одной
+    for (const i of shuffle([...Array(81).keys()])) { 
       if (clues <= target) break;
       const keep = puzzle[i];
       puzzle[i] = 0;
-      if (countSolutions(puzzle.slice(), 2) !== 1) puzzle[i] = keep; // решение перестало быть одним — вернуть
+      if (countSolutions(puzzle.slice(), 2) !== 1) puzzle[i] = keep; 
       else clues--;
     }
     return { puzzle, solution };
   }
 
-  /* Подсказка. board — текущее поле игрока, solution — готовое решение.
-   * Всегда возвращает ПРАВИЛЬНУЮ цифру (берётся из solution).
-   * Результат: { index, value, text } */
   function hint(board, solution) {
     // 0) Сначала ошибки игрока
     for (let i = 0; i < 81; i++) {
@@ -127,7 +114,7 @@ const Sudoku = (() => {
         return { index: i, value: solution[i], text: 'Здесь стоит неверная цифра. Правильная: ' + solution[i] };
       }
     }
-    // 1) Клетка, куда подходит только одна цифра
+
     for (let i = 0; i < 81; i++) {
       if (board[i]) continue;
       const m = candMask(board, i);
@@ -135,7 +122,7 @@ const Sudoku = (() => {
         return { index: i, value: solution[i], text: 'Сюда подходит только одна цифра: ' + solution[i] };
       }
     }
-    // 2) Цифра, которая в строке/столбце/блоке может стоять только в одной клетке
+
     for (const u of UNITS) {
       for (let d = 1; d <= 9; d++) {
         if (u.cells.some(i => board[i] === d)) continue;
@@ -145,13 +132,13 @@ const Sudoku = (() => {
         }
       }
     }
-    // 3) Если простых ходов нет — открываем любую пустую клетку
+    
     const i = board.findIndex(v => !v);
     if (i === -1) return null;
     return { index: i, value: solution[i], text: 'Правильная цифра: ' + solution[i] };
   }
 
-  // Клетки, где есть повтор в строке/столбце/блоке (подсветить красным)
+  
   function conflicts(board) {
     const bad = new Set();
     for (let i = 0; i < 81; i++) {
@@ -161,7 +148,6 @@ const Sudoku = (() => {
     return bad;
   }
 
-  // Сколько раз каждая цифра ещё нужна (для маленьких цифр под кнопками, как в фиолетовом судоку)
   function remaining(board) {
     const left = [0, 9, 9, 9, 9, 9, 9, 9, 9, 9]; // индекс = цифра
     for (const v of board) if (v) left[v]--;
@@ -170,9 +156,6 @@ const Sudoku = (() => {
 
   const isSolved = (board, solution) => board.every((v, i) => v === solution[i]);
 
-  /* Подсветка выбранной клетки.
-   * cells — список 81 DOM-элемента клеток (по порядку), selected — индекс (или -1).
-   * Добавляет классы: sel (выбрана), peer (строка/столбец/блок), same (такая же цифра). */
   function highlight(cells, selected, board) {
     cells.forEach(c => c.classList.remove('sel', 'peer', 'same'));
     if (selected < 0) return;

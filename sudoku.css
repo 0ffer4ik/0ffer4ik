@@ -62,8 +62,8 @@ body {
 .btn-diff, .btn-action {
     padding: 8px 2px;
     background: rgba(0,0,0,0.5);
-    border: 1px solid #4b0000d3;
-    color: #630000bb;
+    border: 1px solid #ff0000d3;
+    color: #ff0000bb;
     border-radius: 6px;
     font-family: 'Consolas', monospace;
     font-weight: bold;
