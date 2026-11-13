@@ -24,8 +24,8 @@ const OFFPLAY_CONTENT = {
     // Меняй эти файлы в images/ — ссылки на картинки и alt-текст находятся здесь.
     memes: [
         { image: 'images/meme.jpg', alt: 'Пиксельный смайлик', pixelated: true },
-        { image: 'images/meme-doge.jpg', alt: 'Мем с собакой Доге' },
-        { image: 'images/meme-cat.jpg', alt: 'Мем с котом' }
+        { image: 'images/meme3.jpg', alt: 'Мем с собакой Доге' },
+        { image: 'images/meme2.jpg', alt: 'Мем с котом' }
     ]
 };
 

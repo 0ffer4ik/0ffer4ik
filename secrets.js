@@ -3,7 +3,7 @@ const SITE_SECRETS = [
     {
         clue: 'Какая головоломка с числами 1–9 открывается кнопкой вверху страницы?',
         answers: ['судоку', 'sudoku'],
-        image: 'images/meme.jpg',
+        image: 'images/Без названия (9).jpg',
         alt: 'Пиксельный смайлик'
     },
     {
@@ -15,19 +15,19 @@ const SITE_SECRETS = [
     {
         clue: 'Что вращается рядом с любимыми треками и хранит музыку в дорожках?',
         answers: ['винил', 'пластинка', 'виниловая пластинка'],
-        image: 'images/secret.jpg',
+        image: 'images/max mayfield.jpg',
         alt: 'Секретный мем'
     },
     {
         clue: 'В каком игровом сервисе можно увидеть, что сейчас запущен Wallpaper Engine?',
         answers: ['steam', 'стим'],
-        image: 'images/meme-doge.jpg',
+        image: 'images/Jenna Ortega_.jpg',
         alt: 'Мем с собакой Доге'
     },
     {
         clue: 'Какое испанское приветствие написано над терминалом?',
         answers: ['hola', 'ола'],
-        image: 'images/meme-cat.jpg',
+        image: 'images/Hande Erçel.jpg',
         alt: 'Мем с котом'
     }
 ];
