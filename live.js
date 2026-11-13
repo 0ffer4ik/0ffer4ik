@@ -1,15 +1,6 @@
 // ===== НАСТРОЙКИ (заполни свои) =====
 const LIVE = {
     statsfmUser: '31zampzx6vdwi7qqah3yttplww2q',   // ник или customId из ссылки на твой профиль stats.fm
-    // Любимые треки (показываются первые 3). Меняй прямо здесь:
-    //   title  — название, artist — исполнитель,
-    //   cover  — картинка (ссылка или файл из репозитория, например 'covers/1.jpg'), можно оставить '',
-    //   link   — ссылка на трек (можно оставить '')
-    favorites: [
-        { title: 'Блондинка', artist: 'GSPD', cover: '', link: 'https://open.spotify.com/track/50IKCZwA8w4mON9FDDkciA?si=4a1883c281834593' },
-        { title: 'Мементо Мори', artist: 'ксюшенька.', cover: '', link: 'https://music.yandex.com/album/40513185/track/147876905?utm_source=web&utm_medium=copy_link' },
-        { title: 'SOLO', artist: 'lightprey', cover: '', link: 'https://open.spotify.com/track/484u1CQG998X0poznDaSHM?si=f433fe56c84a4b91' }
-    ],
     refreshSec: 30                       // как часто обновлять «Сейчас играет»
 };
 
@@ -73,20 +64,34 @@ async function loadNow() {
     } catch (e) { box.innerHTML = errorBox(e); }
 }
 
+// Рисует полку по данным из favorite-tracks.js; меняй треки именно там.
 function loadFavorites() {
-    $('live-fav').innerHTML = LIVE.favorites.slice(0, 3).map((t, i) => {
-        const cover = t.cover ? `<img src="${esc(t.cover)}" alt="">` : '<div class="live-cover-empty">♪</div>';
+    const favorites = window.FAVORITE_TRACKS;
+    if (!Array.isArray(favorites)) {
+        $('live-fav').innerHTML = errorBox(new Error('Не удалось загрузить список: проверь favorite-tracks.js'));
+        return;
+    }
+
+    $('live-fav').innerHTML = favorites.slice(0, 3).map((t, i) => {
+        const cover = t.cover
+            ? `<img src="${esc(t.cover)}" alt="">`
+            : `<div class="favorite-sleeve-art favorite-sleeve-art-${i + 1}" aria-hidden="true">
+                <span class="favorite-sleeve-label">SIDE A · 0${i + 1}</span>
+                <strong>${esc(t.title.charAt(0))}</strong>
+                <span class="favorite-sleeve-title">${esc(t.title)}</span>
+                <span class="favorite-sleeve-artist">${esc(t.artist)}</span>
+            </div>`;
         const inner = `
-            <span class="live-rank">${i + 1}</span>
-            <div class="live-mini">${cover}</div>
-            <div class="live-track-info">
-                <div class="live-track-name">${esc(t.title)}</div>
-                <div class="live-muted">${esc(t.artist)}</div>
+            <div class="favorite-record-art" aria-hidden="true">
+                <div class="favorite-vinyl-disc"><span></span></div>
+                <div class="favorite-vinyl-sleeve">${cover}</div>
             </div>
-            ${t.link ? '<span class="live-count">↗</span>' : ''}`;
+            <span class="favorite-record-rank">0${i + 1}</span>
+            <span class="favorite-record-title">${esc(t.title)}</span>
+            <span class="favorite-record-artist">${esc(t.artist)}</span>`;
         return t.link
-            ? `<a class="live-track" href="${esc(t.link)}" target="_blank" rel="noopener">${inner}</a>`
-            : `<div class="live-track">${inner}</div>`;
+            ? `<a class="favorite-record" href="${esc(t.link)}" target="_blank" rel="noopener" aria-label="${esc(t.title)} — ${esc(t.artist)}, открыть трек">${inner}</a>`
+            : `<div class="favorite-record">${inner}</div>`;
     }).join('');
 }
 

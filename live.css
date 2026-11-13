@@ -150,6 +150,215 @@
 }
 
 /* Любимые треки */
-.live-fav { display: grid; gap: 8px; }
-a.live-track { text-decoration: none; transition: 0.3s; }
-a.live-track:hover { border-color: rgba(255, 32, 59, 0.55); box-shadow: 0 0 18px rgba(255, 20, 45, 0.18); }
+.live-fav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.favorite-record {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 8px 12px;
+    border: 1px solid rgba(255, 40, 60, 0.1);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--text);
+    text-align: center;
+    text-decoration: none;
+    scroll-snap-align: start;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.favorite-record:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 32, 59, 0.42);
+    background: rgba(255, 32, 59, 0.06);
+}
+
+.favorite-record:focus-visible {
+    outline: 2px solid var(--accent-strong, #ff203b);
+    outline-offset: 3px;
+}
+
+.favorite-record-art {
+    position: relative;
+    display: grid;
+    width: min(100%, 150px);
+    aspect-ratio: 1;
+    place-items: center;
+    margin: 4px auto 12px;
+    isolation: isolate;
+}
+
+.favorite-vinyl-disc {
+    /* Размер и базовый вид пластинки; цвета меняются в background и border ниже. */
+    position: absolute;
+    z-index: 0;
+    top: 15%;
+    right: 6%;
+    width: 70%;
+    height: 70%;
+    border: 1px solid rgba(250, 239, 218, 0.95);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, #fff8e9 0 5.5%, #a90f2a 6% 11%, transparent 11.5%),
+        repeating-radial-gradient(circle, rgba(127, 48, 37, 0.2) 0 1px, transparent 1px 3px),
+        conic-gradient(from 22deg, #f8f0df 0 17%, #e9dcc6 17% 31%, #fff8e9 31% 50%, #eadbc1 50% 65%, #f8f0df 65% 82%, #efe3d0 82%);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.48), inset 0 0 0 3px rgba(255, 250, 235, 0.7);
+    transform: translateX(4%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.favorite-vinyl-disc::after {
+    position: absolute;
+    inset: 5%;
+    border: 1px solid rgba(140, 80, 52, 0.22);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+
+.favorite-vinyl-disc span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff6e8 0 24%, #b5102c 28% 100%);
+    box-shadow: 0 0 0 1px rgba(116, 10, 28, 0.35);
+    transform: translate(-50%, -50%);
+}
+
+.favorite-record:hover .favorite-vinyl-disc,
+.favorite-record:focus-visible .favorite-vinyl-disc {
+    /* Увеличь translateX, если нужно сильнее выдвинуть диск при наведении. */
+    transform: translateX(20%) rotate(10deg);
+}
+
+.favorite-vinyl-sleeve {
+    position: relative;
+    z-index: 1;
+    width: 80%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid rgba(255, 235, 238, 0.26);
+    border-radius: 9px;
+    background: #211a1b;
+    box-shadow: 0 9px 22px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.favorite-vinyl-sleeve img {
+    /* Обложка заполняет конверт целиком; object-fit управляет кадрированием. */
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.favorite-sleeve-art {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 10%;
+    color: #fff;
+    text-align: left;
+}
+
+.favorite-sleeve-art-1 {
+    background: radial-gradient(circle at 72% 28%, rgba(255, 183, 105, 0.9), transparent 25%), linear-gradient(145deg, #48141f, #a21d32 56%, #271016);
+}
+
+.favorite-sleeve-art-2 {
+    background: radial-gradient(circle at 24% 72%, rgba(255, 104, 119, 0.75), transparent 28%), linear-gradient(145deg, #15192b, #42466e 55%, #17121c);
+}
+
+.favorite-sleeve-art-3 {
+    background: radial-gradient(circle at 72% 28%, rgba(96, 191, 255, 0.85), transparent 25%), linear-gradient(145deg, #102634, #18577a 56%, #111822);
+}
+
+.favorite-sleeve-label {
+    font-size: clamp(6px, 0.62vw, 8px);
+    letter-spacing: 0.12em;
+    opacity: 0.8;
+}
+
+.favorite-sleeve-art strong {
+    align-self: center;
+    font-family: sans-serif;
+    font-size: clamp(34px, 4vw, 60px);
+    font-weight: 500;
+    line-height: 1;
+    text-shadow: 0 3px 14px rgba(0, 0, 0, 0.35);
+}
+
+.favorite-sleeve-title,
+.favorite-sleeve-artist {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.favorite-sleeve-title { font-size: clamp(8px, 0.8vw, 10px); font-weight: 700; }
+.favorite-sleeve-artist { font-size: clamp(7px, 0.7vw, 9px); opacity: 0.78; }
+
+.favorite-record-rank {
+    position: absolute;
+    z-index: 2;
+    top: 14px;
+    left: 12px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+}
+
+.favorite-record-title {
+    width: 100%;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.favorite-record-artist {
+    width: 100%;
+    margin-top: 4px;
+    overflow: hidden;
+    color: var(--text-soft);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+    .live-fav {
+        grid-auto-columns: minmax(108px, 1fr);
+        grid-auto-flow: column;
+        grid-template-columns: none;
+        overflow-x: auto;
+        padding: 2px 2px 10px;
+        scroll-snap-type: x mandatory;
+        scrollbar-color: rgba(255, 32, 59, 0.45) rgba(255, 255, 255, 0.05);
+        scrollbar-width: thin;
+    }
+
+    .favorite-record { padding: 10px 7px 12px; }
+    .favorite-record-art { margin-bottom: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .favorite-record,
+    .favorite-vinyl-disc { transition: none; }
+}
