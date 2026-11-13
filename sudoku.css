@@ -518,21 +518,85 @@ body {
     background: rgba(0, 0, 0, 0.3);
     text-align: center;
 }
+.daily-metrics > .daily-streak-card {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 1px;
+    border-color: rgba(190, 190, 200, 0.13);
+    background: rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+.streak-icon {
+    position: relative;
+    display: grid;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    place-items: center;
+    transform-origin: 50% 50%;
+}
+.streak-icon svg {
+    width: 46px;
+    height: 46px;
+    overflow: visible;
+    filter: grayscale(1);
+    opacity: 0.48;
+}
+.streak-spark-main {
+    fill: url(#streak-spark-gradient);
+    stroke: #ffc0cf;
+    stroke-width: 0.8;
+    stroke-linejoin: round;
+}
+.streak-spark-small { fill: #ffcad7; }
+.streak-spark-dot { fill: #ff6c91; }
+.streak-icon > strong {
+    position: absolute;
+    bottom: -1px;
+    display: grid;
+    min-width: 25px;
+    height: 25px;
+    padding: 0 4px;
+    place-items: center;
+    border: 1px solid rgba(255, 174, 198, 0.46);
+    border-radius: 999px;
+    background: #1b050b;
+    color: #fff0f4;
+    font: 800 14px/1 'Consolas', monospace;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+}
+.streak-label { color: #c9a49c; font: 700 10px 'Consolas', monospace; letter-spacing: 0.12em; }
+.daily-streak-card.has-streak {
+    border-color: rgba(255, 80, 130, 0.24);
+    background: radial-gradient(ellipse at 50% 45%, rgba(176, 16, 58, 0.16), transparent 72%), rgba(0, 0, 0, 0.3);
+}
+.daily-streak-card.has-streak .streak-icon {
+    filter: drop-shadow(0 0 11px rgba(255, 50, 105, 0.58));
+    animation: spark-float 2.8s ease-in-out infinite;
+}
+.daily-streak-card.has-streak .streak-icon svg { filter: none; opacity: 1; }
+.daily-streak-card.has-streak .streak-spark-small { animation: spark-glint 1.8s ease-in-out infinite; }
+.daily-streak-card.streak-updated .streak-icon { animation: streak-pop 0.65s cubic-bezier(0.2, 0.8, 0.25, 1.25); }
+@keyframes spark-float {
+    0%, 100% { transform: rotate(-5deg) scale(0.98); }
+    50% { transform: rotate(5deg) scale(1.07); }
+}
+@keyframes spark-glint {
+    0%, 100% { opacity: 0.65; }
+    50% { opacity: 1; }
+}
+@keyframes streak-pop {
+    0% { transform: scale(0.75) rotate(-8deg); }
+    65% { transform: scale(1.22) rotate(4deg); }
+    100% { transform: scale(1) rotate(0); }
+}
 .daily-metrics span { color: #a69a9c; font: 12px 'Consolas', monospace; }
 .daily-metrics strong { color: #ff9aa6; font: 700 20px 'Consolas', monospace; }
-.daily-achievements { display: flex; flex-wrap: wrap; gap: 7px; }
-.daily-achievement {
-    padding: 6px 9px;
-    border: 1px solid rgba(255, 40, 60, 0.12);
-    border-radius: 999px;
-    color: #817477;
-    background: rgba(0, 0, 0, 0.25);
-    font: 12px 'Consolas', monospace;
-}
-.daily-achievement.is-unlocked {
-    border-color: rgba(255, 32, 59, 0.42);
-    color: #ff9aa6;
-    background: rgba(176, 0, 24, 0.15);
+.daily-metrics .streak-icon > strong {
+    border-color: rgba(255, 174, 198, 0.46);
+    color: #fff0f4;
+    font-size: 14px;
 }
 .daily-note { margin: 0; color: #a69a9c; text-align: center; font: 13px/1.5 'Consolas', monospace; }
 
@@ -547,7 +611,19 @@ body {
     .daily-heading { align-items: stretch; flex-direction: column; }
     .daily-start { width: 100%; }
     .daily-metrics > div { padding: 8px 4px; }
+    .daily-metrics > .daily-streak-card { gap: 1px; padding: 8px 5px; }
+    .streak-icon { flex-basis: 42px; width: 42px; height: 42px; }
+    .streak-icon svg { width: 42px; height: 42px; }
+    .streak-label { font-size: 9px; }
     .daily-metrics span { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .daily-streak-card.has-streak .streak-icon,
+    .daily-streak-card.has-streak .streak-spark-small,
+    .daily-streak-card.streak-updated .streak-icon {
+        animation: none;
+    }
     .back-btn { top: 12px; left: 10px; padding: 8px 11px; }
     .profile-trigger { top: 12px; right: 10px; padding: 5px 9px 5px 5px; font-size: 14px; }
     .profile-trigger-avatar { width: 28px; height: 28px; }

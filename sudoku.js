@@ -10,17 +10,9 @@ let dailyChallengeDate = null;
 let assistedGame = false;
 let gameRequestId = 0;
 let currentDifficulty = 'easy';
+let lastRenderedStreak = null;
 const PROGRESS_KEY = 'sudoku-progress-v1';
 const saveNote = document.getElementById('save-note');
-const DAILY_ACHIEVEMENTS = [
-    { code: 'first_daily', label: 'Первое задание' },
-    { code: 'streak_3', label: '3 дня подряд' },
-    { code: 'streak_7', label: 'Неделя подряд' },
-    { code: 'streak_30', label: 'Месяц подряд' },
-    { code: 'daily_10', label: '10 заданий' },
-    { code: 'daily_50', label: '50 заданий' },
-    { code: 'daily_100', label: '100 заданий' },
-];
 let cloudSaveTimeout = null;
 let cloudSyncQueue = Promise.resolve();
 let cloudSavedAt = 0;
@@ -346,25 +338,23 @@ async function refreshDailyStats() {
     const startButton = document.getElementById('daily-start-button');
 
     if (!signedIn) {
-        document.getElementById('daily-current-streak').textContent = '—';
+        renderDailyStreak(0);
         document.getElementById('daily-best-streak').textContent = '—';
         document.getElementById('daily-completed-days').textContent = '—';
-        note.textContent = 'Войдите в профиль, чтобы сохранять серии и достижения.';
+        note.textContent = 'Войдите в профиль, чтобы сохранять серию.';
         startButton.disabled = false;
         startButton.textContent = 'Играть сегодня';
-        renderDailyAchievements([]);
         return;
     }
 
     try {
-        const result = await auth.loadDailyStats();
-        const stats = result?.stats;
+        const stats = await auth.loadDailyStats();
         const yesterday = new Date(Date.parse(`${today}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
         const activeStreak = stats && [today, yesterday].includes(stats.last_challenge_date)
             ? stats.current_streak
             : 0;
         const completedToday = stats?.last_challenge_date === today;
-        document.getElementById('daily-current-streak').textContent = String(activeStreak);
+        renderDailyStreak(activeStreak);
         document.getElementById('daily-best-streak').textContent = String(stats?.best_streak || 0);
         document.getElementById('daily-completed-days').textContent = String(stats?.completed_days || 0);
         note.textContent = completedToday
@@ -372,7 +362,6 @@ async function refreshDailyStats() {
             : 'Решайте задание каждый день, чтобы поддерживать серию.';
         startButton.disabled = completedToday;
         startButton.textContent = completedToday ? 'Уже решено сегодня' : 'Играть сегодня';
-        renderDailyAchievements(result?.achievements || []);
     } catch (error) {
         console.error('Could not load daily Sudoku stats:', error);
         note.textContent = 'Статистика недоступна. Проверьте применение миграции Supabase.';
@@ -381,18 +370,25 @@ async function refreshDailyStats() {
     }
 }
 
-function renderDailyAchievements(unlocked = []) {
-    const unlockedCodes = new Set(unlocked.map(item => typeof item === 'string' ? item : item.code));
-    const container = document.getElementById('daily-achievements');
-    container.replaceChildren();
-    DAILY_ACHIEVEMENTS.forEach(achievement => {
-        const badge = document.createElement('span');
-        badge.className = 'daily-achievement';
-        badge.textContent = achievement.label;
-        badge.classList.toggle('is-unlocked', unlockedCodes.has(achievement.code));
-        badge.setAttribute('aria-label', `${achievement.label}: ${unlockedCodes.has(achievement.code) ? 'получено' : 'не получено'}`);
-        container.appendChild(badge);
-    });
+function renderDailyStreak(value) {
+    const streak = Math.max(0, Number(value) || 0);
+    const card = document.getElementById('daily-streak-card');
+    const count = document.getElementById('daily-current-streak');
+    const dayWord = streak % 10 === 1 && streak % 100 !== 11
+        ? 'день'
+        : streak % 10 >= 2 && streak % 10 <= 4 && (streak % 100 < 12 || streak % 100 > 14)
+            ? 'дня'
+            : 'дней';
+
+    count.textContent = String(streak);
+    card.setAttribute('aria-label', `Текущая серия: ${streak} ${dayWord}`);
+    card.classList.toggle('has-streak', streak > 0);
+    card.classList.remove('streak-updated');
+    if (lastRenderedStreak !== null && streak > lastRenderedStreak) {
+        void card.offsetWidth;
+        card.classList.add('streak-updated');
+    }
+    lastRenderedStreak = streak;
 }
 
 function formatElapsed(value) {

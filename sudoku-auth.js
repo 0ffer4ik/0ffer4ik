@@ -486,22 +486,12 @@
         async loadDailyStats() {
             await sessionReady;
             if (!session?.access_token) return null;
-            const [statsResult, achievementsResult] = await Promise.all([
-                client.from('sudoku_daily_stats')
-                    .select('completed_days, current_streak, best_streak, last_challenge_date')
-                    .eq('user_id', session.user.id)
-                    .maybeSingle(),
-                client.from('sudoku_achievements')
-                    .select('code, unlocked_at')
-                    .eq('user_id', session.user.id)
-                    .order('unlocked_at', { ascending: true }),
-            ]);
-            if (statsResult.error) throw statsResult.error;
-            if (achievementsResult.error) throw achievementsResult.error;
-            return {
-                stats: statsResult.data,
-                achievements: achievementsResult.data || [],
-            };
+            const { data, error } = await client.from('sudoku_daily_stats')
+                .select('completed_days, current_streak, best_streak, last_challenge_date')
+                .eq('user_id', session.user.id)
+                .maybeSingle();
+            if (error) throw error;
+            return data;
         },
         async submitRankedGame(gameId, board) {
             const { data, error } = await client.functions.invoke('sudoku-game', {
