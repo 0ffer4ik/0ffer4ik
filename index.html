@@ -23,7 +23,7 @@
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    <link rel="stylesheet" href="style.css?v=12">
+    <link rel="stylesheet" href="style.css?v=14">
     <link rel="stylesheet" href="live.css?v=10">
     <link rel="stylesheet" href="mobile.css?v=4" media="(max-width: 768px)">
 </head>
@@ -167,38 +167,27 @@
         </div>
     </section>
 
-    <div id="secret-modal" class="secret-modal">
-        <div class="secret-content">
-            <span class="close-btn" id="close-secret">&times;</span>
-            <img src="images/secret.jpg" alt="Секрет" class="secret-img">
-        </div>
+    <div id="secret-modal" class="secret-modal" aria-hidden="true">
+        <section class="secret-content" role="dialog" aria-modal="true" aria-labelledby="secret-title">
+            <button class="close-btn" id="close-secret" type="button" aria-label="Закрыть секреты">&times;</button>
+            <p class="secret-kicker">ДОСТУП К СЕКРЕТАМ</p>
+            <h2 class="secret-title" id="secret-title">Пять загадок</h2>
+            <p class="secret-intro">Разгадай их по подсказкам на сайте — за каждой спрятана картинка.</p>
+            <p class="secret-progress" id="secret-progress" role="status" aria-live="polite"></p>
+            <div class="secret-list" id="secret-list"></div>
+        </section>
     </div>
 
     <script src="matrix.js"></script>
     <!-- Список редактируемых треков подключается до скрипта, который рисует музыкальный блок. -->
     <script src="favorite-tracks.js?v=2"></script>
-    <script src="live.js?v=8"></script>
+    <script src="live.js?v=9"></script>
+    <script src="secrets.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="guestbook.js?v=2"></script>
     
     <script>
-        let clickCount = 0;
-        const trigger = document.getElementById('secret-trigger');
-        const modal = document.getElementById('secret-modal');
-        const closeBtn = document.getElementById('close-secret');
-
-        trigger.addEventListener('click', () => {
-            clickCount++;
-            if (clickCount === 5) {
-                modal.classList.add('show');
-                clickCount = 0;
-            }
-        });
-
-        closeBtn.addEventListener('click', () => modal.classList.remove('show'));
-        window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
-
         const terminalOutput = document.getElementById('terminal-output');
         const lines = [
             "guest@0ffer4ik:~$ whoami",

@@ -25,7 +25,7 @@ const OFFPLAY_CONTENT = {
     memes: [
         { image: 'images/meme.jpg', alt: 'Пиксельный смайлик', pixelated: true },
         { image: 'images/meme-doge.jpg', alt: 'Мем с собакой Доге' },
-        { image: 'images/meme-cat.png', alt: 'Кот, удивленный вспышкой' }
+        { image: 'images/meme-cat.jpg', alt: 'Мем с котом' }
     ]
 };
 
