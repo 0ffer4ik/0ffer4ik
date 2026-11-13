@@ -13,12 +13,12 @@ const OFFPLAY_CONTENT = {
         {
             title: '1+1',
             imdbId: 'tt1675434',
-            poster: 'https://www.film.ru/movies/11/posters#gallery-3'
+            poster: 'https://www.film.ru/sites/default/files/movies/posters/1632369-341246.jpg'
         },
         {
             title: 'Гарри Поттер',
             imdbId: 'tt0241527',
-            poster: 'https://www.film.ru/movies/garri-potter-i-dary-smerti-chast-2/posters#gallery-3'
+            poster: 'https://www.film.ru/sites/default/files/movies/posters/1627991-298099.jpg'
         }
     ],
     // Меняй эти файлы в images/ — ссылки на картинки и alt-текст находятся здесь.
