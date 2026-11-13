@@ -109,11 +109,19 @@ async function loadMusic() {
             rangeStats(start.getTime()),
             rangeStats(Date.now() - 30 * 86400000)
         ]);
-        const item = (label, ms, count) => `<div class="live-stat"><span class="live-label">${label}</span><span class="live-num">${fmtMs(ms)}</span><span class="live-sub">${tracksWord(count)}</span></div>`;
+        const item = (index, label, ms, count, featured = false) => `
+            <div class="live-stat${featured ? ' live-stat-featured' : ''}">
+                <div class="live-stat-heading">
+                    <span class="live-label">${label}</span>
+                    <span class="live-stat-index">0${index}</span>
+                </div>
+                <span class="live-num">${fmtMs(ms)}</span>
+                <span class="live-sub">${tracksWord(count)}</span>
+            </div>`;
         box.innerHTML =
-            item('Сегодня', today.ms, today.count) +
-            item('За 30 дней', month.ms, month.count) +
-            item('В среднем за день', month.ms / 30, Math.round(month.count / 30));
+            item(1, 'Сегодня', today.ms, today.count) +
+            item(2, 'За 30 дней', month.ms, month.count, true) +
+            item(3, 'В среднем за день', month.ms / 30, Math.round(month.count / 30));
     } catch (e) { box.innerHTML = errorBox(e); }
 }
 

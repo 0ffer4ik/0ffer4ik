@@ -99,21 +99,47 @@
 .live-muted { color: var(--text-soft); font-size: 15px; }
 
 /* Плитки статистики */
-.live-stats { display: grid; gap: 8px; }
+.live-stats { display: grid; gap: 12px; }
 .live-stats.two { grid-template-columns: 1fr 1fr; }
 .live-stats.three { grid-template-columns: repeat(3, 1fr); }
 
 .live-stat {
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255, 40, 60, 0.09);
-    border-radius: 16px;
-    padding: 12px 14px;
-    display: flex; flex-direction: column; gap: 5px;
-    transition: 0.3s;
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 122px;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+    padding: 15px 16px;
+    border: 1px solid rgba(255, 40, 60, 0.12);
+    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.live-stat:hover { border-color: rgba(255, 32, 59, 0.5); box-shadow: 0 0 16px rgba(255, 20, 45, 0.14); }
+.live-stat::before {
+    position: absolute;
+    top: 0;
+    right: 16px;
+    left: 16px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 32, 59, 0.7), transparent);
+    content: "";
+    opacity: 0.5;
+}
+.live-stat:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 32, 59, 0.38);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+}
+.live-stat-featured {
+    border-color: rgba(255, 32, 59, 0.25);
+    background: radial-gradient(ellipse at 90% 0%, rgba(176, 0, 24, 0.2), transparent 60%), linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+}
+.live-stat-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .live-label { color: var(--text-soft); font-size: 14px; }
-.live-num { color: var(--text); font-size: 26px; font-weight: bold; }
+.live-stat-index { color: #ff6577; font: 11px 'Consolas', monospace; letter-spacing: 0.08em; opacity: 0.8; }
+.live-num { color: var(--text); font-size: 30px; font-weight: bold; line-height: 1.15; }
 .live-num small { font-size: 15px; }
 .live-sub { color: #9a9a9a; font-size: 14px; }
 
@@ -361,4 +387,5 @@
 @media (prefers-reduced-motion: reduce) {
     .favorite-record,
     .favorite-vinyl-disc { transition: none; }
+    .live-stat { transition: none; }
 }

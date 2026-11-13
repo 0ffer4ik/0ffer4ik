@@ -66,6 +66,7 @@ create table if not exists public.sudoku_daily_progress (
 create table if not exists public.guestbook_entries (
     id uuid primary key default gen_random_uuid(),
     user_id uuid not null references public.profiles (id) on delete cascade,
+    parent_entry_id uuid references public.guestbook_entries (id) on delete set null,
     message text not null check (
         message = btrim(message)
         and char_length(message) between 1 and 500
@@ -73,10 +74,16 @@ create table if not exists public.guestbook_entries (
     created_at timestamptz not null default now()
 );
 
+alter table public.guestbook_entries
+    add column if not exists parent_entry_id uuid
+    references public.guestbook_entries (id) on delete set null;
+
 create index if not exists guestbook_entries_created_idx
     on public.guestbook_entries (created_at desc);
 create index if not exists guestbook_entries_user_created_idx
     on public.guestbook_entries (user_id, created_at desc);
+create index if not exists guestbook_entries_parent_created_idx
+    on public.guestbook_entries (parent_entry_id, created_at);
 
 alter table public.sudoku_daily_results enable row level security;
 alter table public.sudoku_daily_stats enable row level security;
@@ -127,7 +134,18 @@ create policy "Guestbook entries are publicly readable"
 drop policy if exists "Signed-in users can add guestbook entries" on public.guestbook_entries;
 create policy "Signed-in users can add guestbook entries"
     on public.guestbook_entries for insert to authenticated
-    with check (user_id = (select auth.uid()));
+    with check (
+        user_id = (select auth.uid())
+        and (
+            parent_entry_id is null
+            or exists (
+                select 1
+                from public.guestbook_entries parent
+                where parent.id = guestbook_entries.parent_entry_id
+                    and parent.parent_entry_id is null
+            )
+        )
+    );
 
 drop policy if exists "Users can delete own guestbook entries" on public.guestbook_entries;
 create policy "Users can delete own guestbook entries"

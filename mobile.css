@@ -65,7 +65,7 @@ body {
 .live-wide { grid-column: auto; }
 .live-card { padding: 16px; border-radius: 20px; }
 .live-stats.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.live-stat { padding: 11px 9px; }
+.live-stat { min-height: 112px; padding: 12px 10px; }
 .live-label, .live-sub { font-size: 13px; }
 .live-num { font-size: 22px; }
 .live-top { grid-template-columns: 1fr; }
@@ -86,6 +86,8 @@ body {
 .guestbook-submit { width: 100%; }
 .guestbook-entry { padding: 13px; }
 .guestbook-date { font-size: 11px; }
+.guestbook-replies { margin-left: 8px; padding-left: 10px; }
+.guestbook-action { width: 40px; height: 40px; }
 
 @media (max-width: 380px) {
     body { padding-right: 10px; padding-left: 10px; }

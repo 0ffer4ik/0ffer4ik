@@ -23,8 +23,8 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    <link rel="stylesheet" href="style.css?v=10">
-    <link rel="stylesheet" href="live.css?v=8">
+    <link rel="stylesheet" href="style.css?v=11">
+    <link rel="stylesheet" href="live.css?v=9">
     <link rel="stylesheet" href="mobile.css?v=4" media="(max-width: 768px)">
 </head>
 <body>
@@ -151,6 +151,10 @@
         <div class="guestbook-card">
             <form class="guestbook-form" id="guestbook-form" hidden>
                 <label for="guestbook-message">Сообщение</label>
+                <div class="guestbook-reply-context" id="guestbook-reply-context" hidden>
+                    <span>Ответ для <strong id="guestbook-reply-author"></strong></span>
+                    <button class="guestbook-reply-cancel" id="guestbook-cancel-reply" type="button">Отмена</button>
+                </div>
                 <textarea id="guestbook-message" name="message" maxlength="500" rows="3" placeholder="Напиши что-нибудь хорошее…" required></textarea>
                 <div class="guestbook-form-footer">
                     <span>До 500 символов</span>
@@ -173,10 +177,10 @@
     <script src="matrix.js"></script>
     <!-- Список редактируемых треков подключается до скрипта, который рисует музыкальный блок. -->
     <script src="favorite-tracks.js?v=2"></script>
-    <script src="live.js?v=5"></script>
+    <script src="live.js?v=6"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
-    <script src="guestbook.js?v=1"></script>
+    <script src="guestbook.js?v=2"></script>
     
     <script>
         let clickCount = 0;
@@ -197,11 +201,12 @@
 
         const terminalOutput = document.getElementById('terminal-output');
         const lines = [
-            "system_init() ... OK",
-            "bypass_firewall() ... OK",
-            "access_granted()",
-            "it's my first site from GitHub Pages.",
-            "but no😎"
+            "guest@0ffer4ik:~$ whoami",
+            "0ffer4ik",
+            "guest@0ffer4ik:~$ cat interests.txt",
+            "Музыка · технологии · Sudoku",
+            "guest@0ffer4ik:~$ echo 'Рад тебя видеть'",
+            "Добро пожаловать в мой цифровой уголок."
         ];
         let lineIndex = 0;
         let charIndex = 0;
