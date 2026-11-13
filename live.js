@@ -170,7 +170,7 @@ async function loadSteamStatus() {
 function buildLive() {
     const root = $('live-root');
     if (!root) return;
-    const head = (title, fn, refreshTitle = 'Обновить') => `<div class="live-head"><span>${title}</span>${fn ? `<button class="live-refresh" data-fn="${fn}" title="${refreshTitle}" aria-label="${refreshTitle}">↻</button>` : ''}</div>`;
+    const head = (title, fn, refreshTitle = 'Обновить') => `<div class="live-head"><span>${title}</span>${fn ? `<button class="live-refresh" data-fn="${fn}" title="${refreshTitle}" aria-label="${refreshTitle}"><span class="live-refresh-icon" aria-hidden="true">↻</span></button>` : ''}</div>`;
     const movies = OFFPLAY_CONTENT.movies.map((movie, i) => {
         const poster = movie.poster
             ? `<img src="${esc(movie.poster)}" alt="Постер фильма «${esc(movie.title)}»" loading="lazy" decoding="async">`
@@ -188,7 +188,11 @@ function buildLive() {
             <h2 class="section-title">Live</h2>
             <div class="live-grid">
                 <div class="live-card">${head('Сейчас играет', 'loadNow', 'Обновить статус воспроизведения')}<div id="live-now" class="live-now"></div></div>
-                <div class="live-card">${head('Любимые треки')}<div id="live-fav" class="live-fav"></div></div>
+                <div class="live-card">
+                    ${head('Любимые треки')}
+                    <div id="live-fav" class="live-fav"></div>
+                    <div id="secret-slot-vinyl" class="secret-slot"></div>
+                </div>
                 <div class="live-card live-wide">
                     ${head('Вне плейлиста', 'loadSteamStatus', 'Обновить статус Steam')}
                     <div class="offplay-grid">
@@ -199,6 +203,7 @@ function buildLive() {
                                 <a href="https://www.imdb.com/" target="_blank" rel="noopener">IMDb</a>
                                 <span>Все карточки ведут на IMDb</span>
                             </div>
+                            <div id="secret-slot-actress" class="secret-slot"></div>
                         </div>
                         <div class="offplay-tile offplay-meme">
                             <span class="offplay-label">МЕМЫ</span>
@@ -207,7 +212,7 @@ function buildLive() {
                         <div class="offplay-tile offplay-steam">
                             <span class="offplay-label">STEAM</span>
                             <a class="offplay-steam-link" href="${esc(OFFPLAY_CONTENT.steamProfile)}" target="_blank" rel="noopener">
-                                <span id="steam-avatar" class="offplay-steam-avatar" aria-hidden="true">S</span>
+                                <span id="steam-avatar" class="offplay-steam-avatar" aria-hidden="true"><span class="steam-avatar-fallback">S</span></span>
                                 <span class="offplay-steam-info">
                                     <strong id="steam-name">djxd_17</strong>
                                     <span id="steam-status" class="offplay-steam-status">Загружаю статус…</span>

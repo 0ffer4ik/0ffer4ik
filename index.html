@@ -23,13 +23,13 @@
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    <link rel="stylesheet" href="style.css?v=15">
-    <link rel="stylesheet" href="live.css?v=12">
+    <link rel="stylesheet" href="style.css?v=19">
+    <link rel="stylesheet" href="live.css?v=13">
     <link rel="stylesheet" href="mobile.css?v=4" media="(max-width: 768px)">
 </head>
 <body>
    
-    <a href="sudoku.html" class="top-right-btn">🎮 Судоку</a>
+    <a href="sudoku.html" class="top-right-btn"><span class="icon-glyph top-right-icon" aria-hidden="true">🎮</span> Судоку</a>
 
     <canvas id="matrix-canvas"></canvas>
 
@@ -39,6 +39,7 @@
             <div class="terminal">
                 <div id="terminal-output"></div>
             </div>
+            <div id="secret-slot-spanish" class="secret-slot"></div>
         </div>
         <div class="hero-logo" role="img" aria-label="Анимированный логотип 0ffer4ik">
             <div class="logo-orbit"></div>
@@ -46,6 +47,8 @@
             <div class="logo-wordmark">0FFER4IK</div>
         </div>
     </div>
+
+    <div id="secret-slot-sudoku" class="secret-slot secret-slot-sudoku"></div>
 
     <section class="device-section" id="device">
     <h2 class="section-title">Моё устройство</h2>
@@ -108,6 +111,7 @@
                     <span class="spec-value">512 ГБ</span>
                 </div>
             </div>
+            <div id="secret-slot-phone" class="secret-slot"></div>
         </div>
     </div>
 </section>
@@ -169,20 +173,18 @@
 
     <div id="secret-modal" class="secret-modal" aria-hidden="true">
         <section class="secret-content" role="dialog" aria-modal="true" aria-labelledby="secret-title">
-            <button class="close-btn" id="close-secret" type="button" aria-label="Закрыть секреты">&times;</button>
-            <p class="secret-kicker">ДОСТУП К СЕКРЕТАМ</p>
-            <h2 class="secret-title" id="secret-title">Пять загадок</h2>
-            <p class="secret-intro">Разгадай их по подсказкам на сайте — за каждой спрятана картинка.</p>
-            <p class="secret-progress" id="secret-progress" role="status" aria-live="polite"></p>
-            <div class="secret-list" id="secret-list"></div>
+            <button class="close-btn" id="close-secret" type="button" aria-label="Закрыть секрет с Нагиевым"><span class="close-icon" aria-hidden="true">&times;</span></button>
+            <p class="secret-kicker" id="secret-kicker">ПЯТЬ КЛИКОВ — И...</p>
+            <h2 class="secret-title" id="secret-title">Нагиев на месте</h2>
+            <img id="secret-modal-image" class="secret-nagiev-img" alt="" decoding="async">
         </section>
     </div>
 
     <script src="matrix.js"></script>
     <!-- Список редактируемых треков подключается до скрипта, который рисует музыкальный блок. -->
     <script src="favorite-tracks.js?v=2"></script>
-    <script src="live.js?v=10"></script>
-    <script src="secrets.js?v=1"></script>
+    <script src="live.js?v=12"></script>
+    <script src="secrets.js?v=4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="guestbook.js?v=2"></script>

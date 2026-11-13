@@ -198,6 +198,15 @@ body {
     transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+.sudoku-icon {
+    display: inline-block;
+    transform-origin: center;
+}
+
+#profile-trigger-avatar {
+    transform-origin: center;
+}
+
 .back-btn:hover, .back-btn:focus-visible {
     border-color: var(--accent-strong, #ff203b);
     box-shadow: 0 0 18px rgba(255, 20, 45, 0.28);
@@ -573,24 +582,8 @@ body {
 }
 .daily-streak-card.has-streak .streak-icon {
     filter: drop-shadow(0 0 11px rgba(255, 50, 105, 0.58));
-    animation: spark-float 2.8s ease-in-out infinite;
 }
 .daily-streak-card.has-streak .streak-icon svg { filter: none; opacity: 1; }
-.daily-streak-card.has-streak .streak-spark-small { animation: spark-glint 1.8s ease-in-out infinite; }
-.daily-streak-card.streak-updated .streak-icon { animation: streak-pop 0.65s cubic-bezier(0.2, 0.8, 0.25, 1.25); }
-@keyframes spark-float {
-    0%, 100% { transform: rotate(-5deg) scale(0.98); }
-    50% { transform: rotate(5deg) scale(1.07); }
-}
-@keyframes spark-glint {
-    0%, 100% { opacity: 0.65; }
-    50% { opacity: 1; }
-}
-@keyframes streak-pop {
-    0% { transform: scale(0.75) rotate(-8deg); }
-    65% { transform: scale(1.22) rotate(4deg); }
-    100% { transform: scale(1) rotate(0); }
-}
 .daily-metrics span { color: #a69a9c; font: 12px 'Consolas', monospace; }
 .daily-metrics strong { color: #ff9aa6; font: 700 20px 'Consolas', monospace; }
 .daily-metrics .streak-icon > strong {
@@ -619,11 +612,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .daily-streak-card.has-streak .streak-icon,
-    .daily-streak-card.has-streak .streak-spark-small,
-    .daily-streak-card.streak-updated .streak-icon {
-        animation: none;
-    }
     .back-btn { top: 12px; left: 10px; padding: 8px 11px; }
     .profile-trigger { top: 12px; right: 10px; padding: 5px 9px 5px 5px; font-size: 14px; }
     .profile-trigger-avatar { width: 28px; height: 28px; }
