@@ -2,3 +2,6 @@ project_id = "hcryixvtlysiyrzsdgyz"
 
 [functions.sudoku-game]
 verify_jwt = true
+
+[functions.steam-status]
+verify_jwt = false

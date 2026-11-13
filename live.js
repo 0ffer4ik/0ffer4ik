@@ -4,22 +4,28 @@ const LIVE = {
     refreshSec: 30                       // как часто обновлять «Сейчас играет»
 };
 
+// Здесь можно менять любимые фильмы, Steam-профиль и картинку мема.
+const OFFPLAY_CONTENT = {
+    // Если меняешь профиль, обнови vanityName в supabase/functions/steam-status/index.ts.
+    steamProfile: 'https://steamcommunity.com/id/djxd_17/',
+    movies: [
+        {
+            title: '1+1',
+            poster: 'https://media.themoviedb.org/t/p/w500/zQsq95pYgjhJwYKqoFdeXlVse88.jpg',
+            link: 'https://www.themoviedb.org/movie/77338-the-intouchables'
+        },
+        {
+            title: 'Гарри Поттер',
+            poster: 'https://media.themoviedb.org/t/p/w500/q3LZNzwW7ZWu4kSFIPGcB5CYFE4.jpg',
+            link: 'https://www.themoviedb.org/movie/671-harry-potter-and-the-philosopher-s-stone'
+        }
+    ],
+    memeImage: 'meme.jpg'
+};
+
 // ===== помощники =====
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const fmt = m => {
-    const h = Math.floor(m / 60), mm = m % 60;
-    return h ? `${h}<small>ч</small> ${mm}<small>м</small>` : `${mm}<small>м</small>`;
-};
-const fmtMs = ms => fmt(Math.round(ms / 60000));
-const plural = (n, f) => {
-    const a = Math.abs(n) % 100, b = a % 10;
-    if (a > 10 && a < 20) return f[2];
-    if (b > 1 && b < 5) return f[1];
-    if (b === 1) return f[0];
-    return f[2];
-};
-const tracksWord = n => `${n} ${plural(n, ['трек', 'трека', 'треков'])}`;
 
 const API = 'https://api.stats.fm/api/v1/users/';
 async function sfm(path, params = {}) {
@@ -95,76 +101,117 @@ function loadFavorites() {
     }).join('');
 }
 
-async function rangeStats(afterMs) {
-    const d = await sfm('/streams/stats', { after: afterMs, before: Date.now() });
-    const i = d.items || d;
-    return { ms: i.durationMs || 0, count: i.count || 0 };
-}
+async function loadSteamStatus() {
+    const status = $('steam-status');
+    const hint = $('steam-hint');
+    const avatar = $('steam-avatar');
+    const name = $('steam-name');
 
-async function loadMusic() {
-    const box = $('live-music');
+    status.textContent = 'Загружаю статус…';
+    hint.textContent = '';
+    status.classList.remove('is-playing', 'is-online', 'is-offline');
     try {
-        const start = new Date(); start.setHours(0, 0, 0, 0);
-        const [today, month] = await Promise.all([
-            rangeStats(start.getTime()),
-            rangeStats(Date.now() - 30 * 86400000)
-        ]);
-        const item = (index, label, ms, count, featured = false) => `
-            <div class="live-stat${featured ? ' live-stat-featured' : ''}">
-                <div class="live-stat-heading">
-                    <span class="live-label">${label}</span>
-                    <span class="live-stat-index">0${index}</span>
-                </div>
-                <span class="live-num">${fmtMs(ms)}</span>
-                <span class="live-sub">${tracksWord(count)}</span>
-            </div>`;
-        box.innerHTML =
-            item(1, 'Сегодня', today.ms, today.count) +
-            item(2, 'За 30 дней', month.ms, month.count, true) +
-            item(3, 'В среднем за день', month.ms / 30, Math.round(month.count / 30));
-    } catch (e) { box.innerHTML = errorBox(e); }
-}
+        const baseUrl = window.SUDOKU_SUPABASE_URL;
+        const publishableKey = window.SUDOKU_SUPABASE_KEY;
+        if (!baseUrl || !publishableKey) {
+            throw new Error('Supabase не настроен');
+        }
 
-async function loadTop() {
-    const box = $('live-top');
-    try {
-        const d = await sfm('/top/tracks', { range: 'weeks', limit: 6 });
-        const list = (d.items || []).slice(0, 6);
-        box.innerHTML = list.map((x, i) => {
-            const t = x.track || {};
-            const n = x.streams ?? x.count ?? 0;
-            return `
-            <div class="live-track">
-                <span class="live-rank">${i + 1}</span>
-                <div class="live-mini">${coverOf(t)}</div>
-                <div class="live-track-info">
-                    <div class="live-track-name">${esc(t.name)}</div>
-                    <div class="live-muted">${esc(artistsOf(t))}</div>
-                </div>
-                <span class="live-count">${n} ${plural(n, ['раз', 'раза', 'раз'])}</span>
-            </div>`;
-        }).join('') || '<p class="live-muted">Пока пусто</p>';
-    } catch (e) { box.innerHTML = errorBox(e); }
+        const response = await fetch(`${baseUrl}/functions/v1/steam-status`, {
+            headers: {
+                apikey: publishableKey,
+                Authorization: `Bearer ${publishableKey}`
+            }
+        });
+        const data = await response.json();
+        const serverError = typeof data?.error === 'string' ? data.error : '';
+        if (!response.ok) {
+            let message = serverError || `HTTP ${response.status}`;
+            if (response.status === 404) {
+                message = serverError ? 'Профиль Steam не найден' : 'Функция Steam не опубликована';
+            } else if (response.status === 503) message = 'Добавь API-ключ Steam в Supabase';
+            else if (response.status >= 500) message = 'Steam временно недоступен';
+            throw new Error(message);
+        }
+        if (!data || typeof data.personaName !== 'string') throw new Error('Некорректный ответ Steam');
+
+        name.textContent = data.personaName;
+        if (data.avatarUrl) {
+            avatar.innerHTML = `<img src="${esc(data.avatarUrl)}" alt="">`;
+        }
+
+        if (data.isPublic === false) {
+            status.textContent = 'Профиль закрыт';
+        } else if (typeof data.gameName === 'string' && data.gameName) {
+            status.textContent = `Играет в ${data.gameName}`;
+            status.classList.add('is-playing');
+        } else if (data.isOnline) {
+            status.textContent = 'В сети';
+            status.classList.add('is-online');
+        } else {
+            status.textContent = 'Сейчас не в игре';
+            status.classList.add('is-offline');
+        }
+    } catch (error) {
+        console.error('Could not load Steam status:', error);
+        status.textContent = 'Статус недоступен';
+        status.classList.add('is-offline');
+        hint.textContent = error.message || 'Проверь подключение';
+    }
 }
 
 // ===== сборка блока =====
 function buildLive() {
     const root = $('live-root');
     if (!root) return;
-    const head = (title, fn) => `<div class="live-head"><span>${title}</span>${fn ? `<button class="live-refresh" data-fn="${fn}" title="Обновить">↻</button>` : ''}</div>`;
+    const head = (title, fn, refreshTitle = 'Обновить') => `<div class="live-head"><span>${title}</span>${fn ? `<button class="live-refresh" data-fn="${fn}" title="${refreshTitle}" aria-label="${refreshTitle}">↻</button>` : ''}</div>`;
+    const movies = OFFPLAY_CONTENT.movies.map((movie, i) => `
+        <a class="offplay-movie offplay-movie-${i + 1}" href="${esc(movie.link)}" target="_blank" rel="noopener" aria-label="Открыть фильм «${esc(movie.title)}» на TMDB">
+            <img src="${esc(movie.poster)}" alt="Постер фильма «${esc(movie.title)}»" loading="lazy" decoding="async">
+            <strong>${esc(movie.title)}</strong>
+        </a>`).join('');
     root.innerHTML = `
         <section class="live-section">
             <h2 class="section-title">Live</h2>
             <div class="live-grid">
-                <div class="live-card">${head('Сейчас играет', 'loadNow')}<div id="live-now" class="live-now"></div></div>
+                <div class="live-card">${head('Сейчас играет', 'loadNow', 'Обновить статус воспроизведения')}<div id="live-now" class="live-now"></div></div>
                 <div class="live-card">${head('Любимые треки')}<div id="live-fav" class="live-fav"></div></div>
-                <div class="live-card live-wide">${head('Музыка', 'loadMusic')}<div id="live-music" class="live-stats three"></div></div>
-                <div class="live-card live-wide">${head('Топ треков (4 недели)', 'loadTop')}<div id="live-top" class="live-top"></div></div>
+                <div class="live-card live-wide">
+                    ${head('Вне плейлиста', 'loadSteamStatus', 'Обновить статус Steam')}
+                    <div class="offplay-grid">
+                        <div class="offplay-tile offplay-movies">
+                            <span class="offplay-label">ФИЛЬМЫ</span>
+                            <div class="offplay-movie-list">${movies}</div>
+                            <div class="tmdb-attribution">
+                                <a href="https://www.themoviedb.org/" target="_blank" rel="noopener" aria-label="The Movie Database">
+                                    <img src="https://www.themoviedb.org/assets/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB">
+                                </a>
+                                <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+                            </div>
+                        </div>
+                        <div class="offplay-tile offplay-meme">
+                            <span class="offplay-label">МЕМ</span>
+                            <img src="${esc(OFFPLAY_CONTENT.memeImage)}" alt="Мем с пиксельными очками">
+                        </div>
+                        <div class="offplay-tile offplay-steam">
+                            <span class="offplay-label">STEAM</span>
+                            <a class="offplay-steam-link" href="${esc(OFFPLAY_CONTENT.steamProfile)}" target="_blank" rel="noopener">
+                                <span id="steam-avatar" class="offplay-steam-avatar" aria-hidden="true">S</span>
+                                <span class="offplay-steam-info">
+                                    <strong id="steam-name">djxd_17</strong>
+                                    <span id="steam-status" class="offplay-steam-status">Загружаю статус…</span>
+                                    <span id="steam-hint" class="offplay-steam-hint"></span>
+                                </span>
+                                <span class="offplay-steam-arrow" aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>`;
-    const fns = { loadNow, loadMusic, loadTop };
+    const fns = { loadNow, loadSteamStatus };
     root.querySelectorAll('.live-refresh').forEach(b => b.addEventListener('click', () => fns[b.dataset.fn]()));
-    loadNow(); loadFavorites(); loadMusic(); loadTop();
+    loadNow(); loadFavorites(); loadSteamStatus();
     setInterval(loadNow, LIVE.refreshSec * 1000);
 }
 document.addEventListener('DOMContentLoaded', buildLive);
