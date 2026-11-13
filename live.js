@@ -4,23 +4,29 @@ const LIVE = {
     refreshSec: 30                       // как часто обновлять «Сейчас играет»
 };
 
-// Здесь можно менять любимые фильмы, Steam-профиль и картинку мема.
+// Здесь можно менять любимые фильмы, Steam-профиль и пути к постерам и мемам.
 const OFFPLAY_CONTENT = {
     // Если меняешь профиль, обнови vanityName в supabase/functions/steam-status/index.ts.
     steamProfile: 'https://steamcommunity.com/id/djxd_17/',
+    // Положи локальные постеры в images/ и укажи пути к ним.
     movies: [
         {
             title: '1+1',
-            poster: 'https://media.themoviedb.org/t/p/w500/zQsq95pYgjhJwYKqoFdeXlVse88.jpg',
-            link: 'https://www.themoviedb.org/movie/77338-the-intouchables'
+            imdbId: 'tt1675434',
+            poster: 'https://www.film.ru/movies/11/posters#gallery-3'
         },
         {
             title: 'Гарри Поттер',
-            poster: 'https://media.themoviedb.org/t/p/w500/q3LZNzwW7ZWu4kSFIPGcB5CYFE4.jpg',
-            link: 'https://www.themoviedb.org/movie/671-harry-potter-and-the-philosopher-s-stone'
+            imdbId: 'tt0241527',
+            poster: 'https://www.film.ru/movies/garri-potter-i-dary-smerti-chast-2/posters#gallery-3'
         }
     ],
-    memeImage: 'meme.jpg'
+    // Меняй эти файлы в images/ — ссылки на картинки и alt-текст находятся здесь.
+    memes: [
+        { image: 'images/meme.jpg', alt: 'Пиксельный смайлик', pixelated: true },
+        { image: 'images/meme-doge.jpg', alt: 'Мем с собакой Доге' },
+        { image: 'images/meme-cat.png', alt: 'Кот, удивленный вспышкой' }
+    ]
 };
 
 // ===== помощники =====
@@ -165,11 +171,18 @@ function buildLive() {
     const root = $('live-root');
     if (!root) return;
     const head = (title, fn, refreshTitle = 'Обновить') => `<div class="live-head"><span>${title}</span>${fn ? `<button class="live-refresh" data-fn="${fn}" title="${refreshTitle}" aria-label="${refreshTitle}">↻</button>` : ''}</div>`;
-    const movies = OFFPLAY_CONTENT.movies.map((movie, i) => `
-        <a class="offplay-movie offplay-movie-${i + 1}" href="${esc(movie.link)}" target="_blank" rel="noopener" aria-label="Открыть фильм «${esc(movie.title)}» на TMDB">
-            <img src="${esc(movie.poster)}" alt="Постер фильма «${esc(movie.title)}»" loading="lazy" decoding="async">
-            <strong>${esc(movie.title)}</strong>
-        </a>`).join('');
+    const movies = OFFPLAY_CONTENT.movies.map((movie, i) => {
+        const poster = movie.poster
+            ? `<img src="${esc(movie.poster)}" alt="Постер фильма «${esc(movie.title)}»" loading="lazy" decoding="async">`
+            : 'Добавь локальный постер';
+        return `
+            <a class="offplay-movie offplay-movie-${i + 1}" href="https://www.imdb.com/title/${esc(movie.imdbId)}/" target="_blank" rel="noopener" aria-label="Открыть фильм «${esc(movie.title)}» на IMDb">
+                <span class="offplay-movie-poster">${poster}</span>
+                <strong>${esc(movie.title)}</strong>
+            </a>`;
+    }).join('');
+    const memes = OFFPLAY_CONTENT.memes.map(meme => `
+        <img${meme.pixelated ? ' class="is-pixelated"' : ''} src="${esc(meme.image)}" alt="${esc(meme.alt)}" decoding="async">`).join('');
     root.innerHTML = `
         <section class="live-section">
             <h2 class="section-title">Live</h2>
@@ -182,16 +195,14 @@ function buildLive() {
                         <div class="offplay-tile offplay-movies">
                             <span class="offplay-label">ФИЛЬМЫ</span>
                             <div class="offplay-movie-list">${movies}</div>
-                            <div class="tmdb-attribution">
-                                <a href="https://www.themoviedb.org/" target="_blank" rel="noopener" aria-label="The Movie Database">
-                                    <img src="https://www.themoviedb.org/assets/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB">
-                                </a>
-                                <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+                            <div class="imdb-attribution">
+                                <a href="https://www.imdb.com/" target="_blank" rel="noopener">IMDb</a>
+                                <span>Все карточки ведут на IMDb</span>
                             </div>
                         </div>
                         <div class="offplay-tile offplay-meme">
-                            <span class="offplay-label">МЕМ</span>
-                            <img src="${esc(OFFPLAY_CONTENT.memeImage)}" alt="Мем с пиксельными очками">
+                            <span class="offplay-label">МЕМЫ</span>
+                            <div class="offplay-meme-list">${memes}</div>
                         </div>
                         <div class="offplay-tile offplay-steam">
                             <span class="offplay-label">STEAM</span>

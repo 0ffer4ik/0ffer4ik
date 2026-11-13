@@ -205,7 +205,27 @@
 
 .offplay-movies { grid-column: 1; grid-row: 1 / span 2; }
 
-.tmdb-attribution {
+.offplay-movie-poster {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    overflow: hidden;
+    padding: 8px;
+    place-items: center;
+    color: var(--text-soft);
+    font-size: 11px;
+    text-align: center;
+}
+
+.offplay-movie-poster img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imdb-attribution {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -214,15 +234,11 @@
     line-height: 1.35;
 }
 
-.tmdb-attribution a {
-    display: block;
-    flex: 0 0 36px;
-}
-
-.tmdb-attribution img {
-    display: block;
-    width: 36px;
-    height: auto;
+.imdb-attribution a {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .offplay-meme { grid-column: 2; grid-row: 1; }
@@ -326,17 +342,26 @@
 .offplay-steam-hint { color: #ff9aa6; font-size: 10px; }
 .offplay-steam-arrow { color: var(--text-soft); font-size: 17px; }
 
+.offplay-meme-list {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+}
+
 .offplay-meme img {
-    width: min(100%, 150px);
+    width: min(100%, 132px);
     aspect-ratio: 1;
-    align-self: center;
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50%;
     background: #fff;
-    image-rendering: pixelated;
     object-fit: cover;
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
 }
+
+.offplay-meme img.is-pixelated { image-rendering: pixelated; }
 
 @media (max-width: 768px) {
     .live-grid { grid-template-columns: 1fr; }
@@ -348,8 +373,10 @@
 
 @media (max-width: 480px) {
     .offplay-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
-    .offplay-movies, .offplay-steam, .offplay-meme { grid-column: 1; grid-row: auto; }
-    .offplay-meme img { width: min(100%, 120px); }
+    .offplay-meme { grid-column: 1; grid-row: 1; }
+    .offplay-steam { grid-column: 1; grid-row: 2; }
+    .offplay-movies { grid-column: 1; grid-row: 3; }
+    .offplay-meme-list { gap: 8px; }
 }
 
 /* Любимые треки */
