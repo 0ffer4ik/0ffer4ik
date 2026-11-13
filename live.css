@@ -238,7 +238,7 @@
 .favorite-record:hover .favorite-vinyl-disc,
 .favorite-record:focus-visible .favorite-vinyl-disc {
     /* Увеличь translateX, если нужно сильнее выдвинуть диск при наведении. */
-    transform: translateX(20%) rotate(10deg);
+    transform: translateX(15%) rotate(10deg);
 }
 
 .favorite-vinyl-sleeve {
