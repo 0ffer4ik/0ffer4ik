@@ -140,7 +140,7 @@ revoke all on public.sudoku_daily_results, public.sudoku_daily_stats,
 grant select on public.sudoku_daily_results, public.sudoku_daily_stats,
     public.sudoku_achievements to authenticated;
 grant select on public.guestbook_entries to anon, authenticated;
-grant insert, update, delete on public.sudoku_daily_progress to authenticated;
+grant select, insert, update, delete on public.sudoku_daily_progress to authenticated;
 grant insert, delete on public.guestbook_entries to authenticated;
 grant all on public.sudoku_daily_results, public.sudoku_daily_stats,
     public.sudoku_achievements, public.sudoku_daily_progress,
