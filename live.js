@@ -213,7 +213,6 @@ function buildLive() {
                                     <span id="steam-status" class="offplay-steam-status">Загружаю статус…</span>
                                     <span id="steam-hint" class="offplay-steam-hint"></span>
                                 </span>
-                                <span class="offplay-steam-arrow" aria-hidden="true">↗</span>
                             </a>
                         </div>
                     </div>
